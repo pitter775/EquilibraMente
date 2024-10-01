@@ -19,64 +19,64 @@
         </div>
         <div class="shadow-bottom"></div>
         <div class="main-menu-content">
-            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+        <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+
+            @if(Auth::user()->tipo_usuario == 'admin')
+                <!-- Menu Admin -->
                 <li class="{{ $elementActive == 'dashboard' ? 'active' : '' }} nav-item">
-                    <a class="d-flex align-items-center" href="/home" onclick="link('/home')">
-                    <i data-feather='home'></i><span class="menu-title text-truncate" data-i18n="deshboard">Dashboard</span></a>
+                    <a class="d-flex align-items-center" href="/admin">
+                        <i data-feather='home'></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span>
+                    </a>
+                </li>
+                
+                <li class="{{ $elementActive == 'salas' ? 'active' : '' }} nav-item">
+                    <a class="d-flex align-items-center" href="/admin/salas">
+                        <i data-feather='briefcase'></i><span class="menu-title text-truncate" data-i18n="Gerenciar Salas">Gerenciar Salas</span>
+                    </a>
+                </li>
+                
+                <li class="{{ $elementActive == 'reservas' ? 'active' : '' }} nav-item">
+                    <a class="d-flex align-items-center" href="/admin/reservas">
+                        <i data-feather='calendar'></i><span class="menu-title text-truncate" data-i18n="Reservas">Reservas</span>
+                    </a>
+                </li>
+                
+                <li class="{{ $elementActive == 'relatorios' ? 'active' : '' }} nav-item">
+                    <a class="d-flex align-items-center" href="/admin/relatorios">
+                        <i data-feather='file-text'></i><span class="menu-title text-truncate" data-i18n="Relatórios">Relatórios</span>
+                    </a>
+                </li>
+                
+                <li class="{{ $elementActive == 'usuarios' ? 'active' : '' }} nav-item">
+                    <a class="d-flex align-items-center" href="/admin/usuarios">
+                        <i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Usuários">Usuários</span>
+                    </a>
                 </li>
 
-                <?php  if(Auth::user()->use_perfil == '10' || Auth::user()->use_perfil == '13' || Auth::user()->use_perfil == '14'|| Auth::user()->use_perfil == 17){ ?>
-                    <li class="{{ $elementActive == 'usuario' ? 'active' : '' }} nav-item">
-                        <a class="d-flex align-items-center" href="/usuario" onclick="link('/usuario')">
-                        <i data-feather="users"></i><span class="menu-title text-truncate" data-i18n="Usuários">Usuários</span></a>
-                    </li>
-                    {{-- <li class="{{ $elementActive == 'escolas' ? 'active' : '' }} nav-item">
-                        <a class="d-flex align-items-center" href="/escolas" onclick="link('/escolas')">
-                        <i data-feather='codesandbox'></i><span class="menu-title text-truncate" data-i18n="Escolas">Escolas</span></a>
-                    </li> --}}
+            @elseif(Auth::user()->tipo_usuario == 'cliente')
+                <!-- Menu Cliente -->
+                <li class="{{ $elementActive == 'dashboard' ? 'active' : '' }} nav-item">
+                    <a class="d-flex align-items-center" href="/cliente/dashboard">
+                        <i data-feather='home'></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span>
+                    </a>
+                </li>
                 
-                    <li class="{{ $elementActive == 'serie' ? 'active' : '' }} nav-item">
-                        <a class="d-flex align-items-center" href="/serie" onclick="link('/serie')">
-                        <i data-feather='edit'></i><span class="menu-title text-truncate" data-i18n="Séries">Séries</span></a>
-                    </li>
+                <li class="{{ $elementActive == 'reservar_salas' ? 'active' : '' }} nav-item">
+                    <a class="d-flex align-items-center" href="/cliente/salas/reservar">
+                        <i data-feather='briefcase'></i><span class="menu-title text-truncate" data-i18n="Reservar Salas">Reservar Salas</span>
+                    </a>
+                </li>
+                
+                <li class="{{ $elementActive == 'minhas_reservas' ? 'active' : '' }} nav-item">
+                    <a class="d-flex align-items-center" href="/cliente/reservas">
+                        <i data-feather='calendar'></i><span class="menu-title text-truncate" data-i18n="Minhas Reservas">Minhas Reservas</span>
+                    </a>
+                </li>
+                
+            @endif
 
-                    <li class="{{ $elementActive == 'cardapio' ? 'active' : '' }} nav-item">
-                        <a class="d-flex align-items-center" href="/cardapio" onclick="link('/cardapio')">
-                        <i data-feather='award'></i><span class="menu-title text-truncate" data-i18n="Cardápio">Cardápios</span></a>
-                    </li>
+        </ul>
 
-                    <li class="{{ $elementActive == 'piloto' ? 'active' : '' }} nav-item">
-                        <a class="d-flex align-items-center" href="/piloto" onclick="link('/piloto')">
-                        <i data-feather='server'></i><span class="menu-title text-truncate" data-i18n="piloto">Tabela piloto</span></a>
-                    </li>
-                    <li class="{{ $elementActive == 'presenca' ? 'active' : '' }} nav-item">
-                        <a class="d-flex align-items-center" href="/presenca" onclick="link('/presenca')">
-                        <i data-feather='check-circle'></i><span class="menu-title text-truncate" data-i18n="piloto">Presença</span></a>
-                    </li>
-                    <li class="{{ $elementActive == 'publicacao' ? 'active' : '' }} nav-item">
-                        <a class="d-flex align-items-center" href="/publicacao" onclick="link('/publicacao')">
-                        <i data-feather='book-open'></i><span class="menu-title text-truncate" data-i18n="piloto">Publicações</span></a>
-                    </li>
-                    <li class="{{ $elementActive == 'qrcode' ? 'active' : '' }} nav-item">
-                        <a class="d-flex align-items-center" href="/qrcode" onclick="link('/qrcode')">
-                        <i data-feather='grid'></i><span class="menu-title text-truncate" data-i18n="piloto">QR Codes</span></a>
-                    </li>
-                    <li class="{{ $elementActive == 'atendimento' ? 'active' : '' }} nav-item">
-                        <a class="d-flex align-items-center" href="/atendimento" onclick="link('/atendimento')">
-                        <i data-feather='clipboard'></i><span class="menu-title text-truncate" data-i18n="piloto">Atendimento</span></a>
-                    </li>
-                <?php } if(Auth::user()->use_perfil == '12'){ ?>  
-
-                    @foreach(Session::get('series') as $serie)
-                        <li class="{{ $elementActive == $serie->ser_apelido.'' ? 'active' : '' }} nav-item">
-                            <a class="d-flex align-items-center" href="/serie/chamada/{{$serie->id}}" onclick="link('/serie/chamada/{{$serie->id}}')">
-                            <i data-feather='award'></i><span class="menu-title text-truncate" data-i18n="serie-{{$serie->ser_apelido}}">Série-{{$serie->ser_apelido}}</span></a>
-                        </li>
-                    @endforeach                    
-
-                <?php } ?>
-
-            </ul>
         </div>
     </div>
 

@@ -1,3 +1,12 @@
+@if (Auth::check())
+    @if (Auth::user()->tipo_usuario === 'admin')
+        <script>window.location = "/admin";</script>
+    @else
+        <script>window.location = "/cliente";</script>
+    @endif
+@else
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -92,10 +101,37 @@
     </div>
   </header><!-- End Header -->
 
+
+
   <!-- ======= Hero Section ======= -->
   <section id="hero" >
     <div class="hero-container" data-aos="fade-up">
       <div style="padding: 0 50px;">
+
+        <h2>Login</h2>
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div>
+                <label for="password">Senha:</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+            <button type="submit">Entrar</button>
+        </form>
+
+
+        @if ($errors->any())
+            <div class="alert alert-danger mt-3">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
       <!-- <a href="#about" class="btn-get-started scrollto"><i class="bx bx-chevrons-down"></i></a> -->
     </div>
@@ -191,3 +227,4 @@
 </body>
 
 </html>
+@endif
