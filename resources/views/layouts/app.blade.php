@@ -122,22 +122,23 @@
         }
         
 
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
-    let prot = location.href;
-    position = prot.search("127");
-    console.log(position);
-    if(position !== 7){
-      if (location.protocol !== 'https:') {
-        location.replace(`https:${location.href.substring(location.protocol.length)}`);
-      }
-    }   
+        let prot = location.href;
+        position = prot.search("127");
+        console.log(position);
+        if(position !== 7){
+            if (location.protocol !== 'https:') {
+                location.replace(`https:${location.href.substring(location.protocol.length)}`);
+            }
+        }   
 
     </script>
+    
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     
     <script>

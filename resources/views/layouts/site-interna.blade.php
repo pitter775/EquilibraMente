@@ -21,7 +21,7 @@
   <link href="{{ asset('assets') }}/vendor/icofont/icofont.min.css" rel="stylesheet">
   <link href="{{ asset('assets') }}/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
   <link href="{{ asset('assets') }}/vendor/venobox/venobox.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/vendor/owl.carousel/assests/owl.carousel.min.css" rel="stylesheet">
+  <link href="{{ asset('assets') }}/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
   <link href="{{ asset('assets') }}/vendor/aos/aos.css" rel="stylesheet">
 
   
@@ -187,7 +187,7 @@
 
 
   <!-- Template Main JS File -->
-  <script src="{{ asset('assets') }}/js/main.js"></script>
+    <script src="{{ asset('assets') }}/js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     
     <script>
@@ -225,6 +225,8 @@
     <script>
         const datatablesLangUrl = "{{ asset('assets/js/datatables-pt-br.json') }}";
     </script>
+
+    @stack('js_page')
 
 </body>
 
