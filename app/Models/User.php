@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class User extends Authenticatable
 {
@@ -18,9 +19,18 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'name', 
+        'email', 
+        'password', 
+        'tipo_usuario', 
+        'cpf', 
+        'sexo', 
+        'idade', 
+        'telefone',
+        'cadastro_completo',
+        'registro_profissional', 
+        'tipo_registro_profissional', 
+        'photo'
     ];
 
     /**
@@ -29,7 +39,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        'password', 
         'remember_token',
     ];
 
@@ -42,4 +52,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Relacionamento com reservas
+     */
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class, 'usuario_id');
+    }
+
+    /**
+     * Relacionamento polimórfico com endereço
+     */
+    public function endereco(): MorphOne
+    {
+        return $this->morphOne(Endereco::class, 'enderecavel');
+    }
 }
+

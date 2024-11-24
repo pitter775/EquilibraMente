@@ -17,45 +17,51 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Gestão Escolar</title>
-    <!-- <link rel="shortcut icon" type="image/x-icon" href="{{asset('app-assets/images/ico/favicon.ico')}}"> -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
-
+    
+    
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/vendors.min.css')}}">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/nouislider.min.css">
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/toastr.min.css">
     @stack('css_vendor')
+    
+    <!-- END: Vendor CSS-->
+
+
 
     <!-- BEGIN: Theme CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/bootstrap.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/bootstrap-extended.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/colors.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/components.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/themes/dark-layout.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/themes/bordered-layout.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/themes/semi-dark-layout.css')}}">
-
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/components.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/themes/dark-layout.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/themes/bordered-layout.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/themes/semi-dark-layout.css">
 
     <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/core/menu/menu-types/vertical-menu.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/css/plugins/forms/form-validation.css')}}">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/plugins/extensions/ext-component-toastr.css">
+    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
+
     @stack('css_page')
 
 
     <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/aos/aos.css')}}">
+    <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../../../assets/vendor/aos/aos.css')}}">
+
+
+    
 
      <!-- Scripts -->
      <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
 </head>
-<body class="vertical-layout vertical-menu-modern  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="">
+<body class="vertical-layout vertical-menu-modern  navbar-sticky footer-static" data-open="click" data-menu="vertical-menu-modern" data-col="">
+         
 
     @include('layouts.nav_topo')   
     @include('layouts.nav_lateral')   
@@ -70,23 +76,27 @@
 
 
     <!-- BEGIN: Vendor JS-->     
-    <script src="{{asset('app-assets/vendors/js/vendors.min.js')}}"></script>
+    <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
+
 
 
     <!-- BEGIN: Page Vendor JS-->
+    <script src="../../../app-assets/vendors/js/extensions/wNumb.min.js"></script>
+    <script src="../../../app-assets/vendors/js/extensions/nouislider.min.js"></script>
+    <script src="../../../app-assets/vendors/js/extensions/toastr.min.js"></script>
+    <!-- Adicione esse script no cabeçalho ou rodapé, antes de aplicar a máscara -->
+ 
+
+
     @stack('js_vendor')
 
     <!-- BEGIN: Theme JS-->
-    <script src="{{asset('app-assets/js/core/app-menu.js')}}"></script>
-    <script src="{{asset('app-assets/js/core/app.js')}}"></script>
-    <script src="{{asset('js/jsfull.js')}}"></script>
-    <script src="{{asset('js/jquery.color.js')}}"></script>
-    <script src="{{asset('js/jquery-ui.js')}}"></script>
-    <script src="{{asset('assets/aos/aos.js')}}"></script>
-    <script src="{{asset('app-assets/vendors/js/extensions/toastr.min.js')}}"></script>
-    <script src="{{asset('app-assets/vendors/js/extensions/sweetalert2.all.min.js')}}"></script>
+    <script src="../../../app-assets/js/core/app-menu.js"></script>
+    <script src="../../../app-assets/js/core/app.js"></script>
+    
 
 
+    <!-- BEGIN: Page JS-->
 
     @stack('js_page')
  
@@ -127,6 +137,49 @@ $.ajaxSetup({
       }
     }   
 
+    </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    
+    <script>
+        // Aplica a máscara após o carregamento completo do DOM
+        $(document).ready(function() {
+            $('#newUserModal').on('shown.bs.modal', function () {
+                $('#endereco_cep').mask('00000-000');
+                $('#telefone').mask('(00) 00000-0000');
+            });
+
+            $(document).on('click', '#btn-novo-endereco', function() {
+                $('#novo-endereco-form').toggle(); // Alterna a exibição do formulário de novo endereço
+                $('#endereco_cep').mask('00000-000');
+                $('#telefone').mask('(00) 00000-0000');
+            });
+
+            // Evento para buscar endereço quando o CEP é preenchido
+            $(document).on('blur', '#endereco_cep', function () {
+                let cep = $(this).val().replace(/\D/g, '');
+
+                if (cep.length === 8) {
+                    $.getJSON(`/api/cep/${cep}`, function (data) {
+                        if (!("erro" in data)) {
+                            $('#endereco_rua').val(data.logradouro);
+                            $('#endereco_bairro').val(data.bairro);
+                            $('#endereco_cidade').val(data.localidade);
+                            $('#endereco_estado').val(data.uf);
+                        } else {
+                            toastr.error("CEP não encontrado.");
+                        }
+                    }).fail(function() {
+                        toastr.error("Erro ao buscar o endereço. Tente novamente.");
+                    });
+                } else {
+                    toastr.warning("CEP inválido. Insira um CEP com 8 dígitos.");
+                }
+            });
+
+        });
+    </script>
+    <script>
+        const datatablesLangUrl = "{{ asset('assets/js/datatables-pt-br.json') }}";
     </script>
 </body>
 <!-- END: Body-->

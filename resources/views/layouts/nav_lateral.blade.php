@@ -41,12 +41,6 @@
                     </a>
                 </li>
                 
-                <li class="{{ $elementActive == 'relatorios' ? 'active' : '' }} nav-item">
-                    <a class="d-flex align-items-center" href="/admin/relatorios">
-                        <i data-feather='file-text'></i><span class="menu-title text-truncate" data-i18n="Relatórios">Relatórios</span>
-                    </a>
-                </li>
-                
                 <li class="{{ $elementActive == 'usuarios' ? 'active' : '' }} nav-item">
                     <a class="d-flex align-items-center" href="/admin/usuarios">
                         <i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Usuários">Usuários</span>
@@ -55,23 +49,31 @@
 
             @elseif(Auth::user()->tipo_usuario == 'cliente')
                 <!-- Menu Cliente -->
-                <li class="{{ $elementActive == 'dashboard' ? 'active' : '' }} nav-item">
-                    <a class="d-flex align-items-center" href="/cliente/dashboard">
-                        <i data-feather='home'></i><span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span>
-                    </a>
-                </li>
+               
+
                 
-                <li class="{{ $elementActive == 'reservar_salas' ? 'active' : '' }} nav-item">
-                    <a class="d-flex align-items-center" href="/cliente/salas/reservar">
-                        <i data-feather='briefcase'></i><span class="menu-title text-truncate" data-i18n="Reservar Salas">Reservar Salas</span>
-                    </a>
-                </li>
-                
-                <li class="{{ $elementActive == 'minhas_reservas' ? 'active' : '' }} nav-item">
+                <li class="{{ $elementActive == 'minhas-reservas' ? 'active' : '' }} nav-item">
                     <a class="d-flex align-items-center" href="/cliente/reservas">
                         <i data-feather='calendar'></i><span class="menu-title text-truncate" data-i18n="Minhas Reservas">Minhas Reservas</span>
                     </a>
                 </li>
+
+                <li class="{{ $elementActive == 'dashboard' ? 'active' : '' }} nav-item">
+                    <a class="d-flex align-items-center" href="/cliente/dashboard">
+                        <i data-feather='home'></i><span class="menu-title text-truncate" data-i18n="Dashboard">Contratos</span>
+                    </a>
+                </li> 
+
+                <li class="{{ $elementActive == 'dashboard' ? 'active' : '' }} nav-item">
+                    <a class="d-flex align-items-center" href="/cliente/dashboard">
+                        <i data-feather='home'></i><span class="menu-title text-truncate" data-i18n="Dashboard">Suporte</span>
+                    </a>
+                </li> 
+                <li class="{{ $elementActive == 'dashboard' ? 'active' : '' }} nav-item">
+                    <a class="d-flex align-items-center" href="/cliente/dashboard">
+                        <i data-feather='home'></i><span class="menu-title text-truncate" data-i18n="Dashboard">Notificações</span>
+                    </a>
+                </li> 
                 
             @endif
 

@@ -139,7 +139,7 @@ $(function () {
         {
           // Actions
           targets: -1,
-          title: 'Ação',
+          title: 'Actions',
           orderable: false,
           render: function (data, type, full, meta) {
             return (
@@ -356,7 +356,7 @@ $(function () {
         {
           // Actions
           targets: -1,
-          title: 'Ação',
+          title: 'Actions',
           orderable: false,
           render: function (data, type, full, meta) {
             return (
@@ -384,9 +384,7 @@ $(function () {
         }
       ],
       dom:
-        '<"d-flex justify-content-between align-items-center mx-0 row"'+
-        '<"col-sm-12 col-md-6"l>'+
-        '<"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+        '<"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
       displayLength: 7,
       lengthMenu: [7, 10, 25, 50, 75, 100],
       language: {
@@ -452,7 +450,7 @@ $(function () {
         {
           // Actions
           targets: -1,
-          title: 'Ação',
+          title: 'Actions',
           orderable: false,
           render: function (data, type, full, meta) {
             return (
@@ -587,7 +585,7 @@ $(function () {
         {
           // Actions
           targets: -1,
-          title: 'Ação',
+          title: 'Actions',
           orderable: false,
           render: function (data, type, full, meta) {
             return (

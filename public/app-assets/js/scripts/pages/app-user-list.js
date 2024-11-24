@@ -130,7 +130,7 @@ $(function () {
         {
           // Actions
           targets: -1,
-          title: 'Ação',
+          title: 'Actions',
           orderable: false,
           render: function (data, type, full, meta) {
             return (
@@ -310,7 +310,7 @@ $(function () {
     newUserForm.validate({
       errorClass: 'error',
       rules: {
-        'user-name': {
+        'user-fullname': {
           required: true
         },
         'user-name': {

@@ -12,11 +12,12 @@ class CriarSalasTabela extends Migration
             $table->id();
             $table->string('nome');
             $table->text('descricao');
-            $table->foreignId('endereco_id')->constrained('enderecos');
-            $table->string('foto')->nullable();
+            $table->unsignedBigInteger('endereco_id')->nullable()->change();
+            $table->decimal('valor', 8, 2)->nullable(); // Definir o valor da sala
             $table->string('status')->default('disponivel'); // Status da sala
             $table->timestamps();
         });
+        
     }
 
     public function down()

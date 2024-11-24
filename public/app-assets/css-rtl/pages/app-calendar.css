@@ -47,14 +47,14 @@
 
 .fc .fc-toolbar .fc-button-group .fc-button-primary:not(.fc-prev-button):not(.fc-next-button) {
   background-color : transparent;
-  border-color : #66619c;
-  color : #66619c;
+  border-color : #7367F0;
+  color : #7367F0;
 }
 
 .fc .fc-toolbar .fc-button-group .fc-button-primary:not(.fc-prev-button):not(.fc-next-button).fc-button-active, .fc .fc-toolbar .fc-button-group .fc-button-primary:not(.fc-prev-button):not(.fc-next-button):hover {
   background-color : rgba(115, 103, 240, 0.2) !important;
-  border-color : #66619c !important;
-  color : #66619c;
+  border-color : #7367F0 !important;
+  color : #7367F0;
 }
 
 .fc .fc-toolbar .fc-button-group .fc-button-primary.fc-sidebarToggle-button {

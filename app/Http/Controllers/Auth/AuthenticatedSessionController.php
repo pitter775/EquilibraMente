@@ -28,17 +28,20 @@ class AuthenticatedSessionController extends Controller
     {
         // Autentica o usuário
         $request->authenticate();
-
+    
         // Regenera a sessão
         $request->session()->regenerate();
-
+    
         // Redireciona baseado no tipo de usuário
-        if (Auth::user()->tipo_usuario === 'admin') {
-            return redirect()->intended('/admin');  // Área administrativa
-        } else {
-            return redirect()->intended('/cliente');  // Área do cliente
+        $user = Auth::user();
+    
+        if ($user->tipo_usuario === 'admin') {
+            return redirect()->intended(route('admin.dashboard')); // Rota para a área administrativa
         }
+    
+        return redirect()->intended(route('cliente.reservas')); // Rota para a área do cliente
     }
+    
 
     /**
      * Destroy an authenticated session.

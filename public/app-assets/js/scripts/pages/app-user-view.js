@@ -190,7 +190,7 @@ $(function () {
         {
           // Actions
           targets: -1,
-          title: 'Ação',
+          title: 'Actions',
           width: '80px',
           orderable: false,
           render: function (data, type, full, meta) {

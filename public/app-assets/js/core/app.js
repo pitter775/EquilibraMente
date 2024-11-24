@@ -8,7 +8,7 @@
 ==========================================================================================*/
 window.colors = {
   solid: {
-    primary: '#66619c',
+    primary: '#7367F0',
     secondary: '#82868b',
     success: '#28C76F',
     info: '#00cfe8',
@@ -20,7 +20,7 @@ window.colors = {
     body: '#f8f8f8'
   },
   light: {
-    primary: '#66619c1a',
+    primary: '#7367F01a',
     secondary: '#82868b1a',
     success: '#28C76F1a',
     info: '#00cfe81a',
@@ -1040,7 +1040,7 @@ window.colors = {
 function featherSVG(iconSize) {
   // Feather Icons
   if (iconSize == undefined) {
-    iconSize = '16';
+    iconSize = '14';
   }
   return feather.replace({ width: iconSize, height: iconSize });
 }
@@ -1080,6 +1080,50 @@ if (typeof jQuery.validator === 'function') {
     }
   });
 }
+
+function interpretarErro(jqxhr) {
+  if (jqxhr.responseJSON && jqxhr.responseJSON.message) {
+      let mensagem = jqxhr.responseJSON.message;
+
+      // Erro de duplicidade de chave única no email
+      if (mensagem.includes("Duplicate entry") && mensagem.includes("for key 'users_email_unique'")) {
+          return "O email informado já está em uso. Por favor, escolha outro.";
+      }
+
+      // Erro de duplicidade em outros campos únicos
+      if (mensagem.includes("Duplicate entry")) {
+          return "Um dos campos informados já existe no sistema. Por favor, verifique os dados e tente novamente.";
+      }
+
+      // Erro de integridade referencial (ex: exclusão de registro associado a outro)
+      if (mensagem.includes("Integrity constraint violation")) {
+          return "Não é possível realizar essa ação, pois o registro está associado a outros dados.";
+      }
+
+      // Erro de campo obrigatório não preenchido
+      if (mensagem.includes("SQLSTATE[23000]") && mensagem.includes("cannot be null")) {
+          return "Um campo obrigatório está faltando. Por favor, verifique todos os campos obrigatórios e tente novamente.";
+      }
+
+      // Erro de limite de tamanho excedido
+      if (mensagem.includes("Data too long for column")) {
+          return "O valor inserido em um dos campos é muito longo. Verifique e tente novamente com um valor mais curto.";
+      }
+
+      // Erro de formato de dados inválido (ex: formato de email)
+      if (mensagem.includes("Incorrect integer value") || mensagem.includes("Incorrect double value")) {
+          return "Um dos valores inseridos possui um formato inválido. Verifique e insira um valor correto.";
+      }
+
+      // Outros tipos de erro SQL podem ser tratados aqui
+  }
+  
+  // Mensagem genérica para outros casos
+  return "Ocorreu um erro. Tente novamente mais tarde.";
+}
+
+
+
 
 // Add validation class to input-group (input group validation fix, currently disabled but will be useful in future)
 /* function inputGroupValidation(el) {

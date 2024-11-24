@@ -18,7 +18,8 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
                 <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    {{-- <img src="{{ asset('images/novo-logo.png') }}" alt="Novo Logo" class="w-20 h-20"> --}}
+                    <img src="{{ asset('assets') }}/img/logoescuro.png" alt="" class="img-fluid" style=" width: 15%; margin: 0 auto"> 
                 </a>
             </div>
 

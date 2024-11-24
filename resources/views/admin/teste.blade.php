@@ -35,15 +35,11 @@
 <div class="content-wrapper" data-aos=fade-left data-aos-delay=0>
     
     <div class="content-header row">
-        <h4>Admin Clientes</h4>
+        <h4>Dashboard Administrativo em Construção</h4>
     </div>
     <div class="content-body">
         <section class="app-template-list">
-            <div class="card" >
-                <div class=" " style="width: 100%; padding: 10px; height: 8000px">
-                teste
-                </div>
-            </div>
+          
         </section>
         <!-- templates list ends -->
     </div>
@@ -82,7 +78,8 @@
     <script src="../../../app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js"></script>    
     <script src="../../../app-assets/js/scripts/forms/form-select2.js"></script> 
     <script src="../../../app-assets/js/scripts/extensions/ext-component-sweet-alerts.js"></script>
-    {{-- <script src="../../../app-assets/js/scripts/pages/app-alocacao-list.js"></script> --}}
+    <script src="../../../app-assets/js/scripts/pages/app-alocacao-list.js"></script>
+
 @endpush
 
 @push('js_vendor')

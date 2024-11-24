@@ -1,6 +1,7 @@
     <!-- BEGIN: Header-->
 
-    <nav class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light " style="margin-top:0px; ">
+    <nav class="header-navbar navbar navbar-expand-lg align-items-center navbar-light navbar-shadow fixed-top">
+                
         <div class="navbar-container d-flex content">
             <div class="bookmark-wrapper d-flex align-items-center">
                 <ul class="nav navbar-nav d-xl-none">
@@ -19,12 +20,12 @@
                             <span class="user-status">{{Auth::user()->tipo_usuario}}</span>
                         </div>
                         <span class="avatar">
-                            @if(Auth::user()->use_foto == null)
+                            @if(Auth::user()->photo == null)
                             <img src=" {{asset('app-assets/images/avatars/avatar.png')}}" alt="avatar" height="40" width="40">
 
                             @endif
-                            @if(Auth::user()->use_foto !== null)
-                            <img src="{{asset('arquivos').'/'.Auth::user()->use_foto}}" alt="avatar" height="40" width="40">
+                            @if(Auth::user()->photo !== null)
+                            <img src="{{ Auth::user()->photo }}" alt="avatar" height="40" width="40">
                             @endif
                             <span class="avatar-status-online"></span>
 

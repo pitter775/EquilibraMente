@@ -3,7 +3,7 @@
     @if (Auth::user()->tipo_usuario === 'admin')
         <script>window.location = "/admin";</script>
     @else
-        <script>window.location = "/cliente";</script>
+        <script>window.location = "/cliente/reservas";</script>
     @endif
 @else
 

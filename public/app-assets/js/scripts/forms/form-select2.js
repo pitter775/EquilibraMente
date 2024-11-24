@@ -7,9 +7,8 @@
     Author: Pixinvent
     Author URL: hhttp://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
-(function (window, document, $) { 
+(function (window, document, $) {
   'use strict';
-  setTimeout(function(){ 
   var select = $('.select2'),
     selectIcons = $('.select2-icons'),
     maxLength = $('.max-length'),
@@ -19,24 +18,20 @@
     selectLg = $('.select2-size-lg'),
     selectSm = $('.select2-size-sm'),
     selectInModal = $('.select2InModal');
-    
-      select.each(function () {
-        var $this = $(this);
-        $this.wrap('<div class="position-relative"></div>');
-        $this.select2({
-          // the following code is used to disable x-scrollbar when click in select input and
-          // take 100% width in responsive also
-          dropdownAutoWidth: true,
-          width: '100%',
-          dropdownParent: $this.parent()
-        });
-      });
 
+  select.each(function () {
+    var $this = $(this);
+    $this.wrap('<div class="position-relative"></div>');
+    $this.select2({
+      // the following code is used to disable x-scrollbar when click in select input and
+      // take 100% width in responsive also
+      dropdownAutoWidth: true,
+      width: '100%',
+      dropdownParent: $this.parent()
+    });
+  });
 
   // Select With Icon
-
-
-
   selectIcons.each(function () {
     var $this = $(this);
     $this.wrap('<div class="position-relative"></div>');
@@ -52,7 +47,6 @@
       }
     });
   });
-
 
   // Format icon
   function iconFormat(icon) {
@@ -209,5 +203,4 @@
       placeholder: 'Select a state'
     });
   });
-},  1500); 
 })(window, document, jQuery);
