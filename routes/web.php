@@ -12,6 +12,10 @@ use App\Http\Controllers\ImagemSalaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CepController;
 
+Route::get('/politica-privacidade', function () {
+    return view('site.politica-privacidade1');
+})->name('privacidade');
+
 // Rota pública para o site
 Route::get('/', [SiteController::class, 'index'])->name('site.index');
 Route::get('/sala/{id}', [SiteController::class, 'detalhes'])->name('site.sala.detalhes');

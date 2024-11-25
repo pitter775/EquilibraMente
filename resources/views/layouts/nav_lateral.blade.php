@@ -46,6 +46,12 @@
                         <i data-feather='users'></i><span class="menu-title text-truncate" data-i18n="Usuários">Usuários</span>
                     </a>
                 </li>
+                <li class="{{ $elementActive == 'site' ? 'active' : '' }} nav-item">
+                    <a class="d-flex align-items-center" href="{{ url('/') }}" target="_blank">
+                        <i data-feather='globe'></i><span class="menu-title text-truncate" data-i18n="Site">Ir para o site</span>
+                    </a>
+                </li>
+
 
             @elseif(Auth::user()->tipo_usuario == 'cliente')
                 <!-- Menu Cliente -->

@@ -5,6 +5,12 @@
 @section('content')
 
     <style>
+      hr{ margin: 40px 0 40px 0}
+
+      #descricao-curta,
+        #descricao-completa {
+            transition: all 0.3s ease-in-out;
+        }
 
       .d-flex.flex-wrap .me-4 {
           margin-bottom: 10px;
@@ -82,12 +88,12 @@
 
     <main id="main" style="margin-top: 70px">
 
-      <section class="sala-detalhes">
+      <section class="sala-detalhes pb-0">
         <div class="container">
           <div class="row">
-          <div class="col-12">
-            <h2>{{ $sala->nome }}</h2>
-          </div>
+            <div class="col-12">
+              <h2>{{ $sala->nome }}</h2>
+            </div>
         
 
 
@@ -130,69 +136,95 @@
                 @endif
             </div>
 
+          </div>
+        </div>
+        <div style="background: #fff">
+            <div class="container">
+              <div class="row">
 
-            <!-- Nome e Descrição da Sala -->
-            <div class="col-lg-8">
+                <!-- Nome e Descrição da Sala -->
+                <div class="col-lg-8">
 
-              <h3>Sobre {{ $sala->nome }}</h3>
-              <div class="quill-content">
-                  {!! $sala->descricao !!}
-              </div>
-<hr>
-                <h4>Conveniências</h4>
-                <div class="d-flex flex-wrap mt-1">
-                    @forelse($sala->conveniencias as $conveniencia)
-                        <div class="d-flex align-items-center me-4 mr-4 ">
-                            <i class="{{ $conveniencia->icone }} me-2 pr-1" style="font-size: 24px;"></i>
-                            <span>{{ $conveniencia->nome }}</span>
+                  <h3 class="mt-4">Sobre {{ $sala->nome }}</h3>
+                    <div class="quill-content">
+                        <!-- Conteúdo completo inicialmente escondido -->
+                        <div id="descricao-completa" style="display: none;">
+                            {!! $sala->descricao !!}
                         </div>
-                    @empty
-                        <p>Sem conveniências cadastradas para esta sala.</p>
-                    @endforelse
+
+                        <!-- Botão para alternar -->
+                        <button id="toggle-descricao" class="btn btn-primary btn-sm mt-2">Ver descrição completa</button>
+                    </div>
+
+
+                    <hr>
+                    <h3 class="mb-2">Conveniências</h3>
+                    <div class="d-flex flex-wrap mt-1 mb-5">
+                        @forelse($sala->conveniencias as $conveniencia)
+                            <div class="d-flex align-items-center me-4 mr-4  mt-1 ">
+                                <i class="{{ $conveniencia->icone }} me-2 pr-1" style="font-size: 24px;"></i>
+                                <span>{{ $conveniencia->nome }}</span>
+                            </div>
+                        @empty
+                            <p>Sem conveniências cadastradas para esta sala.</p>
+                        @endforelse
+                    </div>
+
+
+
                 </div>
 
+                <div class="col-lg-4">
+       
+                  <div class="card" style="margin-top: -40px">
+                    <div class="row">
+                      <div class="col-12 p-3">
 
+                          
+                          <p ><span style="font-size:30px">R$ {{ number_format($sala->valor, 2, ',', '.') }}</span> por hora</p>
 
-            </div>
+                          <p> <strong>Endereço:</strong> {{ $sala->endereco->rua }}, {{ $sala->endereco->numero }}, {{ $sala->endereco->bairro }} - {{ $sala->endereco->cidade }}, {{ $sala->endereco->estado }}</p>
 
-            <!-- Carrossel de Imagens -->
-            <div class="col-lg-4">
-              <div class="card">
-                <div class="row">
-                  <div class="col-12 p-3">
+                            <iframe
+                                width="100%"
+                                height="300"
+                                style="border:0"
+                                loading="lazy"
+                                allowfullscreen
+                                src="https://www.google.com/maps?q={{ urlencode($sala->endereco->rua . ', ' . $sala->endereco->numero . ', ' . $sala->endereco->bairro . ', ' . $sala->endereco->cidade . ', ' . $sala->endereco->estado) }}&output=embed">
+                            </iframe>
 
-                      <p style="margin-top: 20px"><strong>Valor por hora:</strong> R$ {{ number_format($sala->valor, 2, ',', '.') }}</p>
+                          <div class="row mt-3">
+                            <div class="col-lg-12 text-center">
+                              <p id="selected-date">Selecione uma data no calendário.</p>
+                              @if(auth()->check())
+                                <div id="calendar"></div>
+                              @else
+                                <p>Para ver a disponibilidade e fazer reservas, faça login.</p>
+                                <a href="{{ route('login.google') }}" class="btn btn-primary">Login com Google</a>
+                                <a href="{{ route('completar.cadastro.form') }}" class="btn btn-secondary">Cadastro Manual</a>
+                              @endif
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  
+                  </div>
 
-                      <p> <strong>Endereço:</strong> {{ $sala->endereco->rua }}, {{ $sala->endereco->numero }}, {{ $sala->endereco->bairro }} - {{ $sala->endereco->cidade }}, {{ $sala->endereco->estado }}</p>
-
-                        <iframe
-                            width="100%"
-                            height="300"
-                            style="border:0"
-                            loading="lazy"
-                            allowfullscreen
-                            src="https://www.google.com/maps?q={{ urlencode($sala->endereco->rua . ', ' . $sala->endereco->numero . ', ' . $sala->endereco->bairro . ', ' . $sala->endereco->cidade . ', ' . $sala->endereco->estado) }}&output=embed">
-                        </iframe>
-
-                      <div class="row mt-3">
-                        <div class="col-lg-12 text-center">
-                          <p id="selected-date">Selecione uma data no calendário.</p>
-                          @if(auth()->check())
-                            <div id="calendar"></div>
-                          @else
-                            <p>Para ver a disponibilidade e fazer reservas, faça login.</p>
-                            <a href="{{ route('login.google') }}" class="btn btn-primary">Login com Google</a>
-                            <a href="{{ route('completar.cadastro.form') }}" class="btn btn-secondary">Cadastro Manual</a>
-                          @endif
-                        </div>
+                  <div class="row">
+                      <div class="col-12 text-center mb-2">
+                          <p class="text-success mb-2">
+                              <i class="fas fa-lock"></i> Este é um ambiente seguro!
+                          </p>
+                          <p>
+                              Trabalhamos constantemente para proteger sua segurança e privacidade. 
+                              <a href="{{ route('privacidade') }}" class="text-primary">Saiba mais</a>
+                          </p>
                       </div>
                   </div>
                 </div>
-              
               </div>
-
             </div>
-          </div>
         </div>
       </section>
 
@@ -351,7 +383,36 @@
               carrosselAtivo.src = novaImagem;
           }
       }
-
       window.trocarImagemPrincipal = trocarImagemPrincipal;
+
+      //alternar entre a descrição curta e completa
+      document.addEventListener('DOMContentLoaded', function () {
+              const descricaoCompleta = document.getElementById('descricao-completa');
+              const toggleButton = document.getElementById('toggle-descricao');
+
+              // Define o limite de caracteres para exibição inicial
+              const limiteCaracteres = 890; // Ajuste conforme necessário
+
+              // Clona o conteúdo completo e cria a versão curta
+              const descricaoOriginal = descricaoCompleta.innerHTML;
+              const descricaoCurta = descricaoOriginal.substring(0, limiteCaracteres) + '...';
+
+              // Exibe a descrição curta inicialmente
+              let descricaoVisivel = false;
+              descricaoCompleta.innerHTML = descricaoCurta;
+              descricaoCompleta.style.display = 'block';
+
+              // Alterna entre curta e completa
+              toggleButton.addEventListener('click', function () {
+                  if (descricaoVisivel) {
+                      descricaoCompleta.innerHTML = descricaoCurta;
+                      toggleButton.textContent = 'Ver descrição completa';
+                  } else {
+                      descricaoCompleta.innerHTML = descricaoOriginal;
+                      toggleButton.textContent = 'Ver descrição reduzida';
+                  }
+                  descricaoVisivel = !descricaoVisivel;
+              });
+          });
   </script>
 @endpush
