@@ -38,8 +38,9 @@ class Sala extends Model
     // Relacionamento com conveniências
     public function conveniencias()
     {
-        return $this->belongsToMany(Conveniencia::class, 'sala_conveniencias');
+        return $this->belongsToMany(Conveniencia::class, 'sala_conveniencias', 'sala_id', 'conveniencia_id');
     }
+
 
     
 }

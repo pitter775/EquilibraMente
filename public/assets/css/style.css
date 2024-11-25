@@ -49,7 +49,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #calendar {
-  height: 500px;
+  height: 350px;
   max-width: 100%; /* Garante que o calendário ocupe a largura total do contêiner */
   overflow-x: hidden; /* Oculta a barra de rolagem horizontal */
 }

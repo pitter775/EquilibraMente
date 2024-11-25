@@ -44,6 +44,9 @@
         <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
     
     <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/toastr.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+
 
 
   <!-- =======================================================

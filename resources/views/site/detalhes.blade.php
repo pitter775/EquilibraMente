@@ -5,6 +5,13 @@
 @section('content')
 
     <style>
+
+      .d-flex.flex-wrap .me-4 {
+          margin-bottom: 10px;
+      }
+      .d-flex.align-items-center {
+          font-size: 16px;
+      }
         .img-thumbnail {
             max-height: 120px; /* Tamanho da imagem */
             object-fit: cover; /* Ajusta a imagem sem distorcer */
@@ -127,13 +134,25 @@
             <!-- Nome e Descrição da Sala -->
             <div class="col-lg-8">
 
-            <h3>Sobre {{ $sala->nome }}</h3>
-    
+              <h3>Sobre {{ $sala->nome }}</h3>
               <div class="quill-content">
-                {!! $sala->descricao !!}
+                  {!! $sala->descricao !!}
               </div>
+<hr>
+                <h4>Conveniências</h4>
+                <div class="d-flex flex-wrap mt-1">
+                    @forelse($sala->conveniencias as $conveniencia)
+                        <div class="d-flex align-items-center me-4 mr-4 ">
+                            <i class="{{ $conveniencia->icone }} me-2 pr-1" style="font-size: 24px;"></i>
+                            <span>{{ $conveniencia->nome }}</span>
+                        </div>
+                    @empty
+                        <p>Sem conveniências cadastradas para esta sala.</p>
+                    @endforelse
+                </div>
 
-              <p><strong>Endereço:</strong> {{ $sala->endereco->rua }}, {{ $sala->endereco->numero }}, {{ $sala->endereco->bairro }} - {{ $sala->endereco->cidade }}, {{ $sala->endereco->estado }}</p>
+
+
             </div>
 
             <!-- Carrossel de Imagens -->
@@ -144,9 +163,11 @@
 
                       <p style="margin-top: 20px"><strong>Valor por hora:</strong> R$ {{ number_format($sala->valor, 2, ',', '.') }}</p>
 
+                      <p> <strong>Endereço:</strong> {{ $sala->endereco->rua }}, {{ $sala->endereco->numero }}, {{ $sala->endereco->bairro }} - {{ $sala->endereco->cidade }}, {{ $sala->endereco->estado }}</p>
+
                         <iframe
                             width="100%"
-                            height="350"
+                            height="300"
                             style="border:0"
                             loading="lazy"
                             allowfullscreen
