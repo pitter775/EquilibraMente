@@ -232,9 +232,9 @@
 }
 
 .horizontal-menu .header-navbar.navbar-horizontal ul#main-menu-navigation > li.active > a {
-  background : -webkit-linear-gradient(208deg, #2b275b, rgba(115, 103, 240, 0.7));
-  background :         linear-gradient(-118deg, #2b275b, rgba(115, 103, 240, 0.7));
-  box-shadow : 0 0 6px 1px rgba(115, 103, 240, 0.6);
+  background : -webkit-linear-gradient(208deg, #2b275b, rgba(84, 94, 81, 0.7));
+  background :         linear-gradient(-118deg, #2b275b, rgba(84, 94, 81, 0.7));
+  box-shadow : 0 0 6px 1px rgba(84, 94, 81, 0.6);
   color : #FFFFFF;
   border-radius : 4px;
 }

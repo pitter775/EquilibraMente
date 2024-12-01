@@ -79,16 +79,16 @@
 
 .ql-container {
   border-color: #d8d6de !important;
-  font-family: "Montserrat", Helvetica, Arial, serif; }
+  font-family: "Roboto", Helvetica, Arial, serif; }
 
 .ql-editor a {
   color: #2b275b; }
 
 .ql-picker {
-  color: #5e5873 !important; }
+  color: #545e51 !important; }
 
 .ql-stroke {
-  stroke: #5e5873 !important; }
+  stroke: #545e51 !important; }
 
 .ql-active .ql-stroke {
   stroke: #2b275b !important; }
@@ -97,7 +97,7 @@
   fill: #2b275b !important; }
 
 .ql-fill {
-  fill: #5e5873 !important; }
+  fill: #545e51 !important; }
 
 .ql-toolbar,
 .ql-container {

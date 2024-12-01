@@ -18,7 +18,7 @@
 }
 
 .context-menu-list .context-menu-item.context-menu-hover, .context-menu-list .context-menu-item:hover, .context-menu-list .context-menu-item:focus {
-  background-color : rgba(115, 103, 240, 0.12) !important;
+  background-color : rgba(84, 94, 81, 0.12) !important;
   color : #2b275b;
 }
 

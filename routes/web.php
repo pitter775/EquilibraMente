@@ -12,6 +12,21 @@ use App\Http\Controllers\ImagemSalaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CepController;
 
+
+Route::get('/debug-usuario', function () {
+    if (!auth()->check()) {
+        return response()->json(['error' => 'Usuário não autenticado.']);
+    }
+
+    return response()->json([
+        'id' => auth()->id(),
+        'email' => auth()->user()->email,
+        'tipo_usuario' => auth()->user()->tipo_usuario,
+        'cadastro_completo' => auth()->user()->cadastro_completo,
+    ]);
+});
+
+
 Route::get('/politica-privacidade', function () {
     return view('site.politica-privacidade1');
 })->name('privacidade');
@@ -19,6 +34,19 @@ Route::get('/politica-privacidade', function () {
 // Rota pública para o site
 Route::get('/', [SiteController::class, 'index'])->name('site.index');
 Route::get('/sala/{id}', [SiteController::class, 'detalhes'])->name('site.sala.detalhes');
+
+
+// Rota para exibir a página de revisão da reserva (GET)
+Route::get('/reserva/revisao', [SiteController::class, 'exibirRevisao'])->name('reserva.revisao');
+// Rota para processar os dados da reserva e salvar na sessão (POST)
+Route::post('/reserva/revisao', [SiteController::class, 'revisao'])->name('reserva.revisao.processar');
+// Rota para confirmar a reserva (POST)
+// Route::post('/reserva/confirmar', [SiteController::class, 'salvarReserva'])->name('reserva.confirmar');
+Route::post('/reserva/salvar', [SiteController::class, 'salvarReserva'])->name('reserva.salvar');
+
+
+
+
 
 // Rotas para gestão de imagens
 Route::post('/salas/{sala}/imagens', [ImagemSalaController::class, 'store'])->name('imagens.store');
@@ -41,6 +69,7 @@ Route::view('/termos-de-servico', 'termos-de-servico')->name('termos.servico');
 // Google Login e Cadastro Completo
 Route::get('/login/google', [AuthController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/login/google/callback', [AuthController::class, 'handleGoogleCallback']);
+
 Route::get('/completar-cadastro', [UsuarioController::class, 'mostrarFormularioCompletarCadastro'])->name('completar.cadastro.form');
 Route::post('/completar-cadastro', [UsuarioController::class, 'completarCadastro'])->name('completar.cadastro');
 
@@ -83,11 +112,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/relatorios', [RelatorioController::class, 'index']);
 
 
-    // Rotas para o site autenticado 
-    // Rota para exibir a página de revisão da reserva
-    Route::post('/reserva/revisao', [ReservaController::class, 'revisao'])->name('reserva.revisao');
-    // Rota para confirmar a reserva
-    Route::post('/reserva/confirmar', [ReservaController::class, 'confirmar'])->name('reserva.confirmar');
+
+
 
 });
 

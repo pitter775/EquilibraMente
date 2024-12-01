@@ -1,4 +1,6 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="{{ asset('assets') }}/css/style.css" rel="stylesheet">
+    <link href="{{ asset('assets') }}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 .button-container {
@@ -22,7 +24,7 @@
 }
 
 .btn-google {
-    background-color: #db4437; /* Cor do botão Google */
+    background-color: #545e51; /* Cor do botão Google */
 }
 
 .btn-google:hover {
@@ -38,7 +40,7 @@
 }
 
 .btn-entrar {
-    background-color: #007BFF; /* Cor azul para chamar atenção */
+    background-color: #545e51 !important; /* Cor azul para chamar atenção */
     color: #fff; /* Cor do texto */
     border-radius: 5px; /* Bordas arredondadas */
     padding: 10px 20px; /* Espaçamento interno */
@@ -93,7 +95,7 @@
 
 <div class="button-container">
     <a href="{{ route('login.google') }}" class="btn btn-google">
-        <i class="fab fa-google"></i> Login com Google
+       Login com Google
     </a>
     <a href="{{ route('completar.cadastro.form') }}" class="btn btn-secondary">
         Cadastro Manual

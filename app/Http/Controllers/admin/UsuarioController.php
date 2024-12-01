@@ -117,11 +117,7 @@ class UsuarioController extends Controller
     }
     public function completarCadastro(Request $request)
     {
-        // Obtém o usuário autenticado
-        $user = Auth::user();
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Usuário não autenticado.');
-        }
+        \Log::info('Dados recebidos no completarCadastro:', $request->all());
     
         // Validação dos dados
         $request->validate([
@@ -133,6 +129,7 @@ class UsuarioController extends Controller
             'sexo' => 'required|string|max:10',
             'idade' => 'required|integer',
             'registro_profissional' => 'nullable|string|max:255',
+            'senha' => 'required|string|min:8|confirmed',
             'tipo_registro_profissional' => 'nullable|string|max:255',
             'endereco_rua' => 'required|string|max:255',
             'endereco_numero' => 'required|string|max:10',
@@ -142,21 +139,71 @@ class UsuarioController extends Controller
             'endereco_estado' => 'required|string|max:2',
             'endereco_cep' => 'required|string|max:9',
         ]);
+
+        \Log::info('Validouuu');
     
-        // Atualiza o usuário com os dados fornecidos
-        
-        $user->update([
-            'name' => $request->input('fullname'),
-            'photo' => $request->input('photo'),
-            'email' => $request->input('email'),
-            'telefone' => $request->input('telefone'),
-            'cpf' => $request->input('cpf'),
-            'sexo' => $request->input('sexo'),
-            'idade' => $request->input('idade'),
-            'registro_profissional' => $request->input('registro_profissional'),
-            'tipo_registro_profissional' => $request->input('tipo_registro_profissional'),
-            'cadastro_completo' => true, // Marca o cadastro como completo
-        ]);
+    
+        if (Auth::check()) {
+            \Log::info('Tá logado');
+            $user = Auth::user();
+            // Atualiza o usuário existente
+            $user->update([
+                'name' => $request->input('fullname'),
+                'photo' => $request->input('photo'),
+                'email' => $request->input('email'),
+                'telefone' => $request->input('telefone'),
+                'cpf' => $request->input('cpf'),
+                'sexo' => $request->input('sexo'),
+                'idade' => $request->input('idade'),
+                'registro_profissional' => $request->input('registro_profissional'),
+                'tipo_registro_profissional' => $request->input('tipo_registro_profissional'),
+                'password' => Hash::make($request->input('senha')), // Adiciona o hash da senha
+                'cadastro_completo' => true, // Marca o cadastro como completo
+            ]);
+
+        } else {
+
+            \Log::info('Não esta logado ');
+            
+             // Verifica se o e-mail já existe
+                $existingUser = User::where('email', $request->input('email'))->first();
+
+                if ($existingUser) {
+                    // Retorna uma mensagem de erro se o e-mail já está cadastrado
+                    \Log::info('ja existe um usuario com memsmo emil');
+                    if ($request->ajax()) {
+                        return response()->json([
+                            'error' => 'E-mail já cadastrado. Faça login ou use outro e-mail.'
+                        ], 422);
+                    }
+                    return redirect()->back()->with('error', 'E-mail já cadastrado. Faça login ou use outro e-mail.');
+                
+                }
+            // Cria um novo usuário e realiza o login
+            $user = User::create([
+                'name' => $request->input('fullname'),
+                'email' => $request->input('email'),
+                'telefone' => $request->input('telefone'),
+                'cpf' => $request->input('cpf'),
+                'sexo' => $request->input('sexo'),
+                'idade' => $request->input('idade'),
+                'registro_profissional' => $request->input('registro_profissional'),
+                'tipo_registro_profissional' => $request->input('tipo_registro_profissional'),
+                'password' => Hash::make($request->input('senha')), // Hash da senha
+                'cadastro_completo' => true, // Marca o cadastro como completo
+            ]);
+
+            if ($user) {
+
+                \Log::info('novo usuario criado');
+            }else{
+                \Log::info('criou um novo');
+            }
+
+           
+    
+            Auth::login($user); // Realiza o login automaticamente
+        }
     
         // Atualiza ou cria o endereço relacionado
         $user->endereco()->updateOrCreate([], [
@@ -170,21 +217,24 @@ class UsuarioController extends Controller
         ]);
     
         // Determina a URL de redirecionamento
-        $redirectUrl = session()->has('url_detalhe') 
+        $redirectUrl = session()->has('url_detalhe')
             ? session('url_detalhe')
-            : route('site.sala.detalhes');
-
+            : route('site.index'); // Redireciona para a home após o login
+    
+        \Log::info('Redirecionando para URL:', ['redirectUrl' => $redirectUrl]);
+    
         // Verifica se a requisição é AJAX
         if ($request->ajax()) {
             return response()->json([
                 'redirect' => $redirectUrl,
-                'message' => 'Cadastro completado com sucesso!'
+                'message' => 'Cadastro completado com sucesso!',
             ]);
         }
-
+    
         // Redireciona normalmente, se não for uma requisição AJAX
         return redirect($redirectUrl)->with('success', 'Cadastro completado com sucesso!');
     }
+    
     
 
     public function mostrarFormularioCompletarCadastro()

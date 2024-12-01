@@ -4,8 +4,9 @@
     <main id="main" style="margin-top: 70px">
 
         <section class="sala-detalhes">
-            <div class="container">
-                <div class="row">
+            <div class="container"> 
+                <div class="row p-50">
+                <div class="card p-5">
                     <div class="col-12">
                         <h1 class="text-center mb-4">Política de Privacidade</h1>
                         
@@ -81,7 +82,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div></div>
         </section>
     </div>
 @endsection

@@ -31,23 +31,26 @@ class AuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
     
-            // Verifica se o usuário já existe ou cria um novo
             $user = User::firstOrCreate(
                 ['email' => $googleUser->email],
                 [
                     'name' => $googleUser->name,
                     'photo' => $googleUser->avatar,
+                    'tipo_usuario' => 'cliente', // Certifique-se de que o cliente é definido como 'cliente'
                     'cadastro_completo' => false,
                     'password' => Hash::make('123'),
                 ]
             );
     
-            // Faz o login do usuário
+            \Log::info('Usuário Google', [
+                'id' => $user->id,
+                'email' => $user->email,
+                'tipo_usuario' => $user->tipo_usuario,
+            ]);
+    
             Auth::login($user);
     
-            // Verifica se o cadastro está completo
             if (!$user->cadastro_completo) {
-                // Redireciona para a página de completar cadastro
                 return redirect()->route('completar.cadastro.form')->with('google_data', [
                     'name' => $googleUser->name,
                     'email' => $googleUser->email,
@@ -55,14 +58,17 @@ class AuthController extends Controller
                 ]);
             }
     
-            // Redireciona para a rota armazenada na sessão ou para a home
             $redirectUrl = session()->pull('redirect_url', route('site.index'));
+    
             return redirect($redirectUrl);
     
         } catch (\Exception $e) {
+            \Log::error('Erro no login com Google: ' . $e->getMessage());
             return redirect()->route('site.index')->with('error', 'Falha no login com o Google.');
         }
     }
+    
+    
     
     
     

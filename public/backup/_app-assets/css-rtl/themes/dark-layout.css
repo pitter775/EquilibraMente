@@ -460,7 +460,7 @@ body.dark-layout {
 }
 
 .dark-layout .dropdown-menu .dropdown-item:hover, .dark-layout .dropdown-menu .dropdown-item:focus {
-  background : rgba(115, 103, 240, 0.12);
+  background : rgba(84, 94, 81, 0.12);
   color : #66619c;
 }
 
@@ -1157,7 +1157,7 @@ body.dark-layout {
 }
 
 .dark-layout .email-application .content-area-wrapper .email-app-list .email-user-list .media.selected-row-bg {
-  background-color : rgba(115, 103, 240, 0.06);
+  background-color : rgba(84, 94, 81, 0.06);
   border-color : #3B4253;
 }
 
@@ -1403,7 +1403,7 @@ body.dark-layout {
 }
 
 .dark-layout .ecommerce-application .content-right .grid-view .ecommerce-card .item-options .wishlist span, .dark-layout .ecommerce-application .content-right .list-view .ecommerce-card .item-options .wishlist span, .dark-layout .ecommerce-application .content-body .grid-view .ecommerce-card .item-options .wishlist span, .dark-layout .ecommerce-application .content-body .list-view .ecommerce-card .item-options .wishlist span {
-  color : #5E5873;
+  color : #545e51;
 }
 
 .dark-layout .ecommerce-application .content-right .grid-view .ecommerce-card .item-options .cart span, .dark-layout .ecommerce-application .content-right .list-view .ecommerce-card .item-options .cart span, .dark-layout .ecommerce-application .content-body .grid-view .ecommerce-card .item-options .cart span, .dark-layout .ecommerce-application .content-body .list-view .ecommerce-card .item-options .cart span {

@@ -47,14 +47,14 @@
 
 .fc .fc-toolbar .fc-button-group .fc-button-primary:not(.fc-prev-button):not(.fc-next-button) {
   background-color : transparent;
-  border-color : #7367F0;
-  color : #7367F0;
+  border-color : #545e51;
+  color : #545e51;
 }
 
 .fc .fc-toolbar .fc-button-group .fc-button-primary:not(.fc-prev-button):not(.fc-next-button).fc-button-active, .fc .fc-toolbar .fc-button-group .fc-button-primary:not(.fc-prev-button):not(.fc-next-button):hover {
-  background-color : rgba(115, 103, 240, 0.2) !important;
-  border-color : #7367F0 !important;
-  color : #7367F0;
+  background-color : rgba(84, 94, 81, 0.2) !important;
+  border-color : #545e51 !important;
+  color : #545e51;
 }
 
 .fc .fc-toolbar .fc-button-group .fc-button-primary.fc-sidebarToggle-button {
@@ -236,7 +236,7 @@
 }
 
 .app-calendar .app-calendar-sidebar .select-all ~ label, .app-calendar .app-calendar-sidebar .input-filter ~ label {
-  color : #5E5873;
+  color : #545e51;
   font-weight : 500;
   letter-spacing : 0.4px;
 }
@@ -312,7 +312,7 @@
 }
 
 .app-calendar .fc-popover .fc-popover-header .fc-popover-title, .app-calendar .fc-popover .fc-popover-header .fc-popover-close {
-  color : #5E5873;
+  color : #545e51;
 }
 
 .app-calendar .fc-popover .fc-popover-body *:not(:last-of-type) {

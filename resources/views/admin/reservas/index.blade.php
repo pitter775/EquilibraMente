@@ -10,123 +10,123 @@
 <!-- Botão para abrir o modal de Novo Usuário -->
 
 
-<!-- Modal para Adicionar/Editar Usuário -->
-<div class="modal fade" id="newUserModal" tabindex="-1" aria-labelledby="newUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newUserModalLabel">Novo Usuário</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <!-- Modal para Adicionar/Editar Usuário -->
+    <div class="modal fade" id="newUserModal" tabindex="-1" aria-labelledby="newUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newUserModalLabel">Novo Usuário</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <h3 class="mt-2 ml-2">Reservas</h3>
+                <p class="ml-2 mt-0">Ao definir os dados a serem cadastrados segue abaixo o botão se salvar.</p>
+                <form id="newUserForm">
+                    <div class="modal-body">
+                                    
+                        <!-- Seção: Informações Básicas -->
+                        <div class="card p-2">
+                            <h3 class="mb-3">Informações Básicas</h3>
+                            <div class="row">
+                                <div class="col-md-6 mb-1">
+                                    
+                                    <p id="fullname" class="form-control-plaintext"></p>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    
+                                    <p id="email" class="form-control-plaintext"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-1">
+                                    
+                                    <p id="telefone" class="form-control-plaintext"></p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    
+                                    <p id="cpf" class="form-control-plaintext"></p>
+                                </div>
+                                <div class="col-md-2 mb-1">
+                                    
+                                    <p id="sexo" class="form-control-plaintext"></p>
+                                </div>
+                                <div class="col-md-2 mb-1">
+                                    
+                                    <p  class="form-control-plaintext"> <span id="idade"></span> anos</p>
+                                </div>
+                                <div class="col-md-7 mb-1">
+                                    <label class="form-label">URL da Foto</label>
+                                    <p id="photo" class="form-control-plaintext"></p>
+                                </div>
+                                <div class="col-md-5 mb-1">
+                                    
+                                    <p id="status" class="form-control-plaintext"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Seção: Informações Profissionais -->
+                        <div class="card p-2">
+                            <h3 class="mb-3">Informações Profissionais</h3>
+                            <div class="row">
+                                <div class="col-md-6 mb-1">
+                                    <label class="form-label">Registro Profissional</label>
+                                    <p id="registro_profissional" class="form-control-plaintext"></p>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <label class="form-label">Tipo de Registro</label>
+                                    <p id="tipo_registro_profissional" class="form-control-plaintext"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Seção: Endereço -->
+                        <div class="card p-2">
+                            <h3 class="mb-3">Endereço</h3>
+                            <div class="row">
+                                <div class="col-md-3 mb-1">
+                                    <label class="form-label">CEP</label>
+                                    <p id="endereco_cep" class="form-control-plaintext"></p>
+                                </div>
+                                <div class="col-md-6 mb-1">
+                                    <label class="form-label">Rua</label>
+                                    <p id="endereco_rua" class="form-control-plaintext"></p>
+                                </div>
+                                <div class="col-md-3 mb-1">
+                                    <label class="form-label">Número</label>
+                                    <p id="endereco_numero" class="form-control-plaintext"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 mb-1">
+                                    <label class="form-label">Complemento</label>
+                                    <p id="endereco_complemento" class="form-control-plaintext"></p>
+                                </div>
+                                <div class="col-md-3 mb-1">
+                                    <label class="form-label">Bairro</label>
+                                    <p id="endereco_bairro" class="form-control-plaintext"></p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <label class="form-label">Cidade</label>
+                                    <p id="endereco_cidade" class="form-control-plaintext"></p>
+                                </div>
+                                <div class="col-md-2 mb-1">
+                                    <label class="form-label">Estado</label>
+                                    <p id="endereco_estado" class="form-control-plaintext"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-outline-secondary" data-dismiss="modal"><i data-feather='x'></i> Fechar</button>
+                        
+                    </div>
+                </form>
             </div>
-            <h3 class="mt-2 ml-2">Reservas</h3>
-            <p class="ml-2 mt-0">Ao definir os dados a serem cadastrados segue abaixo o botão se salvar.</p>
-            <form id="newUserForm">
- <div class="modal-body">
-                
-                <!-- Seção: Informações Básicas -->
-                <div class="card p-2">
-                    <h3 class="mb-3">Informações Básicas</h3>
-                    <div class="row">
-                        <div class="col-md-6 mb-1">
-                            
-                            <p id="fullname" class="form-control-plaintext"></p>
-                        </div>
-                        <div class="col-md-6 mb-1">
-                            
-                            <p id="email" class="form-control-plaintext"></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 mb-1">
-                            
-                            <p id="telefone" class="form-control-plaintext"></p>
-                        </div>
-                        <div class="col-md-4 mb-1">
-                            
-                            <p id="cpf" class="form-control-plaintext"></p>
-                        </div>
-                        <div class="col-md-2 mb-1">
-                            
-                            <p id="sexo" class="form-control-plaintext"></p>
-                        </div>
-                        <div class="col-md-2 mb-1">
-                            
-                            <p  class="form-control-plaintext"> <span id="idade"></span> anos</p>
-                        </div>
-                        <div class="col-md-7 mb-1">
-                            <label class="form-label">URL da Foto</label>
-                            <p id="photo" class="form-control-plaintext"></p>
-                        </div>
-                        <div class="col-md-5 mb-1">
-                            
-                            <p id="status" class="form-control-plaintext"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Seção: Informações Profissionais -->
-                <div class="card p-2">
-                    <h3 class="mb-3">Informações Profissionais</h3>
-                    <div class="row">
-                        <div class="col-md-6 mb-1">
-                            <label class="form-label">Registro Profissional</label>
-                            <p id="registro_profissional" class="form-control-plaintext"></p>
-                        </div>
-                        <div class="col-md-6 mb-1">
-                            <label class="form-label">Tipo de Registro</label>
-                            <p id="tipo_registro_profissional" class="form-control-plaintext"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Seção: Endereço -->
-                <div class="card p-2">
-                    <h3 class="mb-3">Endereço</h3>
-                    <div class="row">
-                        <div class="col-md-3 mb-1">
-                            <label class="form-label">CEP</label>
-                            <p id="endereco_cep" class="form-control-plaintext"></p>
-                        </div>
-                        <div class="col-md-6 mb-1">
-                            <label class="form-label">Rua</label>
-                            <p id="endereco_rua" class="form-control-plaintext"></p>
-                        </div>
-                        <div class="col-md-3 mb-1">
-                            <label class="form-label">Número</label>
-                            <p id="endereco_numero" class="form-control-plaintext"></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3 mb-1">
-                            <label class="form-label">Complemento</label>
-                            <p id="endereco_complemento" class="form-control-plaintext"></p>
-                        </div>
-                        <div class="col-md-3 mb-1">
-                            <label class="form-label">Bairro</label>
-                            <p id="endereco_bairro" class="form-control-plaintext"></p>
-                        </div>
-                        <div class="col-md-4 mb-1">
-                            <label class="form-label">Cidade</label>
-                            <p id="endereco_cidade" class="form-control-plaintext"></p>
-                        </div>
-                        <div class="col-md-2 mb-1">
-                            <label class="form-label">Estado</label>
-                            <p id="endereco_estado" class="form-control-plaintext"></p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-                <div class="modal-footer">
-                    <button type="reset" class="btn btn-outline-secondary" data-dismiss="modal"><i data-feather='x'></i> Fechar</button>
-                    
-                </div>
-            </form>
         </div>
     </div>
-</div>
 
 
    <div class="">
@@ -138,8 +138,7 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="float-left mb-0">Reservas</h2>
-                
+                            <h3 class="float-left mb-0">Reservas</h3>                
                         </div>
                     </div>
                 </div>
@@ -168,6 +167,7 @@
                                             <th>Sala</th>
                                             <th>Período da Reserva</th>
                                             <th>Valor por Hora</th> <!-- Coluna para valor por hora -->
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>

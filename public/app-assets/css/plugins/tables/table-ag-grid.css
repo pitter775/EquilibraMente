@@ -9,14 +9,14 @@
 
 .aggrid .ag-icon-checkbox-checked,
 .aggrid .ag-icon-checkbox-indeterminate {
-  color: #7367f0 !important; }
+  color: #545e51 !important; }
 
 .aggrid .ag-root-wrapper-body {
   min-height: calc(100% - 56px); }
 
 .aggrid .ag-header-cell-text {
   font-size: 1rem;
-  font-family: "Montserrat", Helvetica, Arial, serif; }
+  font-family: "Roboto", Helvetica, Arial, serif; }
 
 .aggrid .ag-paging-panel {
   display: block !important;
@@ -67,7 +67,7 @@
     margin-right: 0; } }
 
 .aggrid .ag-paging-panel span[ref='lbCurrent'] {
-  background-color: #7367f0; }
+  background-color: #545e51; }
 
 .aggrid .ag-paging-panel span[ref='lbTotal'] {
   background-color: #dae1e7;

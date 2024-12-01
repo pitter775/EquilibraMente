@@ -12,9 +12,9 @@
   display: none; }
 
 .invoice-list-wrapper .dataTables_wrapper .invoice-list-table tbody .control:before {
-  background-color: #7367f0;
+  background-color: #545e51;
   line-height: 1rem;
-  font-family: "Montserrat", Helvetica, Arial, serif; }
+  font-family: "Roboto", Helvetica, Arial, serif; }
 
 .invoice-list-wrapper .dataTables_wrapper .invoice-list-table tbody .col-actions a:not(.dropdown-item) {
   color: #6e6b7b; }

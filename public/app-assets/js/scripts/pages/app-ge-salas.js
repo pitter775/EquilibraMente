@@ -234,8 +234,13 @@ $(document).ready(function () {
                     data.sala.imagens.forEach(function (imagem) {
                         var imagemHtml = `
                             <div class="col-md-3 mb-2" id="imagem-${imagem.id}">
-                                <img src="/storage/${imagem.path}" class="img-fluid img-thumbnail" alt="Imagem da sala">
-                                <button type="button" class="btn btn-danger btn-sm btn-remover-imagem" data-id="${imagem.id}">Excluir</button>
+                                <img src="/storage/${imagem.path}" class="img-fluid img-thumbnail ${imagem.principal ? 'principal' : ''}" alt="Imagem da sala">
+                                <div class="mt-2">
+                                    <button type="button" class="btn btn-danger btn-sm btn-remover-imagem" data-id="${imagem.id}">Excluir</button>
+                                    <button type="button" class="btn btn-${imagem.principal ? 'primary' : 'info'} btn-sm definir-principal" data-id="${imagem.id}">
+                                        ${imagem.principal ? 'Imagem Principal' : 'Definir Principal'}
+                                    </button>
+                                </div>
                             </div>
                         `;
                         imagensContainer.append(imagemHtml);
@@ -251,12 +256,7 @@ $(document).ready(function () {
             }
         });
     });
-    
-    
-    
-    
-    
-    
+       
 
 
     $(document).on('click', '#btn-criar-sala', function() {
@@ -275,12 +275,7 @@ $(document).ready(function () {
     
         // Abre a modal para criação da nova sala
         $('#modals-slide-in').modal('show');
-    });
-    
-    
-    
-    
-    
+    });   
     
         
     // Excluir imagem ao clicar no botão de exclusão
@@ -351,38 +346,38 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#btn-excluir-sala', function (e) {
-    e.preventDefault(); // Prevenir comportamento padrão
+        e.preventDefault(); // Prevenir comportamento padrão
 
-    var salaId = $('#sala_id').val(); // Pegar o ID da sala
+        var salaId = $('#sala_id').val(); // Pegar o ID da sala
 
-    if (confirm('Você tem certeza que deseja excluir esta sala?')) {
-            $.ajax({
-            url: `/admin/salas/${salaId}`, // Rota para deletar a sala
-            method: 'DELETE',
-            data: {
-                    _token: $('meta[name="csrf-token"]').attr('content') // Token CSRF
-            },
-            success: function (response) {
-                    // Mostrar mensagem de sucesso
-                    toastr.success('Sala excluída com sucesso!', 'Sucesso', {
-                    closeButton: true,
-                    tapToDismiss: false
-                    });
+        if (confirm('Você tem certeza que deseja excluir esta sala?')) {
+                $.ajax({
+                url: `/admin/salas/${salaId}`, // Rota para deletar a sala
+                method: 'DELETE',
+                data: {
+                        _token: $('meta[name="csrf-token"]').attr('content') // Token CSRF
+                },
+                success: function (response) {
+                        // Mostrar mensagem de sucesso
+                        toastr.success('Sala excluída com sucesso!', 'Sucesso', {
+                        closeButton: true,
+                        tapToDismiss: false
+                        });
 
-                    // Fechar o modal
-                    $('#modals-slide-in').modal('hide');
+                        // Fechar o modal
+                        $('#modals-slide-in').modal('hide');
 
-                    // Remover o card da sala da lista
-                    $(`#sala-card-${salaId}`).remove();
-            },
-            error: function () {
-                    toastr.error('Erro ao excluir a sala.', 'Erro', {
-                    closeButton: true,
-                    tapToDismiss: false
-                    });
-            }
-            });
-    }
+                        // Remover o card da sala da lista
+                        $(`#sala-card-${salaId}`).remove();
+                },
+                error: function () {
+                        toastr.error('Erro ao excluir a sala.', 'Erro', {
+                        closeButton: true,
+                        tapToDismiss: false
+                        });
+                }
+                });
+        }
     });
 });
 
@@ -484,32 +479,37 @@ function carregarSalas(status = '', busca = '') {
 
 // Função para carregar imagens da sala no modal de edição
 function carregarImagensSala(salaId) {
-        $.ajax({
-                url: `/admin/salas/${salaId}/imagens`, // Endereço para buscar imagens da sala
-                method: 'GET',
-                success: function(response) {
-                $('#imagens-existentes').empty(); // Limpar a div que contém as imagens existentes
+    $.ajax({
+        url: `/salas/${salaId}/imagens`, // Rota para buscar imagens da sala
+        method: 'GET',
+        success: function (response) {
+            $('#imagens-existentes').empty(); // Limpa o container de imagens
 
-                if (response.imagens && response.imagens.length > 0) {
-                        // Iterar sobre as imagens retornadas e exibir no modal
-                        response.imagens.forEach(function(imagem) {
-                        $('#imagens-existentes').append(`
-                                <div class="col-md-3" id="imagem-${imagem.id}">
-                                <img src="/storage/${imagem.path}" class="img-thumbnail mb-2" style="width: 100%; height: auto;">
-                                <button type="button" class="btn btn-danger btn-sm btn-delete-imagem" data-id="${imagem.id}">Excluir</button>
-                                </div>
-                        `);
-                        });
-                } else {
-                        // Se não houver imagens, exibir uma mensagem ou deixar o campo vazio
-                        $('#imagens-existentes').append('<p>Nenhuma imagem disponível para esta sala.</p>');
-                }
-                },
-                error: function() {
-                toastr.error('Erro ao carregar as imagens.');
-                }
-        });
+            if (response.imagens && response.imagens.length > 0) {
+                response.imagens.forEach(function (imagem) {
+                    // Adiciona cada imagem ao container
+                    $('#imagens-existentes').append(`
+                        <div class="col-md-3 mb-3" id="imagem-${imagem.id}">
+                            <img src="/storage/${imagem.path}" class="img-fluid img-thumbnail ${imagem.principal ? 'principal' : ''}" alt="Imagem da sala">
+                            <div class="mt-2">
+                                <button type="button" class="btn btn-danger btn-sm btn-remover-imagem" data-id="${imagem.id}">Excluiiiiiiiir</button>
+                                <button type="button" class="btn btn-${imagem.principal ? 'primary' : 'info'} btn-sm definir-principal" data-id="${imagem.id}">
+                                    ${imagem.principal ? 'Imagem Principal' : 'Definir Principal'}
+                                </button>
+                            </div>
+                        </div>
+                    `);
+                });
+            } else {
+                $('#imagens-existentes').html('<p>Nenhuma imagem disponível para esta sala.</p>');
+            }
+        },
+        error: function () {
+            toastr.error('Erro ao carregar as imagens.');
+        }
+    });
 }
+
 
 $(document).on('click', '.btn-delete-imagem', function() {
         var imagemId = $(this).data('id');

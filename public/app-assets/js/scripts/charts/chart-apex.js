@@ -611,7 +611,7 @@ $(function () {
                 from: 51,
                 to: 60,
                 name: '50-60',
-                color: '#7367f0'
+                color: '#545e51'
               }
             ]
           }
@@ -718,11 +718,11 @@ $(function () {
           dataLabels: {
             name: {
               fontSize: '2rem',
-              fontFamily: 'Montserrat'
+              fontFamily: 'Roboto'
             },
             value: {
               fontSize: '1rem',
-              fontFamily: 'Montserrat'
+              fontFamily: 'Roboto'
             },
             total: {
               show: true,
@@ -852,11 +852,11 @@ $(function () {
               show: true,
               name: {
                 fontSize: '2rem',
-                fontFamily: 'Montserrat'
+                fontFamily: 'Roboto'
               },
               value: {
                 fontSize: '1rem',
-                fontFamily: 'Montserrat',
+                fontFamily: 'Roboto',
                 formatter: function (val) {
                   return parseInt(val) + '%';
                 }

@@ -94,7 +94,7 @@
 
 .ql-container {
   border-color : #D8D6DE !important;
-  font-family : 'Montserrat', Helvetica, Arial, serif;
+  font-family : 'Roboto', Helvetica, Arial, serif;
 }
 
 .ql-editor a {
@@ -102,11 +102,11 @@
 }
 
 .ql-picker {
-  color : #5E5873 !important;
+  color : #545e51 !important;
 }
 
 .ql-stroke {
-  stroke : #5E5873 !important;
+  stroke : #545e51 !important;
 }
 
 .ql-active .ql-stroke {
@@ -118,7 +118,7 @@
 }
 
 .ql-fill {
-  fill : #5E5873 !important;
+  fill : #545e51 !important;
 }
 
 .ql-toolbar, .ql-container {

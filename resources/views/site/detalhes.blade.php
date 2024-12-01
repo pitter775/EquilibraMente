@@ -4,7 +4,12 @@
 
 @section('content')
 
-    <style>
+  <style>
+      .bthorasdis { margin: 5px}
+      .fc-toolbar-title { font-size: 14px !important}
+      .preco {
+          font-family: Arial, sans-serif;
+      }
       hr{ margin: 40px 0 40px 0}
 
       #descricao-curta,
@@ -84,7 +89,7 @@
             h3{ font-size: 16px !important}
         }
 
-    </style>
+  </style>
 
     <main id="main" style="margin-top: 70px">
 
@@ -94,9 +99,6 @@
             <div class="col-12">
               <h2>{{ $sala->nome }}</h2>
             </div>
-        
-
-
             <div class="col-lg-12 mb-5">
                 @if($sala->imagens->isNotEmpty())
                     <div class="row">
@@ -138,12 +140,12 @@
 
           </div>
         </div>
-        <div style="background: #fff">
+        <div style="background: #fff" >
             <div class="container">
               <div class="row">
 
                 <!-- Nome e Descrição da Sala -->
-                <div class="col-lg-8">
+                <div class="col-lg-8 mb-5">
 
                   <h3 class="mt-4">Sobre {{ $sala->nome }}</h3>
                     <div class="quill-content">
@@ -158,16 +160,20 @@
 
 
                     <hr>
-                    <h3 class="mb-2">Conveniências</h3>
-                    <div class="d-flex flex-wrap mt-1 mb-5">
-                        @forelse($sala->conveniencias as $conveniencia)
-                            <div class="d-flex align-items-center me-4 mr-4  mt-1 ">
-                                <i class="{{ $conveniencia->icone }} me-2 pr-1" style="font-size: 24px;"></i>
-                                <span>{{ $conveniencia->nome }}</span>
+                    <h3 class="mb-4">Conveniências</h3>
+                    <div class="d-flex flex-wrap ">
+                      
+                          @forelse($sala->conveniencias as $conveniencia)
+                            <div class="card m-2 p-2">
+                              <div class="d-flex align-items-center  ">
+                                  <i class="{{ $conveniencia->icone }} me-2 pr-1 mr-1" style="font-size: 15px; color: #76aa66"></i>
+                                  <span style="font-size: 13px; color: #999">{{ $conveniencia->nome }}</span>
+                              </div>
                             </div>
-                        @empty
-                            <p>Sem conveniências cadastradas para esta sala.</p>
-                        @endforelse
+                          @empty
+                              <p>Sem conveniências cadastradas para esta sala.</p>
+                          @endforelse
+                      
                     </div>
 
 
@@ -175,52 +181,56 @@
                 </div>
 
                 <div class="col-lg-4">
-       
-                  <div class="card" style="margin-top: -40px">
-                    <div class="row">
-                      <div class="col-12 p-3">
-
-                          
-                          <p ><span style="font-size:30px">R$ {{ number_format($sala->valor, 2, ',', '.') }}</span> por hora</p>
-
-                          <p> <strong>Endereço:</strong> {{ $sala->endereco->rua }}, {{ $sala->endereco->numero }}, {{ $sala->endereco->bairro }} - {{ $sala->endereco->cidade }}, {{ $sala->endereco->estado }}</p>
-
-                            <iframe
-                                width="100%"
-                                height="300"
-                                style="border:0"
-                                loading="lazy"
-                                allowfullscreen
-                                src="https://www.google.com/maps?q={{ urlencode($sala->endereco->rua . ', ' . $sala->endereco->numero . ', ' . $sala->endereco->bairro . ', ' . $sala->endereco->cidade . ', ' . $sala->endereco->estado) }}&output=embed">
-                            </iframe>
-
-                          <div class="row mt-3">
-                            <div class="col-lg-12 text-center">
-                              <p id="selected-date">Selecione uma data no calendário.</p>
-                              @if(auth()->check())
-                                <div id="calendar"></div>
-                              @else
-                                <p>Para ver a disponibilidade e fazer reservas, faça login.</p>
-                                <a href="{{ route('login.google') }}" class="btn btn-primary">Login com Google</a>
-                                <a href="{{ route('completar.cadastro.form') }}" class="btn btn-secondary">Cadastro Manual</a>
-                              @endif
-                            </div>
-                          </div>
-                      </div>
-                    </div>
-                  
-                  </div>
 
                   <div class="row">
-                      <div class="col-12 text-center mb-2">
-                          <p class="text-success mb-2">
-                              <i class="fas fa-lock"></i> Este é um ambiente seguro!
-                          </p>
-                          <p>
-                              Trabalhamos constantemente para proteger sua segurança e privacidade. 
-                              <a href="{{ route('privacidade') }}" class="text-primary">Saiba mais</a>
-                          </p>
+        
+                    <div class="card p-4" style="margin-top: -40px">
+                      <div class="row">
+                        <div class="col-12">
+
+                            
+                            <p class="mt-2 mb-4" ><span style="font-size:30px; color: #000">R$ {{ number_format($sala->valor, 2, ',', '.') }}</span> por hora</p>
+
+                            <p> <strong>Endereço:</strong> {{ $sala->endereco->rua }}, {{ $sala->endereco->numero }}, {{ $sala->endereco->bairro }} - {{ $sala->endereco->cidade }}, {{ $sala->endereco->estado }}</p>
+
+                              <iframe
+                                  width="100%"
+                                  height="300"
+                                  style="border:0"
+                                  loading="lazy"
+                                  allowfullscreen
+                                  src="https://www.google.com/maps?q={{ urlencode($sala->endereco->rua . ', ' . $sala->endereco->numero . ', ' . $sala->endereco->bairro . ', ' . $sala->endereco->cidade . ', ' . $sala->endereco->estado) }}&output=embed">
+                              </iframe>
+
+                            <div class="row mt-3">
+                              <div class="col-lg-12 ">
+                                <h4 id="selected-date" class="mb-3 mt-3" style=" font-size: 16px">Selecione uma data no calendário.</h4>
+                                @if(auth()->check())
+                                  <div id="calendar"></div>
+                                @else
+                                  <p>Para ver a disponibilidade e fazer reservas, faça login.</p>
+                                  <a href="{{ route('login.google') }}" class="btn btn-primary">Login com Google</a>
+                                  <a href="{{ route('completar.cadastro.form') }}" class="btn btn-secondary">Cadastro Manual</a>
+                                @endif
+                              </div>
+                            </div>
+                        </div>
                       </div>
+                    
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 text-center mb-2">
+                            <p class="text-success mb-2">
+                                <i class="fas fa-lock"></i> Este é um ambiente seguro!
+                            </p>
+                            <p>
+                                Trabalhamos constantemente para proteger sua segurança e privacidade. 
+                                <a href="{{ route('privacidade') }}" class="text-primary">Saiba mais</a>
+                            </p>
+                        </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -239,11 +249,16 @@
               </button>
             </div>
             <div class="modal-body">
-              <p><strong>Sala:</strong> <span id="modalSalaNome">{{ $sala->nome }}</span></p>
-              <p> <span class="mr-2"> <strong>Data:</strong> <span id="modalDataReserva"></span> </span> 
-                    <strong>Valor por hora:</strong> R$ <span id="valorHora">{{ number_format($sala->valor, 2, ',', '.') }}</span>
+              <h3 class="mb-4 mt-3"><span id="modalSalaNome">{{ $sala->nome }}</span></h3>
+              <p> 
+                    <span class="mr-5">
+                      <i class="fas fa-calendar-alt"></i> <!-- Ícone de calendário -->
+                      <strong>Data:</strong> <span id="modalDataReserva"></span>
+                    </span>
+                    <span style="float: right"><span   style="font-size: 18px; color: #000;"> R$ <span id="valorHora">{{ number_format($sala->valor, 2, ',', '.') }}</span></span> por hora</span>
               </p>
         
+              <p>Selecione os horários disponíveis para sua reserva.</p>
               
               <div id="horarios-disponiveis">
                 <!-- Horários serão carregados aqui via AJAX -->
@@ -282,6 +297,11 @@
             validRange: {
               start: new Date().toISOString().split('T')[0] // Bloqueia datas passadas
             },
+            headerToolbar: {
+              // Botões de navegação (anterior e próximo)
+              left: 'title',   // Título centralizado
+              right: 'prev,next'        // Remove o botão "Today" e visualizações desnecessárias
+            },
             select: function(info) {
               var selectedDate = info.startStr;
               mostrarModalHorarios(selectedDate);
@@ -290,10 +310,18 @@
           calendar.render();
         });
 
+
+
         function mostrarModalHorarios(data_reserva) {
           horariosSelecionados = []; // Reseta a seleção de horários quando abre a modal
           $('#modalHorarios').modal('show');
-          document.getElementById('modalDataReserva').innerText = data_reserva; // Mostra a data selecionada
+          // Converte a data para o formato brasileiro (dd/mm/yyyy)
+            const dataFormatada = new Date(data_reserva).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+          document.getElementById('modalDataReserva').innerText = dataFormatada; // Mostra a data selecionada
 
           fetch(`/horarios-disponiveis/{{ $sala->id }}/${data_reserva}`)
             .then(response => response.json())
@@ -302,7 +330,7 @@
               horariosDisponiveisContainer.innerHTML = '';
               data.horarios.forEach(horario => {
                 horariosDisponiveisContainer.innerHTML += `
-                  <button class="btn btn-secondary horario-btn" onclick="selecionarHorario('${data_reserva}', '${horario.inicio}', '${horario.fim}', this)">
+                  <button class="btn btn-secondary horario-btn bthorasdis" onclick="selecionarHorario('${data_reserva}', '${horario.inicio}', '${horario.fim}', this)">
                     ${horario.inicio} - ${horario.fim}
                   </button>
                 `;
@@ -338,43 +366,64 @@
           document.getElementById('valorTotal').innerText = total.toFixed(2).replace('.', ',');
         }
 
-        function confirmarReserva() {
-            if (horariosSelecionados.length === 0) {
-                toastr.warning('Por favor, selecione pelo menos um horário.');
-                return;
+function confirmarReserva() {
+    if (horariosSelecionados.length === 0) {
+        toastr.warning('Por favor, selecione pelo menos um horário.');
+        return;
+    }
+
+    fetch('/reserva/revisao', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            sala_id: {{ $sala->id }},
+            horarios: horariosSelecionados
+        })
+    })
+    .then(async response => {
+        console.log('response', response);
+
+        // Verifica se a resposta não é JSON válido
+        if (!response.ok) {
+            if (response.status === 401) {
+                throw new Error('Usuário não autenticado. Faça login para continuar.');
             }
-
-            fetch('/reserva/revisao', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    sala_id: {{ $sala->id }},
-                    horarios: horariosSelecionados
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erro na resposta do servidor');
-                }
-                return response.json(); // Certifique-se de que a resposta é JSON
-            })
-            .then(data => {
-                if (data.redirect) {
-                    window.location.href = data.redirect; // Redireciona para a página de revisão
-                } else {
-                    toastr.error('Erro ao continuar.');
-                }
-            })
-            .catch(error => {
-                console.error('Erro no fetch:', error);
-                toastr.error('Erro inesperado ao continuar. Tente novamente mais tarde.');
-            });
-
-
+            if (response.status === 403) {
+                throw new Error('Acesso negado. Apenas clientes podem realizar reservas.');
+            }
+            throw new Error(`Erro no servidor (status: ${response.status}).`);
         }
+
+        // Tenta converter o corpo da resposta para JSON
+        try {
+            const data = await response.json();
+            console.log('data', data);
+
+            // Verifica as condições da resposta JSON
+            if (data.redirect) {
+                window.location.href = data.redirect;
+            } else if (data.error) {
+                toastr.error(data.error);
+            } else {
+                toastr.error('Erro desconhecido ao continuar.');
+            }
+        } catch (err) {
+            throw new Error('Resposta do servidor não está no formato JSON esperado.');
+        }
+    })
+    .catch(error => {
+        console.error('Erro no fetch:', error.message);
+        toastr.error(error.message || 'Erro inesperado. Tente novamente.');
+    });
+}
+
+
+
+
+
       @endif
 
       function trocarImagemPrincipal(novaImagem) {
@@ -387,32 +436,32 @@
 
       //alternar entre a descrição curta e completa
       document.addEventListener('DOMContentLoaded', function () {
-              const descricaoCompleta = document.getElementById('descricao-completa');
-              const toggleButton = document.getElementById('toggle-descricao');
+        const descricaoCompleta = document.getElementById('descricao-completa');
+        const toggleButton = document.getElementById('toggle-descricao');
 
-              // Define o limite de caracteres para exibição inicial
-              const limiteCaracteres = 890; // Ajuste conforme necessário
+        // Define o limite de caracteres para exibição inicial
+        const limiteCaracteres = 890; // Ajuste conforme necessário
 
-              // Clona o conteúdo completo e cria a versão curta
-              const descricaoOriginal = descricaoCompleta.innerHTML;
-              const descricaoCurta = descricaoOriginal.substring(0, limiteCaracteres) + '...';
+        // Clona o conteúdo completo e cria a versão curta
+        const descricaoOriginal = descricaoCompleta.innerHTML;
+        const descricaoCurta = descricaoOriginal.substring(0, limiteCaracteres) + '...';
 
-              // Exibe a descrição curta inicialmente
-              let descricaoVisivel = false;
-              descricaoCompleta.innerHTML = descricaoCurta;
-              descricaoCompleta.style.display = 'block';
+        // Exibe a descrição curta inicialmente
+        let descricaoVisivel = false;
+        descricaoCompleta.innerHTML = descricaoCurta;
+        descricaoCompleta.style.display = 'block';
 
-              // Alterna entre curta e completa
-              toggleButton.addEventListener('click', function () {
-                  if (descricaoVisivel) {
-                      descricaoCompleta.innerHTML = descricaoCurta;
-                      toggleButton.textContent = 'Ver descrição completa';
-                  } else {
-                      descricaoCompleta.innerHTML = descricaoOriginal;
-                      toggleButton.textContent = 'Ver descrição reduzida';
-                  }
-                  descricaoVisivel = !descricaoVisivel;
-              });
-          });
+        // Alterna entre curta e completa
+        toggleButton.addEventListener('click', function () {
+            if (descricaoVisivel) {
+                descricaoCompleta.innerHTML = descricaoCurta;
+                toggleButton.textContent = 'Ver descrição completa';
+            } else {
+                descricaoCompleta.innerHTML = descricaoOriginal;
+                toggleButton.textContent = 'Ver descrição reduzida';
+            }
+            descricaoVisivel = !descricaoVisivel;
+        });
+    });
   </script>
 @endpush

@@ -145,7 +145,7 @@ a:not([href]):hover {
 }
 
 .text-body-heading {
-  color : #5E5873;
+  color : #545e51;
 }
 
 .text-body-heading:hover {
@@ -153,7 +153,7 @@ a:not([href]):hover {
 }
 
 .text-body[href]:hover {
-  color : #5E50EE !important;
+  color : #5b8250 !important;
 }
 
 code {
@@ -257,7 +257,7 @@ pre code {
 }
 
 label {
-  color : #5E5873;
+  color : #545e51;
   font-size : 0.857rem;
 }
 
@@ -571,7 +571,7 @@ select.form-control.form-control-sm {
 }
 
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before, .custom-radio .custom-control-input:checked ~ .custom-control-label::before {
-  box-shadow : 0 2px 4px 0 rgba(115, 103, 240, 0.4) !important;
+  box-shadow : 0 2px 4px 0 rgba(84, 94, 81, 0.4) !important;
 }
 
 .custom-checkbox .custom-control-input:disabled ~ .custom-control-label::before, .custom-radio .custom-control-input:disabled ~ .custom-control-label::before {
@@ -581,7 +581,7 @@ select.form-control.form-control-sm {
 
 .custom-checkbox .custom-control-input:focus ~ .custom-control-label::before, .custom-radio .custom-control-input:focus ~ .custom-control-label::before {
   border-color : none;
-  box-shadow : 0 2px 4px 0 rgba(115, 103, 240, 0.4) !important;
+  box-shadow : 0 2px 4px 0 rgba(84, 94, 81, 0.4) !important;
 }
 
 .custom-control-input:not(:disabled):active ~ .custom-control-label::before {
@@ -1185,7 +1185,7 @@ input[type='number']::-webkit-inner-spin-button, input[type='number']::-webkit-o
 .header-navbar {
   padding : 0;
   min-height : 4.45rem;
-  font-family : 'Montserrat', Helvetica, Arial, serif;
+  font-family : 'Roboto', Helvetica, Arial, serif;
   -webkit-transition : 300ms ease all, background 0s;
           transition : 300ms ease all, background 0s;
   z-index : 997;
@@ -1882,8 +1882,8 @@ input[type='number']::-webkit-inner-spin-button, input[type='number']::-webkit-o
 }
 
 .card-congratulations {
-  background : -webkit-linear-gradient(208deg, #66619c, rgba(115, 103, 240, 0.7));
-  background :         linear-gradient(-118deg, #66619c, rgba(115, 103, 240, 0.7));
+  background : -webkit-linear-gradient(208deg, #66619c, rgba(84, 94, 81, 0.7));
+  background :         linear-gradient(-118deg, #66619c, rgba(84, 94, 81, 0.7));
   color : #FFFFFF;
 }
 
@@ -1933,7 +1933,7 @@ input[type='number']::-webkit-inner-spin-button, input[type='number']::-webkit-o
 }
 
 .card-developer-meetup .meetup-img-wrapper {
-  background-color : rgba(115, 103, 240, 0.1);
+  background-color : rgba(84, 94, 81, 0.1);
 }
 
 .card-developer-meetup .meetup-header {
@@ -2212,7 +2212,7 @@ input[type='number']::-webkit-inner-spin-button, input[type='number']::-webkit-o
 }
 
 .earnings-card .apexcharts-canvas .apexcharts-pie .apexcharts-datalabel-value {
-  fill : #5E5873;
+  fill : #545e51;
   font-size : 1.286rem;
   font-weight : 500;
 }
@@ -2435,12 +2435,12 @@ input[type='number']::-webkit-inner-spin-button, input[type='number']::-webkit-o
   font-size : 1rem;
   line-height : 1rem;
   border : 1px solid transparent;
-  color : #5E5873;
+  color : #545e51;
 }
 
 .nav-pills .nav-link.active {
   border-color : #66619c;
-  box-shadow : 0 4px 18px -4px rgba(115, 103, 240, 0.65);
+  box-shadow : 0 4px 18px -4px rgba(84, 94, 81, 0.65);
 }
 
 .nav-pills .nav-link.disabled {
@@ -2538,8 +2538,8 @@ input[type='number']::-webkit-inner-spin-button, input[type='number']::-webkit-o
   right : 0;
   width : 100%;
   height : 3px;
-  background : -webkit-linear-gradient(120deg, #66619c, rgba(115, 103, 240, 0.5)) !important;
-  background :         linear-gradient(-30deg, #66619c, rgba(115, 103, 240, 0.5)) !important;
+  background : -webkit-linear-gradient(120deg, #66619c, rgba(84, 94, 81, 0.5)) !important;
+  background :         linear-gradient(-30deg, #66619c, rgba(84, 94, 81, 0.5)) !important;
   -webkit-transition : -webkit-transform 0.3s;
           transition : -webkit-transform 0.3s;
           transition :         transform 0.3s;
@@ -3145,7 +3145,7 @@ ul.list-inline.list-inline-pipe > li + li:before {
 }
 
 .page-item.prev .page-link:hover:before, .page-item.previous .page-link:hover:before {
-  background-image : url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%237367f0\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\' class=\'feather feather-chevron-left\'%3E%3Cpolyline points=\'15 18 9 12 15 6\'%3E%3C/polyline%3E%3C/svg%3E') !important;
+  background-image : url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23545e51\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\' class=\'feather feather-chevron-left\'%3E%3Cpolyline points=\'15 18 9 12 15 6\'%3E%3C/polyline%3E%3C/svg%3E') !important;
 }
 
 .page-item.prev.disabled .page-link:before, .page-item.previous.disabled .page-link:before {
@@ -3164,7 +3164,7 @@ ul.list-inline.list-inline-pipe > li + li:before {
 }
 
 .page-item.next .page-link:hover:after {
-  background-image : url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%237367f0\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\' class=\'feather feather-chevron-right\'%3E%3Cpolyline points=\'9 18 15 12 9 6\'%3E%3C/polyline%3E%3C/svg%3E') !important;
+  background-image : url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23545e51\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\' class=\'feather feather-chevron-right\'%3E%3Cpolyline points=\'9 18 15 12 9 6\'%3E%3C/polyline%3E%3C/svg%3E') !important;
 }
 
 .page-item.next.disabled .page-link:after {

@@ -16,7 +16,7 @@
                     <div class="content-header-left col-md-9 col-12 mb-2">
                         <div class="row breadcrumbs-top">
                             <div class="col-12">
-                                <h2 class="float-left mb-0">Minhas Reservas</h2>
+                                <h3 class="float-left mb-0">Minhas Reservas</h3>
                     
                             </div>
                         </div>
@@ -49,16 +49,29 @@
                                                 <tr>
                                                     <td>{{ $reserva->sala->nome }}</td>
                                                     <td>
-                                                        {{ \Carbon\Carbon::parse($reserva->data_reserva)->format('d/m/Y') }}<br>
-                                                        {{ $reserva->hora_inicio }} - {{ $reserva->hora_fim }}
+                                                        <i data-feather='calendar'></i> {{ \Carbon\Carbon::parse($reserva->data_reserva)->format('d/m/Y') }}<br>
+                                                        <i data-feather='clock'></i> {{ $reserva->hora_inicio }} - {{ $reserva->hora_fim }}
                                                     </td>
                                                     <td>R$ {{ number_format($reserva->sala->valor, 2, ',', '.') }}</td>
                                                     <td>
-                                                        @if(now()->between($reserva->data_reserva . ' ' . $reserva->hora_inicio, $reserva->data_reserva . ' ' . $reserva->hora_fim))
-                                                            <span class="badge badge-success">Ativa</span>
+                                                        @php
+                                                            $agora = now(); // Hora atual
+                                                            $inicio = \Carbon\Carbon::parse($reserva->data_reserva . ' ' . $reserva->hora_inicio); // Início da reserva
+                                                            $fim = \Carbon\Carbon::parse($reserva->data_reserva . ' ' . $reserva->hora_fim); // Fim da reserva
+
+                                                        @endphp
+
+                                                        @if($agora->lt($inicio))
+                                                            <span class="badge badge-warning">Reservado</span>
+                                                        @elseif($agora->between($inicio, $fim))
+                                                            <span class="badge badge-success">Em andamento</span>
                                                         @else
-                                                            <span class="badge badge-secondary">Concluída</span>
+                                                            <span class="badge badge-secondary">Concluído</span>
                                                         @endif
+
+
+
+
                                                     </td>
                                                 </tr>
                                             @endforeach

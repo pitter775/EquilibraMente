@@ -9,7 +9,7 @@
 # General
 --------------------------------------------------------------*/
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Roboto", sans-serif;
   color: #444444;
 }
 
@@ -23,7 +23,21 @@ a:hover {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Raleway", sans-serif;
+  font-family: "Roboto", sans-serif;
+}
+
+
+.cardunidades {
+  border: solid 1px #fefefe;
+  transition: all 0.3s ease-in-out; /* Suaviza as transições */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve */
+  border-radius: 8px; /* Deixa as bordas levemente arredondadas */
+  
+}
+
+.cardunidades:hover {
+  transform: scale(1.01); /* Aumenta o tamanho do card ao passar o mouse */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Aumenta a intensidade da sombra */
 }
 
 #descricao_quill {
@@ -102,16 +116,25 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 997;
   transition: all 0.5s;
   padding: 5px 0;
-  background: #556050;
+  background: #fff;
+
 }
 
 #header.header-transparent {
   background: transparent;
 }
 
+#header.header-scrolled  .logo img {
+
+  opacity: 1 !important;
+}
+
+
 #header.header-scrolled {
-  background: #556050;
+  background: #fff;
   padding: 0;
+  border-bottom: solid 1px #cbd3c8;
+  opacity: 1;
 }
 
 #header .logo h1 {
@@ -163,12 +186,12 @@ h1, h2, h3, h4, h5, h6 {
 .nav-menu a {
   display: block;
   position: relative;
-  color: #20291c;
+  color: #556050;
   padding: 20px 15px;
   transition: 0.3s;
-  font-size: 15px;
-  font-family: "Poppins", sans-serif;
-  text-transform: uppercase;
+  font-size: 18px;
+  /* font-family: "Poppins", sans-serif; */
+  /* text-transform: uppercase; */
   font-weight: 500;
 }
 
@@ -182,7 +205,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .header-scrolled .nav-menu a {
-  color: #fff;
+  color: #556050;
 }
 
 .header-scrolled .nav-menu a:hover, .header-scrolled .nav-menu .active > a, .header-scrolled .nav-menu li:hover > a {
@@ -198,7 +221,7 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0;
   visibility: hidden;
   padding: 10px 0;
-  background: #fff;
+  background: #ccc;
   box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
   transition: ease all 0.3s;
 }
@@ -390,7 +413,7 @@ h1, h2, h3, h4, h5, h6 {
 #hero {
   width: 100%;
   height: 100vh;
-  background: url("../img/hero-bg.jpg") top center;
+  background: url("../img/bg-home.png") top center;
   background-size: cover;
   position: relative;
 }
@@ -417,17 +440,19 @@ h1, h2, h3, h4, h5, h6 {
 
 #hero h1 {
   margin: 0 0 10px 0;
-  font-size: 54px;
-  font-weight: 700;
-  line-height: 56px;
+  font-size: 36px;
+  font-weight: 300;
+  line-height: 48px;
   /* text-transform: uppercase; */
-  padding: 0 20px;
+  padding: 80px;
   color: #535e50;
+
+  padding-top: 50px; 
   
 }
 
 #hero h2 {
-  color: #f1e7e5;
+  color: #556050;
   margin-bottom: 50px;
   font-size: 30px;
   padding: 20px 20px;
@@ -445,9 +470,9 @@ h1, h2, h3, h4, h5, h6 {
   width: 64px;
   height: 64px;
   text-align: center;
-  border: 2px solid #fff;
-  color: #fff;
-  text-shadow: -1px 0 2px #556050;
+  border: 2px solid #556050;
+  color: #556050;
+  /* text-shadow: -1px 0 2px #556050; */
 }
 
 #hero .btn-get-started:hover {
@@ -491,7 +516,7 @@ section {
 }
 
 .section-bg {
-  background-color: #f4ece3;
+  /* background-color: #f4ece3; */
 }
 
 .section-title {
@@ -574,7 +599,7 @@ section {
 # About
 --------------------------------------------------------------*/
 .about {
-  background: url("../img/about-bg.jpg") center center no-repeat;
+  /* background: url("../img/about-bg.jpg") center center no-repeat; */
   background-size: cover;
   padding: 60px 0;
   position: relative;
@@ -629,7 +654,7 @@ section {
 }
 
 .about-btn:hover {
-  background: #53c52d;
+  background: #64765f;
   color: #ffffff;
 }
 
@@ -764,7 +789,7 @@ section {
 .counts .count-box p {
   padding: 15px 0 0 0;
   margin: 0 0 0 60px;
-  font-family: "Raleway", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
   color: #49788c;
 }
@@ -803,7 +828,7 @@ section {
 }
 
 .cta .cta-btn {
-  font-family: "Raleway", sans-serif;
+  font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   font-weight: 500;
   font-size: 16px;
@@ -1011,6 +1036,9 @@ section {
 /*--------------------------------------------------------------
 # Testimonials
 --------------------------------------------------------------*/
+.testimonials {
+    background-color: #f5f3f1;
+}
 .testimonials .testimonial-item {
   box-sizing: content-box;
   text-align: center;
@@ -1187,6 +1215,7 @@ section {
 --------------------------------------------------------------*/
 .contact {
   padding-bottom: 80px;
+  background: url("../img/hero-bg.jpg") top center;
 }
 
 .contact .info-box {
@@ -1359,7 +1388,7 @@ section {
   font-size: 14px;
   line-height: 24px;
   margin-bottom: 0;
-  font-family: "Raleway", sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 #footer .footer-top .social-links a {
@@ -1453,17 +1482,18 @@ section {
   font-size: 16px;
   padding: 0 20px;
   background: #dbcbb6;
-  color: #fff;
+  color: #545e51;
   transition: 0.3s;
   border-radius: 4;
 }
 
 #footer .footer-top .footer-newsletter form input[type="submit"]:hover {
-  background: #dbcbb6;
+  background: #6c8167;
+  color: #dbcbb6;
 }
 
 #footer .copyright {
-  border-top: 1px solid #385b6b;
+  border-top: 1px solid #ccc;
   text-align: center;
   padding-top: 30px;
 }

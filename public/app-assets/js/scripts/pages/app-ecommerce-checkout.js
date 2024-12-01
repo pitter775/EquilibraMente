@@ -10,6 +10,62 @@
 $(function () {
   'use strict';
 
+  $(document).ready(function () {
+    atualizarDetalhes();
+
+    $('#confirmar-reserva').on('click', function () {
+      $.ajax({
+          url: '/reserva/salvar', // Rota vinculada ao método salvarReserva
+          method: 'POST',
+          data: {
+              _token: $('meta[name="csrf-token"]').attr('content') // CSRF Token para segurança
+          },
+          success: function (response) {
+              if (response.success) {
+                  // Exibe o modal de sucesso
+                  $('#modalSucesso').modal('show');
+              } else {
+                  // Exibe mensagem de erro retornada pela função
+                  toastr.error(response.message);
+              }
+          },
+          error: function () {
+              toastr.error('Erro ao processar a reserva.');
+          }
+      });
+    });
+
+    // Redireciona para a tela de reservas do cliente ao fechar o modal
+    $('#modal-ok-button').on('click', function () {
+        window.location.href = '/cliente/reservas'; // Página de reservas do cliente
+    });
+});
+
+  // Função para recalcular os detalhes do carrinho
+  function atualizarDetalhes() {
+      let totalHoras = -1;
+      let valorTotal = 0;
+
+      // Itera sobre os itens restantes no carrinho
+      $('.ecommerce-card').each(function () {
+          // Extrai e processa o valor do item
+          const valorTexto = $(this).find('.item-price').text().trim().replace('R$', '').replace('.', '').replace(',', '.'); // Remove 'R$', substitui ponto por nada e vírgula por ponto
+          const valorItem = parseFloat(valorTexto); // Converte para número decimal
+
+          // Confere se o valor é válido
+          if (!isNaN(valorItem)) {
+              valorTotal += valorItem; // Soma o valor do item ao total
+          }
+
+          // Horários reservados (cada item = 1 hora)
+          totalHoras += 1;
+      });
+
+      // Atualiza o DOM com os novos valores
+      $('.quantidade-horas').text(`${totalHoras}hs`);
+      $('.valor-total').text(`R$ ${valorTotal.toFixed(2).replace('.', ',')}`);
+  }
+
   var quantityCounter = $('.quantity-counter'),
     CounterMin = 1,
     CounterMax = 10,
@@ -20,23 +76,21 @@ $(function () {
     isRtl = $('html').attr('data-textdirection') === 'rtl';
 
   // remove items from wishlist page
-  removeItem.on('click', function () {
-    $(this).closest('.ecommerce-card').remove();
-    toastr['error']('', 'Removed Item 🗑️', {
-      closeButton: true,
-      tapToDismiss: false,
-      rtl: isRtl
+    removeItem.on('click', function () {
+      $(this).closest('.ecommerce-card').remove();
+      atualizarDetalhes();
+      toastr['error']('', 'Item Removido 🗑️', {
+        closeButton: true,
+        tapToDismiss: false,
+        rtl: isRtl
+      });
     });
-  });
+
 
   // move items to cart
   moveToCart.on('click', function () {
     $(this).closest('.ecommerce-card').remove();
-    toastr['success']('', 'Added to wishlist ❤️', {
-      closeButton: true,
-      tapToDismiss: false,
-      rtl: isRtl
-    });
+
   });
 
   // Checkout Wizard

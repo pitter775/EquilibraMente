@@ -702,11 +702,11 @@ $(function() {
                     dataLabels: {
                         name: {
                             fontSize: '2rem',
-                            fontFamily: 'Montserrat'
+                            fontFamily: 'Roboto'
                         },
                         value: {
                             fontSize: '1rem',
-                            fontFamily: 'Montserrat'
+                            fontFamily: 'Roboto'
                         },
                         total: {
                             show: true,
@@ -835,11 +835,11 @@ $(function() {
                             show: true,
                             name: {
                                 fontSize: '2rem',
-                                fontFamily: 'Montserrat'
+                                fontFamily: 'Roboto'
                             },
                             value: {
                                 fontSize: '1rem',
-                                fontFamily: 'Montserrat',
+                                fontFamily: 'Roboto',
                                 formatter: function(val) {
                                     return parseInt(val) + '%';
                                 }

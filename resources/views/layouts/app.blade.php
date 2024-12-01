@@ -10,16 +10,15 @@
 
 
     <!-- Favicons -->
-    <link href="{{ asset('paper') }}/assets/img/icon_logo_ge.png" rel="icon">
-    <link href="{{ asset('paper') }}/assets/img/icon_logo_ge.png" rel="apple-touch-icon">
+    <link href="{{ asset('assets') }}/img/favicon.png" rel="icon">
+    <link href="{{ asset('assets') }}/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Gestão Escolar</title>
-    <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">
-    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">
+    <title>Espaço Equilibra Mente - Gestão</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     
     
     <!-- Styles -->
@@ -138,7 +137,7 @@
         }   
 
     </script>
-    
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     
     <script>

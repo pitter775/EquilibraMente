@@ -8,7 +8,7 @@
                     <li class="nav-item"><a class="nav-link menu-toggle" href="javascript:void(0);"><i class="ficon" data-feather="menu"></i></a></li>
                 </ul>
                 <ul class="nav navbar-nav ">
-                    <li class="nav-item d-none d-lg-block "><h4>Área de Acesso Privado</h4></li>                   
+                    <li class="nav-item d-none d-lg-block"><h5 class="mt-1">Seu Espaço de Controle</h5></li>                   
                 </ul>
 
             </div>
@@ -32,7 +32,7 @@
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
-                        <a class="dropdown-item" href="{{ route('logout') }}"><i class="mr-50" data-feather="power"></i> Logout</a>
+                        <a class="dropdown-item" href="{{ route('logout') }}"><i class="mr-50" data-feather="power"></i> Sair</a>
                     </div>
                 </li>
             </ul>

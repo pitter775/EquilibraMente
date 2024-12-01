@@ -138,57 +138,10 @@ class ReservaController extends Controller
         return ($horario['inicio'] < $reserva->hora_fim && $horario['fim'] > $reserva->hora_inicio);
     }
 
-    public function revisao(Request $request)
-    {
-        $validated = $request->validate([
-            'sala_id' => 'required|exists:salas,id',
-            'horarios' => 'required|array|min:1',
-            'horarios.*.data_reserva' => 'required|date',
-            'horarios.*.hora_inicio' => 'required|date_format:H:i',
-            'horarios.*.hora_fim' => 'required|date_format:H:i|after:horarios.*.hora_inicio',
-        ]);
-    
-        $sala = Sala::findOrFail($validated['sala_id']);
-        $valorTotal = count($validated['horarios']) * $sala->valor;
-    
-        session([
-            'reserva' => [
-                'sala_id' => $validated['sala_id'],
-                'horarios' => $validated['horarios'],
-                'valor_total' => $valorTotal
-            ]
-        ]);
-    
-        return response()->json(['redirect' => route('reserva.revisao')]);
-    }
-    
-    
-    
 
-    public function confirmar(Request $request)
-    {
-        $reservaData = session('reserva');
 
-        if (!$reservaData) {
-            return redirect()->route('site.index')->with('error', 'Reserva inválida.');
-        }
 
-        // Criar a reserva no banco de dados
-        foreach ($reservaData['horarios'] as $horario) {
-            Reserva::create([
-                'usuario_id' => auth()->id(),
-                'sala_id' => $reservaData['sala_id'],
-                'data_reserva' => $horario['data_reserva'],
-                'hora_inicio' => $horario['hora_inicio'],
-                'hora_fim' => $horario['hora_fim'],
-            ]);
-        }
 
-        // Limpar a sessão da reserva
-        session()->forget('reserva');
-
-        return redirect()->route('cliente.reservas')->with('success', 'Reserva confirmada com sucesso!');
-    }
     
 
 }

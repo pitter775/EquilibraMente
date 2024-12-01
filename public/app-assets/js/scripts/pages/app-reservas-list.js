@@ -72,6 +72,25 @@ $(function () {
                         ? `<span>${dados.sala.valor}</span>` 
                         : 'Não disponível';
                 }
+            },
+            {
+                data: function (dados) {
+                    const agora = new Date(); // Hora atual
+                    const inicio = new Date(`${dados.data_reserva}T${dados.hora_inicio}`);
+                    const fim = new Date(`${dados.data_reserva}T${dados.hora_fim}`);
+        
+                    let statusBadge = '';
+        
+                    if (agora < inicio) {
+                        statusBadge = `<span class="badge badge-warning">Reservado</span>`;
+                    } else if (agora >= inicio && agora <= fim) {
+                        statusBadge = `<span class="badge badge-success">Em andamento</span>`;
+                    } else {
+                        statusBadge = `<span class="badge badge-secondary">Concluído</span>`;
+                    }
+        
+                    return statusBadge;
+                }
             }
         ],
         order: [[1, 'asc']],

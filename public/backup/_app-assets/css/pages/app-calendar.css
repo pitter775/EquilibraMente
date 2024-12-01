@@ -72,7 +72,7 @@
 
 .fc .fc-toolbar .fc-button-group .fc-button-primary:not(.fc-prev-button):not(.fc-next-button).fc-button-active,
 .fc .fc-toolbar .fc-button-group .fc-button-primary:not(.fc-prev-button):not(.fc-next-button):hover {
-    background-color: rgba(115, 103, 240, 0.2) !important;
+    background-color: rgba(84, 94, 81, 0.2) !important;
     border-color: #66619c !important;
     color: #66619c;
 }
@@ -272,7 +272,7 @@
 
 .app-calendar-sidebar .select-all~label,
 .app-calendar-sidebar .input-filter~label {
-    color: #5e5873;
+    color: #545e51;
     font-weight: 500;
     letter-spacing: 0.4px;
 }
@@ -352,7 +352,7 @@
 
 .fc-popover .fc-popover-header .fc-popover-title,
 .fc-popover .fc-popover-header .fc-popover-close {
-    color: #5e5873;
+    color: #545e51;
 }
 
 .fc-popover .fc-popover-body *:not(:last-of-type) {
