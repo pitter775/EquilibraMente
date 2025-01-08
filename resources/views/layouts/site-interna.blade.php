@@ -27,8 +27,8 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <!-- Favicons -->
-  <link href="{{ asset('assets') }}/img/favicon.png" rel="icon">
-  <link href="{{ asset('assets') }}/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->  
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -54,12 +54,12 @@
 
 
   <!-- Vendor CSS Files -->
-  <link href="{{ asset('assets') }}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/vendor/icofont/icofont.min.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/vendor/venobox/venobox.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/assets/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="/assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
 
   
 
@@ -68,7 +68,7 @@
   <link rel="stylesheet" href="{{ asset('app-assets/vendors/css/forms/select/select2.min.css') }}">
 
 
-  <link href="{{ asset('assets') }}/css/style.css" rel="stylesheet">
+  <link href="/assets/css/style.css" rel="stylesheet">
 
 
 </head>
@@ -80,7 +80,7 @@
 
       <div class="logo mr-auto">
         {{-- <h1 class="text-light"><a href="/"><span>Equilibra Mente</span></a></h1> --}}
-          <a href="/"><img src="{{ asset('assets') }}/img/logofinoescuro.png" style="height: 30px"> </a>
+          <a href="/"><img src="/assets/img/logofinoescuro.png" style="height: 30px"> </a>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
@@ -120,7 +120,7 @@
 
           <div class="col-lg-4 col-md-6">
             <div class="footer-info" data-aos="fade-up" data-aos-delay="50">
-              <img src="{{ asset('assets') }}/img/logoescuro.png" alt="" class="img-fluid mb-4" style=" width: 70%;"> 
+              <img src="/assets/img/logoescuro.png" alt="" class="img-fluid mb-4" style=" width: 70%;"> 
               <div class="social-links mt-3">
                 <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
                 <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
@@ -167,16 +167,16 @@
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
   <!-- Vendor JS Files -->
-  <script src="{{ asset('assets') }}/vendor/jquery/jquery.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/jquery.easing/jquery.easing.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/php-email-form/validate.js"></script>
-  <script src="{{ asset('assets') }}/vendor/waypoints/jquery.waypoints.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/counterup/counterup.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/venobox/venobox.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/owl.carousel/owl.carousel.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/aos/aos.js"></script>
+  <script src="/assets/vendor/jquery/jquery.min.js"></script>
+  <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+  <script src="/assets/vendor/php-email-form/validate.js"></script>
+  <script src="/assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+  <script src="/assets/vendor/counterup/counterup.min.js"></script>
+  <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/assets/vendor/venobox/venobox.min.js"></script>
+  <script src="/assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+  <script src="/assets/vendor/aos/aos.js"></script>
   <!-- FullCalendar e Dependências -->
   <script src="{{ asset('app-assets/vendors/js/calendar/fullcalendar.min.js') }}"></script>
   <script src="{{ asset('app-assets/vendors/js/extensions/moment.min.js') }}"></script>
@@ -188,7 +188,7 @@
 
 
   <!-- Template Main JS File -->
-    <script src="{{ asset('assets') }}/js/main.js"></script>
+    <script src="/assets/js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     
     <script>

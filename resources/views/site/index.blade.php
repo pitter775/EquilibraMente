@@ -26,24 +26,24 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <!-- Favicons -->
-  <link href="{{ asset('assets') }}/img/favicon.png" rel="icon">
-  <link href="{{ asset('assets') }}/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="{{ asset('assets') }}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/vendor/icofont/icofont.min.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/vendor/venobox/venobox.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/assets/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="/assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/toastr.min.css">
-  <link href="{{ asset('assets') }}/css/style.css" rel="stylesheet">
+  <link href="/assets/css/style.css" rel="stylesheet">
 
 </head>
 
@@ -54,9 +54,9 @@
     <div class="container d-flex align-items-center hero-content">
 
       <div class="logo mr-auto">
-        <a href="/"><img src="{{ asset('assets') }}/img/logofinoescuro.png" style="height: 30px; opacity: 0;"> </a>
+        <a href="/"><img src="/assets/img/logofinoescuro.png" style="height: 30px; opacity: 0;"> </a>
         <!-- Uncomment below if you prefer to use an image logo -->
-        <!-- <a href="index.html"><img src="{{ asset('assets') }}/img/logo.png" alt="" class="img-fluid"></a>-->
+        <!-- <a href="index.html"><img src="/assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
 
       <nav class="nav-menu d-none d-lg-block">
@@ -87,14 +87,14 @@
     <div class="hero-container" data-aos="fade-up">
       <div class="row no-gutters" style="margin-top: 100px; padding: 60px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0));">
         <div class="content col-md-6 centercont" data-aos="fade-up" >
-          <img src="{{ asset('assets') }}/img/logoescuro.png" alt="" class="img-fluid" style=" width: 50%; margin-top: 80px"> 
+          <img src="/assets/img/logoescuro.png" alt="" class="img-fluid" style=" width: 50%; margin-top: 80px"> 
           <h1>Aluguel de Salas Modernas e Bem Localizadas para seus Neg√≥cios</h1>
           <a href="#about" class="btn-get-started scrollto mt-3"><i class="bx bx-chevrons-down"></i></a>
 
           
         </div>
         <div class="col-md-6" style=" padding-top: 80px"> 
-          <img src="{{ asset('assets') }}/img/sala1.jpg" alt="" class="img-fluid" style=" box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); "> 
+          <img src="/assets/img/sala1.jpg" alt="" class="img-fluid" style=" box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); "> 
         </div>
         <div class="col-md-12"> 
             
@@ -259,7 +259,7 @@ Venha conhecer nossas salas e transforme seu dia a dia profissional com um espa√
 
           <div class="col-lg-4 col-md-6">
             <div class="footer-info" data-aos="fade-up" data-aos-delay="50">
-              <img src="{{ asset('assets') }}/img/logoescuro.png" alt="" class="img-fluid mb-4" style=" width: 70%;"> 
+              <img src="/assets/img/logoescuro.png" alt="" class="img-fluid mb-4" style=" width: 70%;"> 
               <div class="social-links mt-3">
                 <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
                 <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
@@ -306,20 +306,20 @@ Venha conhecer nossas salas e transforme seu dia a dia profissional com um espa√
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
   <!-- Vendor JS Files -->
-  <script src="{{ asset('assets') }}/vendor/jquery/jquery.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/jquery.easing/jquery.easing.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/php-email-form/validate.js"></script>
-  <script src="{{ asset('assets') }}/vendor/waypoints/jquery.waypoints.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/counterup/counterup.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/venobox/venobox.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/owl.carousel/owl.carousel.min.js"></script>
-  <script src="{{ asset('assets') }}/vendor/aos/aos.js"></script>
+  <script src="/assets/vendor/jquery/jquery.min.js"></script>
+  <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+  <script src="/assets/vendor/php-email-form/validate.js"></script>
+  <script src="/assets/vendor/waypoints/jquery.waypoints.min.js"></script>
+  <script src="/assets/vendor/counterup/counterup.min.js"></script>
+  <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/assets/vendor/venobox/venobox.min.js"></script>
+  <script src="/assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+  <script src="/assets/vendor/aos/aos.js"></script>
   <script src="../../../app-assets/vendors/js/extensions/toastr.min.js"></script>
 
   <!-- Template Main JS File -->
-  <script src="{{ asset('assets') }}/js/main.js"></script>
+  <script src="/assets/js/main.js"></script>
 
 </body>
 
