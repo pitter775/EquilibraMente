@@ -9,15 +9,15 @@
 <!-- Open Graph Meta Tags (para Facebook, WhatsApp e outros) -->
 <meta property="og:title" content="Espaço Equilibra Mente - Aluguel de Salas Modernas" />
 <meta property="og:description" content="Descubra o espaço perfeito para reuniões, eventos e atendimentos. Salas modernas, bem localizadas e totalmente equipadas." />
-<meta property="og:image" content="http://www.espacoequilibramente.com.br/storage/salas/Zw0ghOj1uwjwFU5xI7zbIZSEVkLCX48eHjAyP7mg.jpg" />
-<meta property="og:url" content="http://www.espacoequilibramente.com.br/" />
+<meta property="og:image" content="https://www.espacoequilibramente.com.br/storage/salas/Zw0ghOj1uwjwFU5xI7zbIZSEVkLCX48eHjAyP7mg.jpg" />
+<meta property="og:url" content="https://www.espacoequilibramente.com.br/" />
 <meta property="og:type" content="website" />
 
 <!-- Twitter Meta Tags -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Espaço Equilibra Mente - Aluguel de Salas Modernas" />
 <meta name="twitter:description" content="Descubra o espaço perfeito para reuniões, eventos e atendimentos. Salas modernas, bem localizadas e totalmente equipadas." />
-<meta name="twitter:image" content="http://www.espacoequilibramente.com.br/storage/salas/Zw0ghOj1uwjwFU5xI7zbIZSEVkLCX48eHjAyP7mg.jpg" /> 
+<meta name="twitter:image" content="https://www.espacoequilibramente.com.br/storage/salas/Zw0ghOj1uwjwFU5xI7zbIZSEVkLCX48eHjAyP7mg.jpg" /> 
 <!-- Meta Tags para SEO -->
 <meta name="description" content="Descubra o espaço perfeito para o seu próximo evento, reunião ou atendimento. Salas modernas, bem localizadas e equipadas para atender suas necessidades." />
 <meta name="keywords" content="aluguel de salas, salas para eventos, salas para reuniões, espaço para workshops, Equilibra Mente" />
