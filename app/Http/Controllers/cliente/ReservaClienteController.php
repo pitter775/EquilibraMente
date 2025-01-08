@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Cliente;
+namespace App\Http\Controllers\cliente;
 
 use App\Http\Controllers\Controller;
 use App\Models\Reserva;
