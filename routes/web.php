@@ -84,7 +84,7 @@ Route::middleware(['auth'])->group(function () {
 
 // Rotas para administradores
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin', [SalaController::class, 'index'])->name('salas.index');
 
     Route::get('/admin/salas', [SalaController::class, 'index'])->name('salas.index');
     Route::get('/admin/salas/create', [SalaController::class, 'create'])->name('salas.create');
