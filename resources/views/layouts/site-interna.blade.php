@@ -6,8 +6,24 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>Espaço Equilibra Mente - {{ $sala->nome ?? '' }}</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+<!-- Open Graph Meta Tags (para Facebook, WhatsApp e outros) -->
+<meta property="og:title" content="Espaço Equilibra Mente - Aluguel de Salas Modernas" />
+<meta property="og:description" content="Descubra o espaço perfeito para reuniões, eventos e atendimentos. Salas modernas, bem localizadas e totalmente equipadas." />
+<meta property="og:image" content="http://www.espacoequilibramente.com.br/assets/img/sala1.jpg" />
+<meta property="og:url" content="http://www.espacoequilibramente.com.br/" />
+<meta property="og:type" content="website" />
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Espaço Equilibra Mente - Aluguel de Salas Modernas" />
+<meta name="twitter:description" content="Descubra o espaço perfeito para reuniões, eventos e atendimentos. Salas modernas, bem localizadas e totalmente equipadas." />
+<meta name="twitter:image" content="http://www.espacoequilibramente.com.br/assets/img/sala1.jpg" />
+
+<!-- Meta Tags para SEO -->
+<meta name="description" content="Descubra o espaço perfeito para o seu próximo evento, reunião ou atendimento. Salas modernas, bem localizadas e equipadas para atender suas necessidades." />
+<meta name="keywords" content="aluguel de salas, salas para eventos, salas para reuniões, espaço para workshops, Equilibra Mente" />
+<meta name="author" content="Espaço Equilibra Mente" />
+
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <!-- Favicons -->
