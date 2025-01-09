@@ -26,6 +26,11 @@ Route::get('/debug-usuario', function () {
     ]);
 });
 
+Route::get('/teste-log', function () {
+    \Log::error('Teste de log - verificando sistema de logs');
+    abort(500, 'Erro proposital para testar logs');
+});
+
 
 Route::get('/politica-privacidade', function () {
     return view('site.politica-privacidade1');
