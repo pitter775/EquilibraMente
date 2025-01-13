@@ -390,9 +390,9 @@ function adicionarSala(sala, isEdit = false) {
     if (sala.imagens && sala.imagens.length > 0) {
         let imagemPrincipalObj = sala.imagens.find(img => img.principal);
         if (imagemPrincipalObj) {
-            imagemPrincipal = `/storage/${imagemPrincipalObj.path}`;
+            imagemPrincipal = imagemPrincipalObj.imagem_base64; // Usa base64
         } else {
-            imagemPrincipal = `/storage/${sala.imagens[0].path}`;
+            imagemPrincipal = sala.imagens[0].imagem_base64; // Usa a primeira imagem como fallback
         }
     }
 
