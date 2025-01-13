@@ -72,10 +72,10 @@ class SalaController extends Controller
         // Lógica de upload de imagens permanece
         if ($request->hasFile('imagens')) {
             foreach ($request->file('imagens') as $index => $imagem) {
-                $path = $imagem->store('salas', 'public');
+                $path = $imagem->move(public_path('salas'), $imagem->getClientOriginalName());
                 ImagemSala::create([
                     'sala_id' => $sala->id,
-                    'path' => $path,
+                    'path' => 'salas/' . $imagem->getClientOriginalName(),
                     'principal' => $index === 0,
                 ]);
             }
@@ -126,10 +126,10 @@ class SalaController extends Controller
         // Upload das imagens (caso existam)
         if ($request->hasFile('imagens')) {
             foreach ($request->file('imagens') as $index => $imagem) {
-                $path = $imagem->store('salas', 'public');
+                $path = $imagem->move(public_path('salas'), $imagem->getClientOriginalName());
                 ImagemSala::create([
                     'sala_id' => $sala->id,
-                    'path' => $path,
+                    'path' => 'salas/' . $imagem->getClientOriginalName(), // Caminho relativo
                     'principal' => $index === 0,
                 ]);
             }
