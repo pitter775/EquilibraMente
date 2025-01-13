@@ -12,6 +12,18 @@ use App\Http\Controllers\ImagemSalaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CepController;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
+
+Route::get('storage/{path}', function ($path) {
+    $filePath = storage_path('app/' . $path);
+
+    if (!file_exists($filePath)) {
+        abort(404, 'Arquivo não encontrado.');
+    }
+
+    return Response::file($filePath);
+})->where('path', '.*');
 
 
 Route::get('/storage-link', function () {
