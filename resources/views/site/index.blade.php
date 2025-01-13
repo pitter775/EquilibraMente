@@ -6,22 +6,22 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title>Espaço Equilibra Mente - site</title>
-<!-- Open Graph Meta Tags (para Facebook, WhatsApp e outros) -->
-<meta property="og:title" content="Espaço Equilibra Mente - Aluguel de Salas Modernas" />
-<meta property="og:description" content="Descubra o espaço perfeito para reuniões, eventos e atendimentos. Salas modernas, bem localizadas e totalmente equipadas." />
-<meta property="og:image" content="https://www.espacoequilibramente.com.br/storage/salas/Zw0ghOj1uwjwFU5xI7zbIZSEVkLCX48eHjAyP7mg.jpg" />
-<meta property="og:url" content="https://www.espacoequilibramente.com.br/" />
-<meta property="og:type" content="website" />
+  <!-- Open Graph Meta Tags (para Facebook, WhatsApp e outros) -->
+  <meta property="og:title" content="Espaço Equilibra Mente - Aluguel de Salas Modernas" />
+  <meta property="og:description" content="Descubra o espaço perfeito para reuniões, eventos e atendimentos. Salas modernas, bem localizadas e totalmente equipadas." />
+  <meta property="og:image" content="https://www.espacoequilibramente.com.br/storage/salas/Zw0ghOj1uwjwFU5xI7zbIZSEVkLCX48eHjAyP7mg.jpg" />
+  <meta property="og:url" content="https://www.espacoequilibramente.com.br/" />
+  <meta property="og:type" content="website" />
 
-<!-- Twitter Meta Tags -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Espaço Equilibra Mente - Aluguel de Salas Modernas" />
-<meta name="twitter:description" content="Descubra o espaço perfeito para reuniões, eventos e atendimentos. Salas modernas, bem localizadas e totalmente equipadas." />
-<meta name="twitter:image" content="https://www.espacoequilibramente.com.br/storage/salas/Zw0ghOj1uwjwFU5xI7zbIZSEVkLCX48eHjAyP7mg.jpg" /> 
-<!-- Meta Tags para SEO -->
-<meta name="description" content="Descubra o espaço perfeito para o seu próximo evento, reunião ou atendimento. Salas modernas, bem localizadas e equipadas para atender suas necessidades." />
-<meta name="keywords" content="aluguel de salas, salas para eventos, salas para reuniões, espaço para workshops, Equilibra Mente" />
-<meta name="author" content="Espaço Equilibra Mente" />
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Espaço Equilibra Mente - Aluguel de Salas Modernas" />
+  <meta name="twitter:description" content="Descubra o espaço perfeito para reuniões, eventos e atendimentos. Salas modernas, bem localizadas e totalmente equipadas." />
+  <meta name="twitter:image" content="https://www.espacoequilibramente.com.br/storage/salas/Zw0ghOj1uwjwFU5xI7zbIZSEVkLCX48eHjAyP7mg.jpg" /> 
+  <!-- Meta Tags para SEO -->
+  <meta name="description" content="Descubra o espaço perfeito para o seu próximo evento, reunião ou atendimento. Salas modernas, bem localizadas e equipadas para atender suas necessidades." />
+  <meta name="keywords" content="aluguel de salas, salas para eventos, salas para reuniões, espaço para workshops, Equilibra Mente" />
+  <meta name="author" content="Espaço Equilibra Mente" />
 
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -84,8 +84,10 @@
 
   <!-- ======= Hero Section ======= -->
   <section id="hero">
-    <div class="hero-container" data-aos="fade-up">
-      <div class="row divheropaddd" style="">
+  <div class="hero-container" data-aos="fade-up" >
+   
+      <div class="divheropaddd">
+       <div class="row">
         <div class="content col-md-6 centercont" data-aos="fade-up" >
           <img src="/assets/img/logoescuro.png" alt="" class="img-fluid logohero" > 
           <h1 class="h1hero">Aluguel de Salas Modernas e Bem Localizadas para seus Negócios</h1>
@@ -96,12 +98,10 @@
         <div class="col-md-6" style=" padding:0; margin:0"> 
           <img src="/assets/img/sala1.jpg" alt="" class="img-fluid imgboxhero"> 
         </div>
-        <div class="col-md-12"> 
-            
-        </div>
-      </div>
-    
-    </div>
+      </div> 
+    </div>   
+  </div> 
+
   </section><!-- End Hero -->
 
   <main id="main">
@@ -156,9 +156,7 @@
         </div>
       </div>
     </section>
-
     <!-- End About Section -->
-
 
     <!-- ======= Testimonials Section ======= -->
     <section id="sobre" class="testimonials section-bg">
@@ -169,13 +167,13 @@
           <h3>Sobre Nós</h3>   
           <p class="mb-5">Somos uma empresa dedicada a oferecer espaços modernos, práticos e confortáveis para profissionais e empresas que buscam ambientes ideais para atender seus clientes ou realizar reuniões e eventos. Nosso objetivo é criar uma experiência única, onde cada detalhe foi pensado para proporcionar funcionalidade e bem-estar. <br>
 
-Com salas totalmente equipadas, flexibilidade de horários e localização estratégica, atendemos às necessidades de psicólogos, terapeutas, coaches, empresários e diversos outros profissionais. Seja para um atendimento individual, um workshop ou uma reunião corporativa, aqui você encontra o ambiente perfeito para alcançar seus objetivos.<br>
+                Com salas totalmente equipadas, flexibilidade de horários e localização estratégica, atendemos às necessidades de psicólogos, terapeutas, coaches, empresários e diversos outros profissionais. Seja para um atendimento individual, um workshop ou uma reunião corporativa, aqui você encontra o ambiente perfeito para alcançar seus objetivos.<br>
 
-Nossa missão é simplificar sua rotina e oferecer o suporte que você precisa para focar no que realmente importa: seus clientes e negócios.
+                Nossa missão é simplificar sua rotina e oferecer o suporte que você precisa para focar no que realmente importa: seus clientes e negócios.
 
-Venha conhecer nossas salas e transforme seu dia a dia profissional com um espaço feito para você!</p>
+                Venha conhecer nossas salas e transforme seu dia a dia profissional com um espaço feito para você!</p>
 
-<hr>
+                <hr>
 
           <h3 class="mt-5">O que dizem do nossos espaço</h3>     
           <p>Nossos espaços foram cuidadosamente planejados para atender às necessidades de profissionais das mais diversas áreas, como psicólogos, terapeutas, coaches, e muitos outros. Aqui, cada detalhe foi pensado para garantir conforto, praticidade e um ambiente profissional. Veja o que alguns de nossos parceiros têm a dizer sobre suas experiências:</p>
@@ -243,7 +241,6 @@ Venha conhecer nossas salas e transforme seu dia a dia profissional com um espa�
       </div>
     </section><!-- End Testimonials Section -->
     <!-- ======= Contact Section ======= -->
-
 
     
     <!-- End Contact Section -->

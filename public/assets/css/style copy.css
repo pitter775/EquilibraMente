@@ -115,7 +115,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.5s;
   z-index: 997;
   transition: all 0.5s;
-  padding: 15px 0;
+  padding: 5px 0;
   background: #fff;
 
 }
@@ -491,7 +491,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 50% !important; padding-top: 40px;
 }
 .imgboxhero{ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); margin-top: 50px;}
-.divheropaddd{ margin-top: 120px; padding: 60px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0));}
+.divheropaddd{ margin:0; margin-top: 120px; padding: 60px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0));}
 
 @media (max-width: 768px) {
   .logohero{
@@ -500,10 +500,10 @@ h1, h2, h3, h4, h5, h6 {
   }
 
 
-  .divheropaddd{ margin-top: 100px; padding: 20px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0));}
+  .divheropaddd{margin:0;  margin-top: 100px; padding: 20px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0));}
   #hero {
     height: auto; /* Ajusta a altura automaticamente */
-    padding: 20px 0px; /* Espaçamento interno para melhor visualização */
+    padding: 20px 10px; /* Espaçamento interno para melhor visualização */
     background-size: cover; /* Garante que a imagem de fundo se ajuste */
   }
 
@@ -511,7 +511,6 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 100%; /* Garante que a imagem não ultrapasse a largura */
     height: auto; /* Mantém a proporção da imagem */
     margin-bottom: 20px; /* Adiciona espaço abaixo da imagem */
-    padding: 10px;
   }
 
   #hero h1, #hero h2 {

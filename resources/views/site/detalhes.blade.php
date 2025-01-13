@@ -219,16 +219,15 @@
                     
                     </div>
 
-                    <div class="row">
-                        <div class="col-12 text-center mb-2">
-                            <p class="text-success mb-2">
-                                <i class="fas fa-lock"></i> Este é um ambiente seguro!
-                            </p>
-                            <p>
-                                Trabalhamos constantemente para proteger sua segurança e privacidade. 
-                                <a href="{{ route('privacidade') }}" class="text-primary">Saiba mais</a>
-                            </p>
-                        </div>
+                    <div class="card p-4" style="margin-top: 0px">
+                        <p class="text-success mb-2">
+                            <i class="fas fa-lock"></i> Este é um ambiente seguro!
+                        </p>
+                        <p>
+                            Trabalhamos constantemente para proteger sua segurança e privacidade. 
+                            <a href="{{ route('privacidade') }}" class="text-primary">Saiba mais</a>
+                        </p>
+                    
                     </div>
 
                   </div>
