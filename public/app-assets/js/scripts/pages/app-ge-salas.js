@@ -234,7 +234,7 @@ $(document).ready(function () {
                     data.sala.imagens.forEach(function (imagem) {
                         var imagemHtml = `
                             <div class="col-md-3 mb-2" id="imagem-${imagem.id}">
-                                <img src="/storage/${imagem.path}" class="img-fluid img-thumbnail ${imagem.principal ? 'principal' : ''}" alt="Imagem da sala">
+                                <img src="${imagem.imagem_base64}" class="img-fluid img-thumbnail ${imagem.principal ? 'principal' : ''}" alt="Imagem da sala">
                                 <div class="mt-2">
                                     <button type="button" class="btn btn-danger btn-sm btn-remover-imagem" data-id="${imagem.id}">Excluir</button>
                                     <button type="button" class="btn btn-${imagem.principal ? 'primary' : 'info'} btn-sm definir-principal" data-id="${imagem.id}">
@@ -490,7 +490,7 @@ function carregarImagensSala(salaId) {
                     // Adiciona cada imagem ao container
                     $('#imagens-existentes').append(`
                         <div class="col-md-3 mb-3" id="imagem-${imagem.id}">
-                            <img src="/storage/${imagem.path}" class="img-fluid img-thumbnail ${imagem.principal ? 'principal' : ''}" alt="Imagem da sala">
+                            <img src="${imagem.imagem_base64}" class="img-fluid img-thumbnail ${imagem.principal ? 'principal' : ''}" alt="Imagem da sala">
                             <div class="mt-2">
                                 <button type="button" class="btn btn-danger btn-sm btn-remover-imagem" data-id="${imagem.id}">Excluiiiiiiiir</button>
                                 <button type="button" class="btn btn-${imagem.principal ? 'primary' : 'info'} btn-sm definir-principal" data-id="${imagem.id}">

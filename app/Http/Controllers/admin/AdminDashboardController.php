@@ -15,6 +15,7 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {
+
         // Total de Reservas
         $totalReservas = Reserva::count();
 
