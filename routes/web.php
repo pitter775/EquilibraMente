@@ -11,6 +11,13 @@ use App\Http\Controllers\admin\UsuarioController;
 use App\Http\Controllers\ImagemSalaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CepController;
+use Illuminate\Support\Facades\Artisan;
+
+
+Route::get('/storage-link', function () {
+    Artisan::call('storage:link');
+    return 'Link simbólico criado!';
+});
 
 
 Route::get('/debug-usuario', function () {

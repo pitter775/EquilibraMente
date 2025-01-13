@@ -51,7 +51,7 @@
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
-    <link rel="stylesheet" type="text/css" href="../../../assets/vendor/aos/aos.css')}}">
+    <link rel="stylesheet" type="text/css" href="../../../assets/vendor/aos/aos.css">
 
 
     
