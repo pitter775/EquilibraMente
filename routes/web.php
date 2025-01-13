@@ -13,6 +13,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CepController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 Route::get('storage/{path}', function ($path) {
@@ -24,6 +26,18 @@ Route::get('storage/{path}', function ($path) {
 
     return Response::file($filePath);
 })->where('path', '.*');
+
+
+
+Route::get('/listar-arquivos', function () {
+    $files = File::files(storage_path('app/salas'));
+
+    $fileNames = array_map(function ($file) {
+        return $file->getFilename();
+    }, $files);
+
+    return response()->json($fileNames);
+});
 
 
 Route::get('/storage-link', function () {
@@ -46,7 +60,7 @@ Route::get('/debug-usuario', function () {
 });
 
 Route::get('/teste-log', function () {
-    \Log::error('Teste de log - verificando sistema de logs');
+    Log::error('Teste de log - verificando sistema de logs');
     abort(500, 'Erro proposital para testar logs');
 });
 
