@@ -17,33 +17,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-Route::get('storage/{path}', function ($path) {
-    $filePath = storage_path('app/' . $path);
-
-    if (!file_exists($filePath)) {
-        abort(404, 'Arquivo não encontrado.');
-    }
-
-    return Response::file($filePath);
-})->where('path', '.*');
-
-
-
-Route::get('/listar-arquivos', function () {
-    $files = File::files(storage_path('app/salas'));
-
-    $fileNames = array_map(function ($file) {
-        return $file->getFilename();
-    }, $files);
-
-    return response()->json($fileNames);
-});
-
-
-Route::get('/storage-link', function () {
-    Artisan::call('storage:link');
-    return 'Link simbólico criado!';
-});
 
 
 Route::get('/debug-usuario', function () {
@@ -132,7 +105,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/admin/salas/{sala}', [SalaController::class, 'destroy'])->name('salas.destroy');
     Route::get('/admin/salas/{sala}/dados', [SalaController::class, 'getSalaData'])->name('salas.dados');
     Route::get('/admin/salas/{sala}/imagens', [ImagemSalaController::class, 'index'])->name('imagens.index');
-    Route::delete('/admin/imagens/{imagem}', [ImagemSalaController::class, 'destroy'])->name('imagens.destroy');
+    // Route::delete('/admin/imagens/{imagem}', [ImagemSalaController::class, 'destroy'])->name('imagens.destroy');
     Route::get('/salas/all', [SalaController::class, 'getSalasData'])->name('salas.data');
 
     // Rotas para gerenciamento de usuários

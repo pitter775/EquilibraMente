@@ -10,7 +10,7 @@ class ImagemSala extends Model
     use HasFactory;
     protected $table = 'imagens_salas';
 
-    protected $fillable = ['sala_id', 'path', 'principal'];
+    protected $fillable = ['sala_id', 'imagem_base64', 'principal'];
 
     public function sala()
     {

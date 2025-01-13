@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('imagens_salas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sala_id'); // Chave estrangeira para a tabela salas
-            $table->string('path'); // Caminho da imagem no armazenamento
+            $table->longText('imagem_base64')->nullable();
             $table->boolean('principal')->default(false); // Marcar se é a imagem principal
-            $table->timestamps();
-        
+            $table->timestamps();        
             // Definir a chave estrangeira e relacionar com a tabela de salas
             $table->foreign('sala_id')->references('id')->on('salas')->onDelete('cascade');
         });

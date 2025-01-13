@@ -130,7 +130,7 @@
                     <div class="carousel-inner">
                       @foreach($sala->imagens as $index => $imagem)
                         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                          <img src="{{ asset('storage/' . $imagem->path) }}" class="d-block w-100" alt="{{ $sala->nome }}">
+                          <img src="{{ $imagem->imagem_base64 }}" class="d-block w-100" alt="{{ $sala->nome }}">
                         </div>
                       @endforeach
                     </div>

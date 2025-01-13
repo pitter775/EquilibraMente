@@ -69,17 +69,56 @@ class SalaController extends Controller
             $sala->conveniencias()->sync($validated['conveniencias']);
         }
     
-        // Lógica de upload de imagens permanece
+        // Upload e processamento das imagens (caso existam)
         if ($request->hasFile('imagens')) {
             foreach ($request->file('imagens') as $index => $imagem) {
-                $path = $imagem->store('salas', 'public');
+                // Obter as dimensões da imagem original
+                list($larguraOriginal, $alturaOriginal) = getimagesize($imagem);
+
+                // Definir os limites máximos
+                $maxLargura = 1440;
+                $maxAltura = 1080;
+
+                // Calcular a nova largura e altura mantendo a proporção
+                $ratio = min($maxLargura / $larguraOriginal, $maxAltura / $alturaOriginal);
+                $novaLargura = $larguraOriginal * $ratio;
+                $novaAltura = $alturaOriginal * $ratio;
+
+                // Criar uma nova imagem redimensionada
+                $imagemRedimensionada = imagecreatetruecolor($novaLargura, $novaAltura);
+                $imagemOriginal = imagecreatefromstring(file_get_contents($imagem));
+                imagecopyresampled(
+                    $imagemRedimensionada,
+                    $imagemOriginal,
+                    0,
+                    0,
+                    0,
+                    0,
+                    $novaLargura,
+                    $novaAltura,
+                    $larguraOriginal,
+                    $alturaOriginal
+                );
+
+                // Converter a imagem redimensionada para base64
+                ob_start();
+                imagejpeg($imagemRedimensionada); // Salvar no buffer
+                $dadosImagem = ob_get_clean();
+                $imagemBase64 = 'data:image/jpeg;base64,' . base64_encode($dadosImagem);
+
+                // Criar o registro da imagem no banco de dados
                 ImagemSala::create([
                     'sala_id' => $sala->id,
-                    'path' => $path,
-                    'principal' => $index === 0,
+                    'imagem_base64' => $imagemBase64, // Salva a imagem como base64
+                    'principal' => $index === 0, // Marca a primeira imagem como principal
                 ]);
+
+                // Liberar memória
+                imagedestroy($imagemRedimensionada);
+                imagedestroy($imagemOriginal);
             }
         }
+
     
         return response()->json([
             'success' => true,
@@ -123,17 +162,56 @@ class SalaController extends Controller
         // Atualizar conveniências
         $sala->conveniencias()->sync($validated['conveniencias'] ?? []);
     
-        // Upload das imagens (caso existam)
+        // Upload e processamento das imagens (caso existam)
         if ($request->hasFile('imagens')) {
             foreach ($request->file('imagens') as $index => $imagem) {
-                $path = $imagem->store('salas', 'public');
+                // Obter as dimensões da imagem original
+                list($larguraOriginal, $alturaOriginal) = getimagesize($imagem);
+
+                // Definir os limites máximos
+                $maxLargura = 1440;
+                $maxAltura = 1080;
+
+                // Calcular a nova largura e altura mantendo a proporção
+                $ratio = min($maxLargura / $larguraOriginal, $maxAltura / $alturaOriginal);
+                $novaLargura = $larguraOriginal * $ratio;
+                $novaAltura = $alturaOriginal * $ratio;
+
+                // Criar uma nova imagem redimensionada
+                $imagemRedimensionada = imagecreatetruecolor($novaLargura, $novaAltura);
+                $imagemOriginal = imagecreatefromstring(file_get_contents($imagem));
+                imagecopyresampled(
+                    $imagemRedimensionada,
+                    $imagemOriginal,
+                    0,
+                    0,
+                    0,
+                    0,
+                    $novaLargura,
+                    $novaAltura,
+                    $larguraOriginal,
+                    $alturaOriginal
+                );
+
+                // Converter a imagem redimensionada para base64
+                ob_start();
+                imagejpeg($imagemRedimensionada); // Salvar no buffer
+                $dadosImagem = ob_get_clean();
+                $imagemBase64 = 'data:image/jpeg;base64,' . base64_encode($dadosImagem);
+
+                // Criar o registro da imagem no banco de dados
                 ImagemSala::create([
                     'sala_id' => $sala->id,
-                    'path' => $path,
-                    'principal' => $index === 0,
+                    'imagem_base64' => $imagemBase64, // Salva a imagem como base64
+                    'principal' => $index === 0, // Marca a primeira imagem como principal
                 ]);
+
+                // Liberar memória
+                imagedestroy($imagemRedimensionada);
+                imagedestroy($imagemOriginal);
             }
         }
+
     
         return response()->json([
             'success' => true,

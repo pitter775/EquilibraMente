@@ -108,7 +108,7 @@
                                 <div class="carousel-inner">
                                     @foreach($sala->imagens as $index => $imagem)
                                         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                            <img src="{{ asset('storage/' . $imagem->path) }}" class="d-block w-100 rounded" alt="{{ $sala->nome }}">
+                                            <img src="{{ $imagem->imagem_base64 }}" class="d-block w-100 rounded" alt="{{ $sala->nome }}">
                                         </div>
                                     @endforeach
                                 </div>
@@ -128,7 +128,7 @@
                             <div class="row"> <!-- Reduz o espaçamento entre imagens -->
                                 @foreach($sala->imagens->take(6) as $imagem)
                                     <div class="col-6 mb-2">
-                                        <img src="{{ asset('storage/' . $imagem->path) }}" class="img-fluid img-thumbnail" alt="Imagem da sala" style="cursor: pointer;" onclick="trocarImagemPrincipal('{{ asset('storage/' . $imagem->path) }}')">
+                                        <img src="{{ $imagem->imagem_base64 }}" class="img-fluid img-thumbnail" alt="Imagem da sala" style="cursor: pointer;" onclick="trocarImagemPrincipal('{{ $imagem->imagem_base64 }}')">
                                     </div>
                                 @endforeach
                             </div>
