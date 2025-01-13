@@ -486,17 +486,47 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-@media (max-width: 768px) {
-  #hero h1 {
-    font-size: 28px;
-    line-height: 36px;
-  }
-  #hero h2 {
-    font-size: 18px;
-    line-height: 24px;
-    margin-bottom: 30px;
-  }
+.logohero{
+  width: 50% !important; margin-top: 80px !important
 }
+
+
+@media (max-width: 768px) {
+  .logohero{
+    width: 90% !important; margin-top: -10px  !important
+  }
+
+
+  #hero {
+    height: auto; /* Ajusta a altura automaticamente */
+    padding: 20px 10px; /* Espaçamento interno para melhor visualização */
+    background-size: cover; /* Garante que a imagem de fundo se ajuste */
+  }
+
+  #hero img {
+    max-width: 100%; /* Garante que a imagem não ultrapasse a largura */
+    height: auto; /* Mantém a proporção da imagem */
+    margin-bottom: 20px; /* Adiciona espaço abaixo da imagem */
+  }
+
+  #hero h1, #hero h2 {
+    font-size: 20px; /* Ajusta o tamanho das fontes para telas menores */
+    line-height: 28px;
+    padding: 0;
+    margin: -10px 0 0 0
+  }
+
+  #hero .btn-get-started {
+    font-size: 24px; /* Diminui o tamanho do botão */
+    width: 50px;
+    height: 50px;
+    margin: 5px; /* Ajusta o espaçamento */
+  }
+
+  .btn-get-started{ display: none;}
+
+}
+
 
 /*--------------------------------------------------------------
 # Sections General
@@ -626,10 +656,8 @@ section {
 }
 
 .about .content h3 {
-  font-weight: 700;
-  font-size: 34px;
-  color: #535e50;
-  margin-bottom: 10px;
+
+
 }
 
 .about .content p {

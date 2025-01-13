@@ -85,10 +85,10 @@
   <!-- ======= Hero Section ======= -->
   <section id="hero">
     <div class="hero-container" data-aos="fade-up">
-      <div class="row no-gutters" style="margin-top: 100px; padding: 60px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0));">
+      <div class="row no-gutters divheropaddd" style="margin-top: 100px; padding: 60px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0));">
         <div class="content col-md-6 centercont" data-aos="fade-up" >
-          <img src="/assets/img/logoescuro.png" alt="" class="img-fluid" style=" width: 50%; margin-top: 80px"> 
-          <h1>Aluguel de Salas Modernas e Bem Localizadas para seus Negócios</h1>
+          <img src="/assets/img/logoescuro.png" alt="" class="img-fluid logohero" > 
+          <h1 class="h1hero">Aluguel de Salas Modernas e Bem Localizadas para seus Negócios</h1>
           <a href="#about" class="btn-get-started scrollto mt-3"><i class="bx bx-chevrons-down"></i></a>
 
           
