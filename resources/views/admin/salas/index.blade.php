@@ -3,6 +3,44 @@
 ])
 @section('content')
 
+<style>
+    #conveniencias-container .form-check {
+        background-color: white; /* Fundo branco */
+        border-radius: 8px; /* Bordas arredondadas */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        padding: 10px; /* Espaçamento interno */
+        margin-bottom: 10px; /* Espaçamento entre os itens */
+        transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animação */
+        margin-right: 10px;
+    }
+
+    #conveniencias-container .form-check:hover {
+        transform: scale(1.05); /* Aumenta um pouco ao passar o mouse */
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra mais intensa ao passar o mouse */
+    }
+
+    #conveniencias-container .form-check-input {
+        margin-right: 10px; /* Espaço entre o checkbox e o texto */
+    }
+
+    #conveniencias-container .form-check-label {
+        display: flex;
+        align-items: center; /* Alinha o ícone e o texto ao centro verticalmente */
+        gap: 8px; /* Espaço entre o ícone e o texto */
+        margin-left: 15px;
+        margin-top: 3px;
+    }
+
+    #conveniencias-container .form-check-label i {
+        font-size: 18px; /* Tamanho do ícone */
+        color: #666; /* Cor do ícone */
+    }
+    .form-check-input {
+        margin-left: 0;
+    }
+</style>
+
+
     <!-- Modal para Adicionar Sala -->
     <div class="modal fade text-left" id="modals-slide-in">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -19,7 +57,7 @@
                         <div class="modal-body">  
                             <div class="row">
                                 <div class="col-12">
-                                <h3 class="mt-3">Dados iniciais</h3>
+                                <h3>Dados iniciais</h3>
                                     <div class="form-group">
                                         <label class="form-label" for="nome">Nome</label>
                                         <input type="text" class="form-control" id="nome" placeholder="Nome da Sala" name="nome" required>
@@ -42,11 +80,13 @@
                                     </div>
                                 </div>
 
+                                <div class="col-12"><hr class="mt-1 mb-1"></div>
+
 
                                 <div class="col-12">
                                     
                                     <div id="novo-endereco-form">                           
-                                        <h3 class="mt-3">Endereço</h3>
+                                        <h3 class="">Endereço</h3>
                                         <div class="row">
                                             <div class="col-md-3 mb-1">
                                                 <label for="endereco_cep" class="form-label">CEP</label>
@@ -82,9 +122,10 @@
                                     </div>
                                 </div>
                                 
-                                
+                                <div class="col-12"><hr class="mt-1 mb-1"></div>
+
                                 <div class="col-12">
-                                    <h3 class="mt-3">Conveniências</h3>
+                                    <h3>Conveniências</h3>
                                     <div id="conveniencias-container" class="d-flex flex-wrap">
                                         @foreach ($conveniencias as $conveniencia)
                                             <div class="form-check me-3 mr-3 mt-1">
@@ -103,9 +144,11 @@
                                         @endforeach
                                     </div>
                                 </div>
+
+                                <div class="col-12"><hr class="mt-1 mb-1"></div>
                                 
                                 <div class="col-12">
-                                    <h3 class="mt-3">Imagens</h3>
+                                    <h3>Imagens</h3>
                                     <div class="form-group">
                                         <label class="form-label" for="imagens">Imagens da Sala</label>
                                         <input type="file" name="imagens[]" id="imagens" multiple class="form-control" accept="image/*">
@@ -118,6 +161,10 @@
                                     
     
                                 </div> 
+
+                                <div class="col-12"><hr class="mt-1 mb-1"></div>
+
+
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label class="form-label" for="descricao">Descrição</label>

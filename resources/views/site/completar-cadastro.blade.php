@@ -12,14 +12,14 @@
 
 
 <div class="container" style="margin-top: 120px; margin-bottom: 100px">
-    <h2>
+    <h4>
         {{ isset($googleData) && $googleData ? 'Completar Cadastro' : 'Cadastro Principal' }}
-    </h2>
+    </h4>
     <form id="completarCadastroForm" method="POST">
         @csrf
         <!-- Seção: Informações Básicas -->
         <div class="card p-4">
-            <h3 class="mb-3">Informações Básicas</h3>
+            <h4 class="mb-3">Informações Básicas</h4>
             <input type="hidden" id="id_geral" name="id">
             <div class="row">
              @if(session('google_data.photo'))
@@ -67,7 +67,9 @@
                 </div>
             </div>
 
-            <h3 class="mb-3 mt-5">Login de Acesso</h3>
+            <hr class="mb-5 mt-5">
+
+            <h4>Login de Acesso</h4>
             <div class="row">
                 <div class="col-md-4 mb-1">
                     <label for="email" class="form-label">Email</label>
@@ -83,7 +85,10 @@
                 </div>
             </div>
 
-            <h3 class="mb-3 mt-5">Informações Profissionais</h3>
+            <hr class="mb-5 mt-5">
+
+
+            <h4>Informações Profissionais</h4>
             <div class="row">
                 <div class="col-md-6 mb-1">
                     <label for="tipo_registro_profissional" class="form-label">Tipo de Registro</label>
@@ -103,7 +108,7 @@
 
         <!-- Seção: Endereço -->
         <div class="card p-4">
-            <h3 class="mb-3">Endereço</h3>
+            <h4 class="mb-3">Endereço</h4>
             <div class="row">
                 <div class="col-md-3 mb-1">
                     <label for="endereco_cep" class="form-label">CEP</label>
