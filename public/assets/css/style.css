@@ -307,7 +307,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mobile-nav-toggle i {
-  color: #fff;
+  color: #535e50;
 }
 
 .mobile-nav {
@@ -343,6 +343,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .mobile-nav a:hover, .mobile-nav .active > a, .mobile-nav li:hover > a {
   color: #efe4d7;
+  background-color: #535e50;
   text-decoration: none;
 }
 
@@ -497,6 +498,10 @@ h1, h2, h3, h4, h5, h6 {
   .logohero{
     width: 90% !important; 
     padding-top: 0px;
+  }
+
+  .sala-detalhes{
+    margin-top: -50px;
   }
 
 

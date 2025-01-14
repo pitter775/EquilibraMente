@@ -71,7 +71,10 @@
             }
 
             .img-thumbnail {
-                max-height: 70px; /* Reduz o tamanho das imagens menores */
+                max-height: 70px; /* Define o tamanho máximo da imagem */
+                display: block; /* Garante que a imagem seja tratada como um bloco */
+                margin: 0 auto; /* Centraliza horizontalmente */
+                position: relative; /* Permite o uso de posicionamento absoluto se necessário */
             }
 
             .col-4.d-flex.flex-column {
@@ -209,8 +212,7 @@
                                   <div id="calendar"></div>
                                 @else
                                   <p>Para ver a disponibilidade e fazer reservas, faça login.</p>
-                                  <a href="{{ route('login.google') }}" class="btn btn-primary">Login com Google</a>
-                                  <a href="{{ route('completar.cadastro.form') }}" class="btn btn-secondary">Cadastro Manual</a>
+                                  <a href="/login" class="btn btn-primary">Entrar</a>                                  
                                 @endif
                               </div>
                             </div>

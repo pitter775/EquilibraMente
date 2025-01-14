@@ -19,7 +19,7 @@
             <div>
                 <a href="/">
                     {{-- <img src="{{ asset('images/novo-logo.png') }}" alt="Novo Logo" class="w-20 h-20"> --}}
-                    <img src="/assets/img/logoescuro.png" alt="" class="img-fluid" style=" width: 15%; margin: 0 auto"> 
+                    <img src="/assets/img/logoescuro.png" alt="" class="img-fluid" style=" width: 200px; margin: 0 auto"> 
                 </a>
             </div>
 

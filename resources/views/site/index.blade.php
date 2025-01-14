@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta name="theme-color" content="#556050"> 
 
   <title>Espaço Equilibra Mente - site</title>
   <!-- Open Graph Meta Tags (para Facebook, WhatsApp e outros) -->
@@ -159,17 +160,17 @@
     <!-- End About Section -->
 
     <!-- ======= Testimonials Section ======= -->
-    <section id="sobre" class="testimonials section-bg">
-      <div class="container">
+    <section id="sobre" class="testimonials section-bg" style="padding:10px; margin:0">
+      <div class="container mt-5">
 
         <div class=" mb-5" data-aos="fade-in" data-aos-delay="100">
 
           <h3>Sobre Nós</h3>   
-          <p class="mb-5">Somos uma empresa dedicada a oferecer espaços modernos, práticos e confortáveis para profissionais e empresas que buscam ambientes ideais para atender seus clientes ou realizar reuniões e eventos. Nosso objetivo é criar uma experiência única, onde cada detalhe foi pensado para proporcionar funcionalidade e bem-estar. <br>
+          <p class="mb-5">Somos uma empresa dedicada a oferecer espaços modernos, práticos e confortáveis para profissionais e empresas que buscam ambientes ideais para atender seus clientes ou realizar reuniões e eventos. Nosso objetivo é criar uma experiência única, onde cada detalhe foi pensado para proporcionar funcionalidade e bem-estar. <br><br>
 
-                Com salas totalmente equipadas, flexibilidade de horários e localização estratégica, atendemos às necessidades de psicólogos, terapeutas, coaches, empresários e diversos outros profissionais. Seja para um atendimento individual, um workshop ou uma reunião corporativa, aqui você encontra o ambiente perfeito para alcançar seus objetivos.<br>
+                Com salas totalmente equipadas, flexibilidade de horários e localização estratégica, atendemos às necessidades de psicólogos, terapeutas, coaches, empresários e diversos outros profissionais. Seja para um atendimento individual, um workshop ou uma reunião corporativa, aqui você encontra o ambiente perfeito para alcançar seus objetivos.<br><br>
 
-                Nossa missão é simplificar sua rotina e oferecer o suporte que você precisa para focar no que realmente importa: seus clientes e negócios.
+                Nossa missão é simplificar sua rotina e oferecer o suporte que você precisa para focar no que realmente importa: seus clientes e negócios.<br><br>
 
                 Venha conhecer nossas salas e transforme seu dia a dia profissional com um espaço feito para você!</p>
 

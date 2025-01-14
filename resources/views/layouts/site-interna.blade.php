@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
+   <meta name="theme-color" content="#556050"> 
 
   <title>Espaço Equilibra Mente - {{ $sala->nome ?? '' }}</title>
 <!-- Open Graph Meta Tags (para Facebook, WhatsApp e outros) -->
