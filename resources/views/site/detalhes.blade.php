@@ -441,7 +441,7 @@ function confirmarReserva() {
         const toggleButton = document.getElementById('toggle-descricao');
 
         // Define o limite de caracteres para exibição inicial
-        const limiteCaracteres = 890; // Ajuste conforme necessário
+        const limiteCaracteres = 300; // Ajuste conforme necessário
 
         // Clona o conteúdo completo e cria a versão curta
         const descricaoOriginal = descricaoCompleta.innerHTML;

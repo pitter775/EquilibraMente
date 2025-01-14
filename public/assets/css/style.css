@@ -517,6 +517,7 @@ h1, h2, h3, h4, h5, h6 {
     height: auto; /* Mantém a proporção da imagem */
     margin-bottom: 20px; /* Adiciona espaço abaixo da imagem */
     padding: 10px;
+    box-shadow: none;
   }
 
   #hero h1, #hero h2 {
