@@ -282,7 +282,7 @@
           <div class="col-lg-4 col-md-6 footer-newsletter" data-aos="fade-up" data-aos-delay="350">
             <h4>Inscreva-se na nossa Newsletter</h4>
             <p>Fique por dentro das nossas ofertas, disponibilidade e Atualizações das salas.</p>
-            <form action="" method="post">
+            <form action="/newsletter" method="post">
               <input type="email" name="email"><input type="submit" value="Inscrever-se">
             </form>
           </div>
@@ -318,6 +318,41 @@
 
   <!-- Template Main JS File -->
   <script src="/assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form[action="/newsletter"]');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            const email = form.querySelector('input[name="email"]').value;
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            fetch('/newsletter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token // Adiciona o token CSRF
+                },
+                body: JSON.stringify({ email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    toastr.success(data.message || 'E-mail cadastrado com sucesso!');
+                    form.reset(); // Limpa o campo do formulário
+                } else {
+                    toastr.error(data.message || 'Ocorreu um erro ao cadastrar o e-mail.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                toastr.error('Erro no servidor. Tente novamente mais tarde.');
+            });
+        });
+    });
+</script>
+
 
 </body>
 

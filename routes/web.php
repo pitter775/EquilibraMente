@@ -16,9 +16,13 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\NewsletterController;
 
 
 
+
+
+// Rota pública para o site
 Route::get('/debug-usuario', function () {
     if (!auth()->check()) {
         return response()->json(['error' => 'Usuário não autenticado.']);
@@ -41,10 +45,9 @@ Route::get('/teste-log', function () {
 Route::get('/politica-privacidade', function () {
     return view('site.politica-privacidade1');
 })->name('privacidade');
-
-// Rota pública para o site
 Route::get('/', [SiteController::class, 'index'])->name('site.index');
 Route::get('/sala/{id}', [SiteController::class, 'detalhes'])->name('site.sala.detalhes');
+Route::post('/newsletter', [NewsletterController::class, 'store'])->name('newsletter.store');
 
 
 // Rota para exibir a página de revisão da reserva (GET)

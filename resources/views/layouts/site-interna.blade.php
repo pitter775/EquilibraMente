@@ -227,6 +227,40 @@
     <script>
         const datatablesLangUrl = "{{ asset('assets/js/datatables-pt-br.json') }}";
     </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form[action="/newsletter"]');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            const email = form.querySelector('input[name="email"]').value;
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            fetch('/newsletter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token // Adiciona o token CSRF
+                },
+                body: JSON.stringify({ email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    toastr.success(data.message || 'E-mail cadastrado com sucesso!');
+                    form.reset(); // Limpa o campo do formulário
+                } else {
+                    toastr.error(data.message || 'Ocorreu um erro ao cadastrar o e-mail.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                toastr.error('Erro no servidor. Tente novamente mais tarde.');
+            });
+        });
+    });
+</script>
 
     @stack('js_page')
 
