@@ -57,7 +57,7 @@
                         <div class="modal-body">  
                             <div class="row">
                                 <div class="col-12">
-                                <h3>Dados iniciais</h3>
+                                <h3 class="mt-2">Dados iniciais</h3>
                                     <div class="form-group">
                                         <label class="form-label" for="nome">Nome</label>
                                         <input type="text" class="form-control" id="nome" placeholder="Nome da Sala" name="nome" required>
@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
-                                        <label class="form-label" for="valor">Valor</label>
+                                        <label class="form-label" for="valor">Valor R$ por hora</label>
                                         <input type="text" class="form-control" id="valor" placeholder="Valor Diaria" name="valor" required>
                                     </div>
                                 </div>

@@ -529,3 +529,27 @@ $(document).on('click', '.btn-delete-imagem', function() {
             }
         });
 });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const inputValor = document.getElementById('valor');
+
+    inputValor.addEventListener('input', function () {
+        let value = inputValor.value;
+
+        // Substitui vírgulas por pontos
+        value = value.replace(/,/g, '.');
+
+        // Remove tudo que não for número ou ponto
+        value = value.replace(/[^0-9.]/g, '');
+
+        // Garante que só exista um ponto decimal
+        const parts = value.split('.');
+        if (parts.length > 2) {
+            value = parts[0] + '.' + parts.slice(1).join('');
+        }
+
+        // Atualiza o campo com o valor limpo
+        inputValor.value = value;
+    });
+});
