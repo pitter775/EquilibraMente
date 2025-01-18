@@ -58,6 +58,17 @@
 
      <!-- Scripts -->
      <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
+
+
+       <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GRG4XXWLH3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GRG4XXWLH3');
+  </script>
 </head>
 <body class="vertical-layout vertical-menu-modern  navbar-sticky footer-static" data-open="click" data-menu="vertical-menu-modern" data-col="">
          
@@ -181,15 +192,7 @@
     <script>
         const datatablesLangUrl = "{{ asset('assets/js/datatables-pt-br.json') }}";
     </script>
-      <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GRG4XXWLH3"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-GRG4XXWLH3');
-  </script>
+    
 </body>
 <!-- END: Body-->
 </html>
