@@ -41,13 +41,13 @@ class SiteController extends Controller
             $sala = Sala::with('imagens')->findOrFail($validated['sala_id']);
             $valorTotal = count($validated['horarios']) * $sala->valor;
     
-            $imagemPrincipal = $sala->imagens->where('principal', true)->first();
+            // $imagemPrincipal = $sala->imagens->where('imagem_base64', true)->first();
     
             session([
                 'reserva' => [
                     'sala_id' => $validated['sala_id'],
                     'sala_nome' => $sala->nome,
-                    'imagem_principal' => $imagemPrincipal ? 'storage/' . $imagemPrincipal->path : 'default.jpg',
+                    // 'imagem_principal' => $imagemPrincipal ? $imagemPrincipal->imagem_base64 : 'default.jpg',
                     'horarios' => $validated['horarios'],
                     'valor_total' => $valorTotal,
                 ],
@@ -67,12 +67,18 @@ class SiteController extends Controller
             return redirect()->route('site.index')->with('error', 'Nenhuma reserva encontrada.');
         }
 
-        $sala = Sala::find($reserva['sala_id']);
+        // $sala = Sala::find($reserva['sala_id']);
+        $sala = Sala::with('imagens')->findOrFail($reserva['sala_id']);
+        $imagemPrincipal = $sala->imagens->where('imagem_base64', true)->first();
+
+
+
 
         return view('site.revisao', [
             'sala' => $sala,
             'horarios' => $reserva['horarios'],
             'valor_total' => $reserva['valor_total'],
+            'imagem_principal' => $imagemPrincipal ? $imagemPrincipal->imagem_base64 : 'default.jpg',
         ]);
     }
 

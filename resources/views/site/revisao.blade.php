@@ -76,7 +76,8 @@ html .content {
                                                     <div class="item-img">
                                                         <a href="{{ route('site.sala.detalhes', session('reserva.sala_id')) }}">
                                                             {{-- Imagem da sala --}}
-                                                            <img src="{{ asset(session('reserva.imagem_principal')) }}" class="d-block w-100 rounded ml-2" alt="{{ session('reserva.sala_nome') }}">
+                                                            {{-- {{dd(session('reserva'))}} --}}
+                                                            <img src="{{ $imagem_principal }}" class="d-block w-100 rounded ml-2" alt="{{ session('reserva.sala_nome') }}">
 
 
                                                         </a>
@@ -182,7 +183,7 @@ html .content {
                                                                 <div class="item-img">
                                                                     <a href="{{ route('site.sala.detalhes', session('reserva.sala_id')) }}">
                                                                         {{-- Imagem da sala --}}
-                                                                        <img src="{{ asset(session('reserva.imagem_principal')) }}" class="d-block w-100 rounded m-2" alt="{{ session('reserva.sala_nome') }}">
+                                                                        <img src="{{ $imagem_principal}}" class="d-block w-100 rounded m-2" alt="{{ session('reserva.sala_nome') }}">
 
 
                                                                     </a>
