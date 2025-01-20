@@ -70,4 +70,8 @@ class AdminDashboardController extends Controller
 
         return view('admin.dashboard', compact('dados'));
     }
+
+    public function analitico(){
+        return view('admin.analitico');    
+    }
 }
