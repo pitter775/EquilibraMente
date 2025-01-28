@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\NewsletterController;
+use App\Models\DebugLog;
+
 
 
 Route::post('/pagbank/callback', [PagBankController::class, 'callback'])->name('pagbank.callback');
@@ -31,12 +33,12 @@ Route::get('/pagamento/erro', function () {
 
 
 Route::get('/debug/logs', function () {
-    return response()->json(\App\Models\DebugLog::latest()->get());
+    return response()->json(DebugLog::latest()->get());
 });
 
 
 Route::get('/debug/clear-logs', function () {
-    \App\Models\DebugLog::truncate();
+    DebugLog::truncate();
     return response('Logs limpos com sucesso!');
 });
 
