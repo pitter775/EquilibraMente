@@ -10,13 +10,16 @@ class PagBankController extends Controller
     public function callback(Request $request)
     {
         $data = $request->all();
-
+    
+        // Identifique a reserva pela referência ou ID da transação
         $transacao = Transacao::where('pagbank_order_id', $data['order_id'])->firstOrFail();
-        $transacao->update([
-            'status' => $data['status'], // Exemplo: PAID, PENDING, FAILED
-            'detalhes' => json_encode($data),
+    
+        // Atualize o status da reserva associada
+        $transacao->reservas()->update([
+            'status' => $data['status'] === 'PAID' ? 'PAGA' : 'CANCELADA',
         ]);
-
+    
         return response()->json(['message' => 'Status atualizado com sucesso.']);
     }
+    
 }

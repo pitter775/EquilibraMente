@@ -19,4 +19,14 @@ class Transacao extends Model
     protected $casts = [
         'detalhes' => 'array', // Para armazenar JSON no banco
     ];
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'usuario_id');
+    }
+
+    public function sala()
+    {
+        return $this->belongsTo(Sala::class, 'sala_id');
+    }
 }

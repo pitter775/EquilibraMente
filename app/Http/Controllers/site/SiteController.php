@@ -117,13 +117,13 @@ class SiteController extends Controller
     public function confirmar(Request $request)
     {
         $reservaData = session('reserva');
-        
+    
         if (!$reservaData) {
             return response()->json(['success' => false, 'message' => 'Reserva inválida.']);
         }
-
+    
         try {
-            // Criar a reserva no banco de dados
+            // Criar as reservas no banco de dados
             $reservasCriadas = [];
             foreach ($reservaData['horarios'] as $horario) {
                 $reserva = Reserva::create([
@@ -132,19 +132,21 @@ class SiteController extends Controller
                     'data_reserva' => $horario['data_reserva'],
                     'hora_inicio' => $horario['hora_inicio'],
                     'hora_fim' => $horario['hora_fim'],
+                    'status' => 'PENDENTE', // Status inicial
                 ]);
                 $reservasCriadas[] = $reserva;
             }
-
-            // Pegando o ID da primeira reserva criada para vincular ao pagamento
-            $primeiraReserva = $reservasCriadas[0];
-
+    
             // Gerar o link de pagamento
-            return $this->gerarLinkPagamento($primeiraReserva->id);
+            $primeiraReserva = $reservasCriadas[0]; // Usar a primeira reserva para gerar o link
+            $response = $this->gerarLinkPagamento($primeiraReserva->id);
+    
+            return $response; // Retorna o redirecionamento para o link do PagSeguro
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Erro ao confirmar a reserva.', 'error' => $e->getMessage()]);
         }
     }
+    
 
     
 
