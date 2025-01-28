@@ -5,7 +5,9 @@ namespace App\Http\Controllers\site;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Reserva;
+use App\Models\Transacao;
 use App\Models\Sala;
+use Illuminate\Support\Facades\Http;
 
 class SiteController extends Controller
 {
@@ -83,7 +85,7 @@ class SiteController extends Controller
     }
 
 
-    public function confirmar(Request $request)
+    public function confirmar2(Request $request)
     {
         $reservaData = session('reserva');
     
@@ -111,6 +113,39 @@ class SiteController extends Controller
             return response()->json(['success' => false, 'message' => 'Erro ao confirmar a reserva.', 'error' => $e->getMessage()]);
         }
     }
+
+    public function confirmar(Request $request)
+    {
+        $reservaData = session('reserva');
+        
+        if (!$reservaData) {
+            return response()->json(['success' => false, 'message' => 'Reserva inválida.']);
+        }
+
+        try {
+            // Criar a reserva no banco de dados
+            $reservasCriadas = [];
+            foreach ($reservaData['horarios'] as $horario) {
+                $reserva = Reserva::create([
+                    'usuario_id' => auth()->id(),
+                    'sala_id' => $reservaData['sala_id'],
+                    'data_reserva' => $horario['data_reserva'],
+                    'hora_inicio' => $horario['hora_inicio'],
+                    'hora_fim' => $horario['hora_fim'],
+                ]);
+                $reservasCriadas[] = $reserva;
+            }
+
+            // Pegando o ID da primeira reserva criada para vincular ao pagamento
+            $primeiraReserva = $reservasCriadas[0];
+
+            // Gerar o link de pagamento
+            return $this->gerarLinkPagamento($primeiraReserva->id);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Erro ao confirmar a reserva.', 'error' => $e->getMessage()]);
+        }
+    }
+
     
 
     public function salvarReserva(Request $request)
@@ -181,6 +216,54 @@ class SiteController extends Controller
             ], 500);
         }
     }
+
+
+
+
+    public function gerarLinkPagamento($reservaId)
+    {
+        $reserva = Reserva::findOrFail($reservaId);
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer SEU_TOKEN_DO_PAGBANK',
+        ])->post('https://sandbox.api.pagseguro.com/orders', [
+            'reference_id' => 'reserva_' . $reserva->id,
+            'items' => [
+                [
+                    'name' => $reserva->sala->nome,
+                    'quantity' => 1,
+                    'unit_amount' => $reserva->sala->valor * 100, // Convertendo para centavos
+                ]
+            ],
+            'charges' => [
+                [
+                    'payment_method' => 'CREDIT_CARD',
+                    'amount' => [
+                        'value' => $reserva->sala->valor * 100,
+                    ],
+                ]
+            ]
+        ]);
+
+        if ($response->successful()) {
+            $data = $response->json();
+            // Salvar na tabela transacoes
+            $transacao = Transacao::create([
+                'usuario_id' => auth()->id(),
+                'sala_id' => $reserva->sala_id,
+                'pagbank_order_id' => $data['id'],
+                'reference_id' => $data['reference_id'],
+                'valor' => $reserva->sala->valor,
+                'status' => 'PENDING',
+                'detalhes' => json_encode($data),
+            ]);
+
+            return redirect($data['links']['checkout']['href']);
+        }
+
+        return response()->json(['error' => 'Erro ao gerar o link de pagamento.'], 500);
+    }
+
     
     
 }

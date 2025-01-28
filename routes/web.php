@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\site\SiteController;
+use App\Http\Controllers\PagBankController;
 use App\Http\Controllers\cliente\ClienteDashboardController;
 use App\Http\Controllers\cliente\ReservaClienteController;
 use App\Http\Controllers\admin\AdminDashboardController;
@@ -18,6 +19,15 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\NewsletterController;
 
+
+Route::post('/pagbank/callback', [PagBankController::class, 'callback'])->name('pagbank.callback');
+Route::get('/pagamento/sucesso', function () {
+    return response()->json(['message' => 'Pagamento realizado com sucesso!']);
+})->name('pagamento.sucesso');
+
+Route::get('/pagamento/erro', function () {
+    return response()->json(['message' => 'Erro no pagamento. Tente novamente.']);
+})->name('pagamento.erro');
 
 
 

@@ -13,12 +13,17 @@ return new class extends Migration
     {
         Schema::create('transacoes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usuario_id')->constrained('users');
-            $table->foreignId('reserva_id')->constrained('reservas'); // Relaciona com a reserva feita
-            $table->string('metodo_pagamento'); // Cartão de crédito, Pix, etc.
-            $table->decimal('valor', 10, 2); // Valor da transação
-            $table->string('status')->default('pendente'); // Status: pendente, pago, cancelado
+            $table->unsignedBigInteger('usuario_id');
+            $table->unsignedBigInteger('sala_id');
+            $table->string('pagbank_order_id')->nullable(); // ID do pedido no PagBank
+            $table->string('reference_id')->nullable(); // ID de referência da transação
+            $table->decimal('valor', 10, 2);
+            $table->string('status')->default('PENDING'); // Status inicial da transação
+            $table->json('detalhes')->nullable(); // Dados completos retornados pelo PagBank
             $table->timestamps();
+    
+            $table->foreign('usuario_id')->references('id')->on('users');
+            $table->foreign('sala_id')->references('id')->on('salas');
         });
         
     }
