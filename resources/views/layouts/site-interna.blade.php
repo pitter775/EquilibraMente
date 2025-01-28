@@ -192,7 +192,7 @@
   <script src="{{ asset('app-assets/vendors/js/extensions/moment.min.js') }}"></script>
   <script src="{{ asset('app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
   <script src="{{ asset('app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/locale/pt-br.min.js"></script>
+  {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/locale/pt-br.min.js"></script> --}}
   
   <script src="../../../app-assets/vendors/js/extensions/toastr.min.js"></script>
 
@@ -202,74 +202,76 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     
     <script>
-        // Aplica a máscara após o carregamento completo do DOM
-        $(document).ready(function() {
-            
-                $('#endereco_cep').mask('00000-000');
-                $('#telefone').mask('(00) 00000-0000');
-            
+      // Aplica a máscara após o carregamento completo do DOM
 
-            // Evento para buscar endereço quando o CEP é preenchido
-            $(document).on('blur', '#endereco_cep', function () {
-                let cep = $(this).val().replace(/\D/g, '');
-
-                if (cep.length === 8) {
-                    $.getJSON(`/api/cep/${cep}`, function (data) {
-                        if (!("erro" in data)) {
-                            $('#endereco_rua').val(data.logradouro);
-                            $('#endereco_bairro').val(data.bairro);
-                            $('#endereco_cidade').val(data.localidade);
-                            $('#endereco_estado').val(data.uf);
-                        } else {
-                            toastr.error("CEP não encontrado.");
-                        }
-                    }).fail(function() {
-                        toastr.error("Erro ao buscar o endereço. Tente novamente.");
-                    });
-                } else {
-                    toastr.warning("CEP inválido. Insira um CEP com 8 dígitos.");
-                }
-            });
-
-        });
-    </script>
-    <script>
+      
+      
+      $(document).ready(function() {
         const datatablesLangUrl = "{{ asset('assets/js/datatables-pt-br.json') }}";
-    </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
         const form = document.querySelector('form[action="/newsletter"]');
+        
+        
+        $('#endereco_cep').mask('00000-000');
+        $('#telefone').mask('(00) 00000-0000');
+        
+
+        // Evento para buscar endereço quando o CEP é preenchido
+        $(document).on('blur', '#endereco_cep', function () {
+            let cep = $(this).val().replace(/\D/g, '');
+
+            if (cep.length === 8) {
+                $.getJSON(`/api/cep/${cep}`, function (data) {
+                    if (!("erro" in data)) {
+                        $('#endereco_rua').val(data.logradouro);
+                        $('#endereco_bairro').val(data.bairro);
+                        $('#endereco_cidade').val(data.localidade);
+                        $('#endereco_estado').val(data.uf);
+                    } else {
+                        toastr.error("CEP não encontrado.");
+                    }
+                }).fail(function() {
+                    toastr.error("Erro ao buscar o endereço. Tente novamente.");
+                });
+            } else {
+                toastr.warning("CEP inválido. Insira um CEP com 8 dígitos.");
+            }
+        });
+
+        /*
 
         form.addEventListener('submit', function (event) {
-            event.preventDefault(); // Impede o envio padrão do formulário
+          event.preventDefault(); // Impede o envio padrão do formulário
 
-            const email = form.querySelector('input[name="email"]').value;
-            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+          const email = form.querySelector('input[name="email"]').value;
+          const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-            fetch('/newsletter', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': token // Adiciona o token CSRF
-                },
-                body: JSON.stringify({ email })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    toastr.success(data.message || 'E-mail cadastrado com sucesso!');
-                    form.reset(); // Limpa o campo do formulário
-                } else {
-                    toastr.error(data.message || 'Ocorreu um erro ao cadastrar o e-mail.');
-                }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                toastr.error('Erro no servidor. Tente novamente mais tarde.');
-            });
+          fetch('/newsletter', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-TOKEN': token // Adiciona o token CSRF
+              },
+              body: JSON.stringify({ email })
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  toastr.success(data.message || 'E-mail cadastrado com sucesso!');
+                  form.reset(); // Limpa o campo do formulário
+              } else {
+                  toastr.error(data.message || 'Ocorreu um erro ao cadastrar o e-mail.');
+              }
+          })
+          .catch(error => {
+              console.error('Erro:', error);
+              toastr.error('Erro no servidor. Tente novamente mais tarde.');
+          });
         });
-    });
-</script>
+        */
+
+      });
+      
+    </script> 
 
 
     @stack('js_page')

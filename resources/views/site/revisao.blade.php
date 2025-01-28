@@ -310,12 +310,13 @@ html .content {
                     height: 14
                 });
             }
-        });
-
-        document.querySelectorAll('input[name="paymentOptions"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.getElementById('metodo_pagamento_input').value = this.value;
+            document.querySelectorAll('input[name="paymentOptions"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    document.getElementById('metodo_pagamento_input').value = this.value;
+                });
             });
         });
+
+       
     </script>
 @endpush
