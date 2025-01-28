@@ -14,35 +14,32 @@ $(function () {
     atualizarDetalhes();
 
     $('#confirmar-reserva').on('click', function () {
-        // Captura a forma de pagamento escolhida
-        var metodoPagamento = $('#metodo_pagamento_input').val(); // O input hidden já tem o valor selecionado
-    
-        // Requisição AJAX para o backend
-        $.ajax({
-            url: '/reserva/confirmar', // Endpoint que processa a reserva
-            method: 'POST',
-            data: {
-                _token: $('meta[name="csrf-token"]').attr('content'), // CSRF Token
-                metodo_pagamento: metodoPagamento // Forma de pagamento
-            },
-            success: function (response) {
-                if (response.redirect) {
-                    // Abre o PagBank em nova aba (ex.: Cartão de Crédito/Débito)
-                    window.open(response.redirect, '_blank');
-                } else if (response.qr_code) {
-                    // Exibe o QR Code do PIX
-                    $('#qrCodeImage').attr('src', response.qr_code); // Adiciona o QR Code ao modal
-                    $('#modalPix').modal('show'); // Exibe o modal com o QR Code
-                } else if (response.error) {
-                    // Mostra mensagens de erro, caso haja
-                    alert('Erro: ' + response.error);
-                }
-            },
-            error: function () {
-                alert('Erro ao processar a reserva. Tente novamente.');
-            }
-        });
-    });
+      // Captura a forma de pagamento escolhida (se necessário no futuro)
+      var metodoPagamento = $('#metodo_pagamento_input').val();
+  
+      // Requisição AJAX para o backend
+      $.ajax({
+          url: '/reserva/confirmar', // Endpoint que processa a reserva
+          method: 'POST',
+          data: {
+              _token: $('meta[name="csrf-token"]').attr('content'),
+              metodo_pagamento: metodoPagamento // Forma de pagamento
+          },
+          success: function (response) {
+              if (response.redirect) {
+                  // Redireciona para o PagBank
+                  window.open(response.redirect, '_blank');
+              } else if (response.error) {
+                  // Mostra mensagens de erro, caso haja
+                  alert('Erro: ' + response.error);
+              }
+          },
+          error: function () {
+              alert('Erro ao processar a reserva. Tente novamente.');
+          }
+      });
+  });
+  
   
   
 
