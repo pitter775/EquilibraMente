@@ -127,6 +127,9 @@ class SiteController extends Controller
         try {
             Log::info('Iniciando confirmação de reserva.', ['reservaData' => $reservaData]);
             DebugLog::create([ 'mensagem' => 'Iniciando confirmação de reserva: ' . json_encode($reservaData),]);
+
+            // Captura a forma de pagamento escolhida pelo usuário
+            $metodoPagamento = $request->input('metodo_pagamento', 'CREDIT_CARD'); // Padrão: Crédito
             
     
             // Criar reservas no banco
@@ -139,6 +142,7 @@ class SiteController extends Controller
                     'hora_inicio' => $horario['hora_inicio'],
                     'hora_fim' => $horario['hora_fim'],
                     'status' => 'PENDENTE',
+                    'forma_pagamento' => $metodoPagamento,
                 ]);
                 $reservasCriadas[] = $reserva;
             }

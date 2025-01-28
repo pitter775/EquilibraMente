@@ -166,46 +166,45 @@ html .content {
                                                         <h4 class="card-title">Opções de Pagamento</h4>
                                                         <p class="card-text text-muted mt-25">Escolha a forma de pagamento desejada</p>
                                                     </div>
-                                                      <hr class="my-2" />
+                                                    <hr class="my-2" />
                                                     <div class="card-body">
+                                                        <!-- Opções de Pagamento -->
                                                         <div class="custom-control custom-radio mb-2">
-                                                            <input type="radio" id="payment-pix" name="paymentOptions" class="custom-control-input" checked />
+                                                            <input type="radio" id="payment-pix" name="paymentOptions" class="custom-control-input" value="PIX" checked />
                                                             <label class="custom-control-label" for="payment-pix">Pix</label>
                                                         </div>
                                                         <div class="custom-control custom-radio">
-                                                            <input type="radio" id="payment-card" name="paymentOptions" class="custom-control-input" />
+                                                            <input type="radio" id="payment-card" name="paymentOptions" class="custom-control-input" value="CREDIT_CARD" />
                                                             <label class="custom-control-label" for="payment-card">Cartão de Crédito ou Débito</label>
                                                         </div>
 
+                                                        <!-- Campo oculto para enviar a forma de pagamento -->
+                                                        <input type="hidden" name="metodo_pagamento" id="metodo_pagamento_input" value="PIX">
+
                                                         <div class="mt-5">
-                                                            
                                                             <div class="card ecommerce-card" style="grid-template-columns: 1fr 3fr !important;">
                                                                 <div class="item-img">
                                                                     <a href="{{ route('site.sala.detalhes', session('reserva.sala_id')) }}">
-                                                                        {{-- Imagem da sala --}}
-                                                                        <img src="{{ $imagem_principal}}" class="d-block w-100 rounded m-2" alt="{{ session('reserva.sala_nome') }}">
-
-
+                                                                        <img src="{{ $imagem_principal }}" class="d-block w-100 rounded m-2" alt="{{ session('reserva.sala_nome') }}">
                                                                     </a>
                                                                 </div>
                                                                 <div class="card-body ml-5">
-                                                                 
-                                                                        <h5 class="mb-0">
-                                                                            <a href="{{ route('site.sala.detalhes', session('reserva.sala_id')) }}" class="text-body">
-                                                                                {{ session('reserva.sala_nome') }}
-                                                                            </a>
-                                                                        </h5>                                                                                  
-                                                             
-                                                                    
-                                                                    {{-- Dados específicos do horário --}}
-                                                                    <span class="delivery-date text-muted"> <i data-feather="calendar"></i> Data da Reserva: {{ date('d/m/Y', strtotime($horario['data_reserva'])) }}</span>
-                                                              
+                                                                    <h5 class="mb-0">
+                                                                        <a href="{{ route('site.sala.detalhes', session('reserva.sala_id')) }}" class="text-body">
+                                                                            {{ session('reserva.sala_nome') }}
+                                                                        </a>
+                                                                    </h5>                                                                                  
+                                                                    <span class="delivery-date text-muted">
+                                                                        <i data-feather="calendar"></i> Data da Reserva: {{ date('d/m/Y', strtotime($horario['data_reserva'])) }}
+                                                                    </span>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <!-- Resumo do Pedido -->
                                             <div class="amount-payable checkout-options">
                                                 <div class="card">
                                                     <div class="card-header">
@@ -217,7 +216,7 @@ html .content {
                                                             <h6 class="price-title">{{ session('reserva.sala_nome') }}</h6>                                      
 
                                                             <ul class="list-unstyled price-details">
-                                                            <li class="price-detail">
+                                                                <li class="price-detail">
                                                                     <div class="detail-title">Valor por hora</div>
                                                                     <div class="detail-amt">R$ {{ number_format(session('reserva.valor_total') / count(session('reserva.horarios')), 2, ',', '.') }}</div>
                                                                 </li>
@@ -225,16 +224,15 @@ html .content {
                                                                     <div class="detail-title">Quantidade de horas</div>
                                                                     <div class="detail-amt discount-amt text-success quantidade-horas">0hs</div>
                                                                 </li>  
-                                                            <hr />
+                                                                <hr />
                                                                 <li class="price-detail">
                                                                     <div class="details-title" style="font-weight: 700">Total</div>
                                                                     <div class="detail-amt valor-total" style="font-weight: 700">
                                                                         <strong>R$00,00</strong>
                                                                     </div>
                                                                 </li>
-                                                            
                                                             </ul>
-                                            
+
                                                             <button id="confirmar-reserva" type="button" class="btn btn-primary btn-block">Confirmar Reserva</button>
                                                         </div>
                                                     </div>
@@ -275,6 +273,22 @@ html .content {
             </div>
 
 
+            <div class="modal fade" id="modalPix" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Pagamento via PIX</h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <p>Escaneie o QR Code abaixo para efetuar o pagamento:</p>
+                            <img id="qrCodeImage" src="" alt="QR Code PIX" style="width: 100%; max-width: 300px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
 
         </div>
     </div>
@@ -296,6 +310,12 @@ html .content {
                     height: 14
                 });
             }
-        })
+        });
+
+        document.querySelectorAll('input[name="paymentOptions"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('metodo_pagamento_input').value = this.value;
+            });
+        });
     </script>
 @endpush
