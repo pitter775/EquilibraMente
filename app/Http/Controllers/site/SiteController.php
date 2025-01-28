@@ -265,7 +265,7 @@ class SiteController extends Controller
                     ]
                 ],
                 'notification_urls' => [
-                    'https://seu-dominio.com/pagbank/callback',
+                    'https://www.espacoequilibramente.com.br/pagbank/callback',
                 ],
             ]);
     
