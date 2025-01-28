@@ -256,7 +256,7 @@ class SiteController extends Controller
                 'pagbank_order_id' => $data['id'],
                 'reference_id' => $data['reference_id'],
                 'valor' => $reserva->sala->valor,
-                'status' => 'PENDING',
+                'status' => Transacao::STATUS_PENDENTE,
                 'detalhes' => json_encode($data),
             ]);
 
