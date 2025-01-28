@@ -472,103 +472,80 @@ class SiteController extends Controller
             throw $e; // Lança a exceção para o método chamador
         }
     }
-
+    // DebugLog::create(['mensagem' => 'Iniciando geração de link de pagamento para a reserva:']);
     public function gerarLinkPagamento($reservaId)
-{
-    try {
-        // Log para debug
-        Log::info('Iniciando teste com dados chapados para geração de link de pagamento.');
-
-        // Dados chapados para teste
-        $payload = [
-            "reference_id" => "ex-00001",
-            "customer" => [
-                "name" => "Jose da Silva",
-                "email" => "email@test.com",
-                "tax_id" => "12345678909",
-                "phones" => [
+    {
+        DebugLog::create(['mensagem' => 'Iniciando geração de link de pagamento para a reserva:']);
+        try {
+            // Dados chapados para teste
+            $payload = [
+                "reference_id" => "ex-00001",
+                "customer" => [
+                    "name" => "Jose da Silva",
+                    "email" => "email@test.com",
+                    "tax_id" => "12345678909",
+                    "phones" => [
+                        [
+                            "country" => "55",
+                            "area" => "11",
+                            "number" => "999999999",
+                            "type" => "MOBILE",
+                        ]
+                    ]
+                ],
+                "items" => [
                     [
-                        "country" => "55",
-                        "area" => "11",
-                        "number" => "999999999",
-                        "type" => "MOBILE",
+                        "reference_id" => "referencia do item",
+                        "name" => "nome do item",
+                        "quantity" => 1,
+                        "unit_amount" => 500,
                     ]
-                ]
-            ],
-            "items" => [
-                [
-                    "reference_id" => "referencia do item",
-                    "name" => "nome do item",
-                    "quantity" => 1,
-                    "unit_amount" => 500,
-                ]
-            ],
-            "qr_codes" => [
-                [
-                    "amount" => [
-                        "value" => 500,
+                ],
+                "qr_codes" => [
+                    [
+                        "amount" => [
+                            "value" => 500,
+                        ]
                     ]
+                ],
+                "notification_urls" => [
+                    "https://meusite.com/notificacoes",
                 ]
-            ],
-            "shipping" => [
-                "address" => [
-                    "street" => "Avenida Brigadeiro Faria Lima",
-                    "number" => "1384",
-                    "complement" => "apto 12",
-                    "locality" => "Pinheiros",
-                    "city" => "São Paulo",
-                    "region_code" => "SP",
-                    "country" => "BRA",
-                    "postal_code" => "01452002",
-                ]
-            ],
-            "billing" => [
-                "address" => [
-                    "street" => "Avenida Brigadeiro Faria Lima",
-                    "number" => "1384",
-                    "complement" => "apto 12",
-                    "locality" => "Pinheiros",
-                    "city" => "São Paulo",
-                    "region_code" => "SP",
-                    "country" => "BRA",
-                    "postal_code" => "01452002",
-                ]
-            ],
-            "notification_urls" => [
-                "https://meusite.com/notificacoes",
-            ]
-        ];
-
-        // Log do payload
-        DebugLog::create(['mensagem' => 'Dados de envio (payload):' . json_encode($payload)]);
-
-        // Enviando a requisição para a API do PagBank
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . env('PAGBANK_TOKEN'),
-            'Content-Type' => 'application/json',
-        ])->post('https://sandbox.api.pagseguro.com/orders', $payload);
-
-        // Verificar a resposta da API
-        if ($response->successful()) {
-            $data = $response->json();
-            Log::info('Link de pagamento gerado com sucesso:', $data);
-            DebugLog::create(['mensagem' => 'Link de pagamento gerado com sucesso:' . json_encode($data)]);
-
-            // Retornar o link de checkout gerado pela API
-            return $data['links']['checkout']['href'];
-        } else {
-            $error = $response->json();
-            Log::error('Erro na resposta da API do PagBank:', $error);
-            DebugLog::create(['mensagem' => 'Erro na resposta da API do PagBank:' . json_encode($error)]);
-
-            throw new \Exception('Erro ao gerar o link de pagamento: ' . json_encode($error));
+            ];
+    
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('PAGBANK_TOKEN'),
+                'Content-Type' => 'application/json',
+            ])->post('https://sandbox.api.pagseguro.com/orders', $payload);
+    
+            if ($response->successful()) {
+                $data = $response->json();
+    
+                // Verificando os dados retornados
+                if (isset($data['links'][0]['href'])) {
+                    $checkoutLink = $data['links'][0]['href'];
+                    DebugLog::create(['mensagem' => 'Link de checkout gerado: ' . $checkoutLink]);
+                    return $checkoutLink;
+                }
+    
+                if (isset($data['qr_codes'][0]['links'][0]['href'])) {
+                    $qrCodeLink = $data['qr_codes'][0]['links'][0]['href'];
+                    DebugLog::create(['mensagem' => 'QR Code gerado: ' . $qrCodeLink]);
+                    return $qrCodeLink;
+                }
+    
+                throw new \Exception('Nenhum link de pagamento disponível na resposta da API.');
+            } else {
+                $error = $response->json();
+                DebugLog::create(['mensagem' => 'Erro na resposta da API do PagBank: ' . json_encode($error)]);
+                throw new \Exception('Erro ao gerar o link de pagamento: ' . json_encode($error));
+            }
+        } catch (\Exception $e) {
+            DebugLog::create(['mensagem' => 'Exceção ao gerar link de pagamento: ' . $e->getMessage()]);
+            throw $e;
         }
-    } catch (\Exception $e) {
-        Log::error('Exceção ao gerar link de pagamento:', ['error' => $e->getMessage()]);
-        DebugLog::create(['mensagem' => 'Exceção ao gerar link de pagamento:' . json_encode($e->getMessage())]);
-        throw $e; // Lança a exceção para o método chamador
     }
-}
+    
 
 
 
