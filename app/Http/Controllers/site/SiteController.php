@@ -288,6 +288,8 @@ class SiteController extends Controller
                     'https://www.espacoequilibramente.com.br/pagbank/callback',
                 ]
             ];
+
+            DebugLog::create(['mensagem' => 'Dados de envio (payload):' . json_encode($payload)]);
     
             // Enviando a requisição para a API do PagBank
             $response = Http::withHeaders([
