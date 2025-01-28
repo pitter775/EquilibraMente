@@ -241,23 +241,25 @@ class SiteController extends Controller
     public function gerarLinkPagamento($reservaId)
     {
         $reserva = Reserva::findOrFail($reservaId);
-        $usuario = auth()->user(); // Obtendo o usuário autenticado
+        $usuario = auth()->user(); // Obtém o usuário autenticado
     
         try {
-            // Log para debug
-            Log::info('Iniciando geração de link de pagamento para a reserva:', ['reserva_id' => $reserva->id]);
+            // Log para debug            
             DebugLog::create(['mensagem' => 'Iniciando geração de link de pagamento para a reserva:' . json_encode($reserva->id)]);
     
-            // Preparando os dados do cliente
+            // Tratando os dados do cliente
+            $telefone = preg_replace('/[^0-9]/', '', $usuario->telefone); // Remove caracteres não numéricos do telefone
+            $cpf = preg_replace('/[^0-9]/', '', $usuario->cpf); // Remove caracteres não numéricos do CPF
+    
             $clienteData = [
                 'name' => $usuario->name,
                 'email' => $usuario->email,
-                'tax_id' => $usuario->cpf, // CPF do usuário
+                'tax_id' => $cpf, // CPF somente com números
                 'phones' => [
                     [
                         'country' => '55', // Código do país (Brasil)
-                        'area' => substr($usuario->telefone, 0, 2), // DDD (primeiros 2 dígitos do telefone)
-                        'number' => substr($usuario->telefone, 2), // Número sem o DDD
+                        'area' => substr($telefone, 0, 2), // DDD (primeiros 2 dígitos do telefone)
+                        'number' => substr($telefone, 2), // Número sem o DDD
                         'type' => 'MOBILE', // Tipo do telefone
                     ]
                 ]
@@ -288,7 +290,8 @@ class SiteController extends Controller
                     'https://www.espacoequilibramente.com.br/pagbank/callback',
                 ]
             ];
-
+    
+            // Log dos dados enviados para debug
             DebugLog::create(['mensagem' => 'Dados de envio (payload):' . json_encode($payload)]);
     
             // Enviando a requisição para a API do PagBank
@@ -300,23 +303,21 @@ class SiteController extends Controller
             // Verificar a resposta da API
             if ($response->successful()) {
                 $data = $response->json();
-                Log::info('Link de pagamento gerado com sucesso:', $data);
                 DebugLog::create(['mensagem' => 'Link de pagamento gerado com sucesso:' . json_encode($data)]);
     
                 return $data['links']['checkout']['href'];
             } else {
                 $error = $response->json();
-                Log::error('Erro na resposta da API do PagBank:', $error);
                 DebugLog::create(['mensagem' => 'Erro na resposta da API do PagBank:' . json_encode($error)]);
     
                 throw new \Exception('Erro ao gerar o link de pagamento: ' . json_encode($error));
             }
         } catch (\Exception $e) {
-            Log::error('Exceção ao gerar link de pagamento:', ['error' => $e->getMessage()]);
             DebugLog::create(['mensagem' => 'Exceção ao gerar link de pagamento:' . json_encode($e->getMessage())]);
             throw $e; // Lança a exceção para o método chamador
         }
     }
+    
     
 
     
