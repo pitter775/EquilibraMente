@@ -15,14 +15,17 @@ $(function () {
 
     $('#confirmar-reserva').on('click', function () {
       $.ajax({
-          url: '/reserva/salvar', // Rota vinculada ao método salvarReserva
+          url: '/reserva/confirmar', // Atualizar para a rota que confirma a reserva e gera o link de pagamento
           method: 'POST',
           data: {
               _token: $('meta[name="csrf-token"]').attr('content') // CSRF Token para segurança
           },
           success: function (response) {
-              if (response.success) {
-                  // Exibe o modal de sucesso
+              if (response.redirect) {
+                  // Redireciona para o link de pagamento do PagBank
+                  window.location.href = response.redirect;
+              } else if (response.success) {
+                  // Exibe o modal de sucesso se não houver redirecionamento
                   $('#modalSucesso').modal('show');
               } else {
                   // Exibe mensagem de erro retornada pela função
@@ -33,7 +36,8 @@ $(function () {
               toastr.error('Erro ao processar a reserva.');
           }
       });
-    });
+  });
+  
 
     // Redireciona para a tela de reservas do cliente ao fechar o modal
     $('#modal-ok-button').on('click', function () {
