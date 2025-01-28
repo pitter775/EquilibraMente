@@ -227,7 +227,7 @@ class SiteController extends Controller
         $reserva = Reserva::findOrFail($reservaId);
 
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer SEU_TOKEN_DO_PAGBANK',
+            'Authorization' => 'Bearer 12a87e0f-1500-4d79-8708-e95ce88a4221f596a8ac4f87ae1316b90f34fd50713b889e-21a9-4514-bdac-4b1378c2f99f',
         ])->post('https://sandbox.api.pagseguro.com/orders', [
             'reference_id' => 'reserva_' . $reserva->id,
             'items' => [
