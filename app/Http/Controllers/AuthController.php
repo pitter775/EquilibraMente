@@ -7,6 +7,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use App\Models\DebugLog;
 
 class AuthController extends Controller
 {
@@ -47,6 +48,10 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'tipo_usuario' => $user->tipo_usuario,
             ]);
+
+            DebugLog::create([
+                'mensagem' => 'Usuário Google - ID: ' . $user->id . ', Email: ' . $user->email . ', Tipo: ' . $user->tipo_usuario,
+            ]);
     
             Auth::login($user);
     
@@ -64,6 +69,9 @@ class AuthController extends Controller
     
         } catch (\Exception $e) {
             \Log::error('Erro no login com Google: ' . $e->getMessage());
+            DebugLog::create([
+                'mensagem' => 'Erro no login com Google: : ' . $e->getMessage(),
+            ]);
             return redirect()->route('site.index')->with('error', 'Falha no login com o Google.');
         }
     }

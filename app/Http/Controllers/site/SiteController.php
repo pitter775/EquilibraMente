@@ -8,6 +8,8 @@ use App\Models\Reserva;
 use App\Models\Transacao;
 use App\Models\Sala;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use App\Models\DebugLog;
 
 class SiteController extends Controller
 {
@@ -119,11 +121,15 @@ class SiteController extends Controller
         $reservaData = session('reserva');
     
         if (!$reservaData) {
-            return response()->json(['success' => false, 'message' => 'Reserva inválida.']);
+            return response()->json(['success' => false, 'message' => 'Dados da reserva inválidos.']);
         }
     
         try {
-            // Criar as reservas no banco de dados
+            Log::info('Iniciando confirmação de reserva.', ['reservaData' => $reservaData]);
+            DebugLog::create([ 'mensagem' => 'Iniciando confirmação de reserva: ' . json_encode($reservaData),]);
+            
+    
+            // Criar reservas no banco
             $reservasCriadas = [];
             foreach ($reservaData['horarios'] as $horario) {
                 $reserva = Reserva::create([
@@ -132,20 +138,26 @@ class SiteController extends Controller
                     'data_reserva' => $horario['data_reserva'],
                     'hora_inicio' => $horario['hora_inicio'],
                     'hora_fim' => $horario['hora_fim'],
-                    'status' => 'PENDENTE', // Status inicial
+                    'status' => 'PENDENTE',
                 ]);
                 $reservasCriadas[] = $reserva;
             }
     
-            // Gerar o link de pagamento
-            $primeiraReserva = $reservasCriadas[0]; // Usar a primeira reserva para gerar o link
-            $response = $this->gerarLinkPagamento($primeiraReserva->id);
+            // Gerar link de pagamento
+            $primeiraReserva = $reservasCriadas[0];
+            Log::info('Chamando geração de link de pagamento.', ['reserva_id' => $primeiraReserva->id]);
+            DebugLog::create([ 'mensagem' => 'Chamando geração de link de pagamento.' . json_encode($primeiraReserva->id),]);
+            
+            $linkPagamento = $this->gerarLinkPagamento($primeiraReserva->id);
     
-            return $response; // Retorna o redirecionamento para o link do PagSeguro
+            return response()->json(['redirect' => $linkPagamento]);
         } catch (\Exception $e) {
+            Log::error('Erro ao confirmar reserva:', ['error' => $e->getMessage()]);
+            DebugLog::create([ 'mensagem' => 'Erro ao confirmar reserva:' . json_encode($e->getMessage()),]);
             return response()->json(['success' => false, 'message' => 'Erro ao confirmar a reserva.', 'error' => $e->getMessage()]);
         }
     }
+    
     
 
     
@@ -225,45 +237,57 @@ class SiteController extends Controller
     public function gerarLinkPagamento($reservaId)
     {
         $reserva = Reserva::findOrFail($reservaId);
+    
+        try {
+            // Log para debug
+            Log::info('Iniciando geração de link de pagamento para a reserva:', ['reserva_id' => $reserva->id]);
+            DebugLog::create([ 'mensagem' => 'Iniciando geração de link de pagamento para a reserva:' . json_encode($reserva->id),]);
 
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer 12a87e0f-1500-4d79-8708-e95ce88a4221f596a8ac4f87ae1316b90f34fd50713b889e-21a9-4514-bdac-4b1378c2f99f',
-        ])->post('https://sandbox.api.pagseguro.com/orders', [
-            'reference_id' => 'reserva_' . $reserva->id,
-            'items' => [
-                [
-                    'name' => $reserva->sala->nome,
-                    'quantity' => 1,
-                    'unit_amount' => $reserva->sala->valor * 100, // Convertendo para centavos
-                ]
-            ],
-            'charges' => [
-                [
-                    'payment_method' => 'CREDIT_CARD',
-                    'amount' => [
-                        'value' => $reserva->sala->valor * 100,
-                    ],
-                ]
-            ]
-        ]);
-
-        if ($response->successful()) {
-            $data = $response->json();
-            // Salvar na tabela transacoes
-            $transacao = Transacao::create([
-                'usuario_id' => auth()->id(),
-                'sala_id' => $reserva->sala_id,
-                'pagbank_order_id' => $data['id'],
-                'reference_id' => $data['reference_id'],
-                'valor' => $reserva->sala->valor,
-                'status' => Transacao::STATUS_PENDENTE,
-                'detalhes' => json_encode($data),
+            
+    
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('PAGBANK_TOKEN'),
+            ])->post('https://sandbox.api.pagseguro.com/orders', [
+                'reference_id' => 'reserva_' . $reserva->id,
+                'items' => [
+                    [
+                        'name' => $reserva->sala->nome,
+                        'quantity' => 1,
+                        'unit_amount' => $reserva->sala->valor * 100, // Convertendo para centavos
+                    ]
+                ],
+                'charges' => [
+                    [
+                        'payment_method' => 'CREDIT_CARD',
+                        'amount' => [
+                            'value' => $reserva->sala->valor * 100,
+                        ],
+                    ]
+                ],
+                'notification_urls' => [
+                    'https://seu-dominio.com/pagbank/callback',
+                ],
             ]);
-
-            return redirect($data['links']['checkout']['href']);
+    
+            // Verificar a resposta da API
+            if ($response->successful()) {
+                $data = $response->json();
+                Log::info('Link de pagamento gerado com sucesso:', $data);
+                DebugLog::create([ 'mensagem' => 'Link de pagamento gerado com sucesso:' . json_encode($data),]);
+    
+                return $data['links']['checkout']['href'];
+            } else {
+                $error = $response->json();
+                Log::error('Erro na resposta da API do PagBank:', $error);
+                DebugLog::create([ 'mensagem' => 'Erro na resposta da API do PagBank:' . json_encode($error),]);
+    
+                throw new \Exception('Erro ao gerar o link de pagamento: ' . json_encode($error));
+            }
+        } catch (\Exception $e) {
+            Log::error('Exceção ao gerar link de pagamento:', ['error' => $e->getMessage()]);
+            DebugLog::create([ 'mensagem' => 'Exceção ao gerar link de pagamento:' . json_encode($e->getMessage()),]);
+            throw $e; // Lança a exceção para o método chamador
         }
-
-        return response()->json(['error' => 'Erro ao gerar o link de pagamento.'], 500);
     }
 
     

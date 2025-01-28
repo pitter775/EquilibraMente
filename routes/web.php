@@ -30,6 +30,15 @@ Route::get('/pagamento/erro', function () {
 })->name('pagamento.erro');
 
 
+Route::get('/debug/logs', function () {
+    return response()->json(\App\Models\DebugLog::latest()->get());
+});
+
+
+Route::get('/debug/clear-logs', function () {
+    \App\Models\DebugLog::truncate();
+    return response('Logs limpos com sucesso!');
+});
 
 
 // Rota pública para o site
