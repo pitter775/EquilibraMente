@@ -435,25 +435,12 @@ class SiteController extends Controller
             $payload = [
                 'reference_id' => 'reserva_' . $reserva->id,
                 'customer' => $clienteData,
-                'items' => [
-                    [
-                        'name' => $reserva->sala->nome,
-                        'quantity' => 1,
-                        'unit_amount' => $reserva->sala->valor * 100,
-                    ]
+                'description' => 'Pagamento da reserva ' . $reserva->id,
+                'amount' => [
+                    'value' => $reserva->sala->valor * 100,
+                    'currency' => 'BRL'
                 ],
-                'charges' => [
-                    [
-                        'amount' => [
-                            'value' => $reserva->sala->valor * 100,
-                            'currency' => 'BRL',
-                        ],
-                        "payment_method" => [
-                            "type" => "CREDIT_CARD",
-                            "capture" => true
-                        ]
-                    ]
-                ],
+                'expiration_date' => date('Y-m-d\TH:i:s\Z', strtotime('+1 day')), // Expira em 24h
                 'notification_urls' => [
                     'https://www.espacoequilibramente.com.br/pagbank/callback',
                 ]
@@ -464,20 +451,16 @@ class SiteController extends Controller
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . env('PAGBANK_TOKEN'),
                 'Content-Type' => 'application/json',
-            ])->post('https://sandbox.api.pagseguro.com/orders', $payload);
+            ])->post('https://sandbox.api.pagseguro.com/payment-links', $payload);
     
             if ($response->successful()) {
                 $data = $response->json();
                 Log::info('Link de pagamento gerado com sucesso:', $data);
                 DebugLog::create(['mensagem' => 'Link de pagamento gerado com sucesso:' . json_encode($data)]);
     
-                // Buscar o link correto de pagamento
-                if (isset($data['links']) && is_array($data['links'])) {
-                    foreach ($data['links'] as $link) {
-                        if ($link['rel'] === 'CHECKOUT') {
-                            return response()->json(['redirect' => $link['href']]); // Retorna o link correto
-                        }
-                    }
+                // Retorna o link de pagamento gerado pelo PagBank
+                if (isset($data['links']['checkout'])) {
+                    return response()->json(['redirect' => $data['links']['checkout']]); // Link correto
                 }
     
                 throw new \Exception('Nenhum link de pagamento encontrado na resposta do PagBank.');
@@ -494,6 +477,8 @@ class SiteController extends Controller
             return response()->json(['error' => 'Erro ao gerar link de pagamento.'], 500);
         }
     }
+    
+    
     
     
 
