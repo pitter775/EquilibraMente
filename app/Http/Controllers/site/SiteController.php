@@ -408,88 +408,91 @@ class SiteController extends Controller
     }
 
     public function gerarLinkPagamento($reservaId)
-{
-    $reserva = Reserva::findOrFail($reservaId);
-    $usuario = auth()->user();
-
-    try {
-        DebugLog::create(['mensagem' => 'Iniciando geração de link de pagamento para a reserva:' . $reserva->id]);
-
-        $telefone = preg_replace('/[^0-9]/', '', $usuario->telefone);
-        $cpf = preg_replace('/[^0-9]/', '', $usuario->cpf);
-
-        $clienteData = [
-            'name' => $usuario->name,
-            'email' => $usuario->email,
-            'tax_id' => $cpf,
-            'phones' => [
-                [
-                    'country' => '55',
-                    'area' => substr($telefone, 0, 2),
-                    'number' => substr($telefone, 2),
-                    'type' => 'MOBILE',
-                ]
-            ]
-        ];
-
-        $payload = [
-            'reference_id' => 'reserva_' . $reserva->id,
-            'customer' => $clienteData,
-            'items' => [
-                [
-                    'name' => $reserva->sala->nome,
-                    'quantity' => 1,
-                    'unit_amount' => $reserva->sala->valor * 100,
-                ]
-            ],
-            'charges' => [
-                [
-                    'amount' => [
-                        'value' => $reserva->sala->valor * 100,
-                        'currency' => 'BRL',
+    {
+        $reserva = Reserva::findOrFail($reservaId);
+        $usuario = auth()->user();
+    
+        try {
+            DebugLog::create(['mensagem' => 'Iniciando geração de link de pagamento para a reserva:' . $reserva->id]);
+    
+            $telefone = preg_replace('/[^0-9]/', '', $usuario->telefone);
+            $cpf = preg_replace('/[^0-9]/', '', $usuario->cpf);
+    
+            $clienteData = [
+                'name' => $usuario->name,
+                'email' => $usuario->email,
+                'tax_id' => $cpf,
+                'phones' => [
+                    [
+                        'country' => '55',
+                        'area' => substr($telefone, 0, 2),
+                        'number' => substr($telefone, 2),
+                        'type' => 'MOBILE',
                     ]
                 ]
-            ],
-            'notification_urls' => [
-                'https://www.espacoequilibramente.com.br/pagbank/callback',
-            ]
-        ];
-
-        DebugLog::create(['mensagem' => 'Dados de envio (payload):' . json_encode($payload)]);
-
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . env('PAGBANK_TOKEN'),
-            'Content-Type' => 'application/json',
-        ])->post('https://sandbox.api.pagseguro.com/orders', $payload);
-
-        if ($response->successful()) {
-            $data = $response->json();
-            Log::info('Link de pagamento gerado com sucesso:', $data);
-            DebugLog::create(['mensagem' => 'Link de pagamento gerado com sucesso:' . json_encode($data)]);
-
-            // Buscar o link correto de pagamento
-            if (isset($data['links']) && is_array($data['links'])) {
-                foreach ($data['links'] as $link) {
-                    if ($link['rel'] === 'CHECKOUT') {
-                        return response()->json(['redirect' => $link['href']]); // Retorna o link correto
+            ];
+    
+            // Criando o payload correto
+            $payload = [
+                'reference_id' => 'reserva_' . $reserva->id,
+                'customer' => $clienteData,
+                'items' => [
+                    [
+                        'name' => $reserva->sala->nome,
+                        'quantity' => 1,
+                        'unit_amount' => $reserva->sala->valor * 100,
+                    ]
+                ],
+                'charges' => [
+                    [
+                        'amount' => [
+                            'value' => $reserva->sala->valor * 100,
+                            'currency' => 'BRL',
+                        ]
+                    ]
+                ],
+                'notification_urls' => [
+                    'https://www.espacoequilibramente.com.br/pagbank/callback',
+                ]
+            ];
+    
+            DebugLog::create(['mensagem' => 'Dados de envio (payload):' . json_encode($payload)]);
+    
+            // Chamando o PagBank para gerar um link de pagamento
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . env('PAGBANK_TOKEN'),
+                'Content-Type' => 'application/json',
+            ])->post('https://sandbox.api.pagseguro.com/orders', $payload);
+    
+            if ($response->successful()) {
+                $data = $response->json();
+                Log::info('Link de pagamento gerado com sucesso:', $data);
+                DebugLog::create(['mensagem' => 'Link de pagamento gerado com sucesso:' . json_encode($data)]);
+    
+                // Buscar o link correto de pagamento no retorno da API
+                if (isset($data['links']) && is_array($data['links'])) {
+                    foreach ($data['links'] as $link) {
+                        if ($link['rel'] === 'CHECKOUT') {
+                            return response()->json(['redirect' => $link['href']]); // Retorna o link correto para abrir no navegador
+                        }
                     }
                 }
+    
+                throw new \Exception('Nenhum link de pagamento encontrado na resposta do PagBank.');
+            } else {
+                $error = $response->json();
+                Log::error('Erro na resposta da API do PagBank:', $error);
+                DebugLog::create(['mensagem' => 'Erro na resposta da API do PagBank:' . json_encode($error)]);
+    
+                throw new \Exception('Erro ao gerar o link de pagamento: ' . json_encode($error));
             }
-
-            throw new \Exception('Nenhum link de pagamento encontrado na resposta do PagBank.');
-        } else {
-            $error = $response->json();
-            Log::error('Erro na resposta da API do PagBank:', $error);
-            DebugLog::create(['mensagem' => 'Erro na resposta da API do PagBank:' . json_encode($error)]);
-
-            throw new \Exception('Erro ao gerar o link de pagamento: ' . json_encode($error));
+        } catch (\Exception $e) {
+            Log::error('Exceção ao gerar link de pagamento:', ['error' => $e->getMessage()]);
+            DebugLog::create(['mensagem' => 'Exceção ao gerar link de pagamento:' . json_encode($e->getMessage())]);
+            return response()->json(['error' => 'Erro ao gerar link de pagamento.'], 500);
         }
-    } catch (\Exception $e) {
-        Log::error('Exceção ao gerar link de pagamento:', ['error' => $e->getMessage()]);
-        DebugLog::create(['mensagem' => 'Exceção ao gerar link de pagamento:' . json_encode($e->getMessage())]);
-        return response()->json(['error' => 'Erro ao gerar link de pagamento.'], 500);
     }
-}
+    
 
 
     
