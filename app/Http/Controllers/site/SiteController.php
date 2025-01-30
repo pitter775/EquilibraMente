@@ -432,7 +432,6 @@ class SiteController extends Controller
                 ]
             ];
     
-            // Criando o payload correto
             $payload = [
                 'reference_id' => 'reserva_' . $reserva->id,
                 'customer' => $clienteData,
@@ -448,6 +447,10 @@ class SiteController extends Controller
                         'amount' => [
                             'value' => $reserva->sala->valor * 100,
                             'currency' => 'BRL',
+                        ],
+                        "payment_method" => [
+                            "type" => "CREDIT_CARD",
+                            "capture" => true
                         ]
                     ]
                 ],
@@ -458,7 +461,6 @@ class SiteController extends Controller
     
             DebugLog::create(['mensagem' => 'Dados de envio (payload):' . json_encode($payload)]);
     
-            // Chamando o PagBank para gerar um link de pagamento
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . env('PAGBANK_TOKEN'),
                 'Content-Type' => 'application/json',
@@ -469,11 +471,11 @@ class SiteController extends Controller
                 Log::info('Link de pagamento gerado com sucesso:', $data);
                 DebugLog::create(['mensagem' => 'Link de pagamento gerado com sucesso:' . json_encode($data)]);
     
-                // Buscar o link correto de pagamento no retorno da API
+                // Buscar o link correto de pagamento
                 if (isset($data['links']) && is_array($data['links'])) {
                     foreach ($data['links'] as $link) {
                         if ($link['rel'] === 'CHECKOUT') {
-                            return response()->json(['redirect' => $link['href']]); // Retorna o link correto para abrir no navegador
+                            return response()->json(['redirect' => $link['href']]); // Retorna o link correto
                         }
                     }
                 }
@@ -493,7 +495,6 @@ class SiteController extends Controller
         }
     }
     
-
-
     
+
 }
