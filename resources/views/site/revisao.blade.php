@@ -233,7 +233,7 @@ html .content {
                                                                 </li>
                                                             </ul>
 
-                                                            <button id="confirmar-reserva" data-reserva-id="{{ $reserva->id ?? '' }}">Confirmar Reserva</button>
+                                                            <button id="confirmar-reserva" data-reserva-id="{{ session('reserva.id') ?? '' }}">Confirmar Reserva</button>
 
                                                         </div>
                                                     </div>
