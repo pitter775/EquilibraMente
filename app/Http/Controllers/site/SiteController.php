@@ -116,13 +116,10 @@ class SiteController extends Controller
     
         try {
             Log::info('Iniciando confirmação de reserva.', ['reservaData' => $reservaData]);
-            DebugLog::create([ 'mensagem' => 'Iniciando confirmação de reserva: ' . json_encode($reservaData),]);
-
-            // Captura a forma de pagamento escolhida pelo usuário
-            $metodoPagamento = $request->input('metodo_pagamento', 'CREDIT_CARD'); // Padrão: Crédito
-            
+            DebugLog::create(['mensagem' => 'Iniciando confirmação de reserva: ' . json_encode($reservaData)]);
     
-            // Criar reservas no banco
+            $metodoPagamento = $request->input('metodo_pagamento', 'CREDIT_CARD');
+    
             $reservasCriadas = [];
             foreach ($reservaData['horarios'] as $horario) {
                 $reserva = Reserva::create([
@@ -137,20 +134,25 @@ class SiteController extends Controller
                 $reservasCriadas[] = $reserva;
             }
     
-            // Gerar link de pagamento
             $primeiraReserva = $reservasCriadas[0];
+            session(['reserva_id' => $primeiraReserva->id]); // Armazena na sessão
+    
             Log::info('Chamando geração de link de pagamento.', ['reserva_id' => $primeiraReserva->id]);
-            DebugLog::create([ 'mensagem' => 'Chamando geração de link de pagamento.' . json_encode($primeiraReserva->id),]);
-            
+            DebugLog::create(['mensagem' => 'Chamando geração de link de pagamento.' . json_encode($primeiraReserva->id)]);
+    
             $linkPagamento = $this->gerarLinkPagamento($primeiraReserva->id);
     
-            return response()->json(['redirect' => $linkPagamento]);
+            return response()->json([
+                'redirect' => $linkPagamento,
+                'reserva_id' => $primeiraReserva->id
+            ]);
         } catch (\Exception $e) {
             Log::error('Erro ao confirmar reserva:', ['error' => $e->getMessage()]);
-            DebugLog::create([ 'mensagem' => 'Erro ao confirmar reserva:' . json_encode($e->getMessage()),]);
+            DebugLog::create(['mensagem' => 'Erro ao confirmar reserva:' . json_encode($e->getMessage())]);
             return response()->json(['success' => false, 'message' => 'Erro ao confirmar a reserva.', 'error' => $e->getMessage()]);
         }
     }
+    
     
     public function salvarReserva(Request $request)
     {

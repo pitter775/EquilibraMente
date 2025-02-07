@@ -233,7 +233,8 @@ html .content {
                                                                 </li>
                                                             </ul>
 
-                                                            <button id="confirmar-reserva" type="button" class="btn btn-primary btn-block">Confirmar Reserva</button>
+                                                            <button id="confirmar-reserva" data-reserva-id="{{ $reserva->id ?? '' }}">Confirmar Reserva</button>
+
                                                         </div>
                                                     </div>
                                                 </div>
