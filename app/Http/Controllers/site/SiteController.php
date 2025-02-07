@@ -267,6 +267,7 @@ class SiteController extends Controller
                 'name' => $usuario->name,
                 'email' => $usuario->email,
                 'tax_id' => $cpf,
+                'phone' => "55{$telefone}", // Adicionando telefone fora do array
                 'phones' => [
                     [
                         'country' => '55',
