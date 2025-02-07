@@ -35,15 +35,20 @@ $(function () {
           success: function (response) {
             console.log("Resposta do servidor (bruta):", response);
         
-            if (response.error) {
-                alert('Erro: ' + response.error);
-            } else if (typeof response.redirect === "string" && response.redirect.startsWith("http")) {
-                console.log("Abrindo link correto:", response.redirect.trim());
+            let redirectUrl = response.redirect;
+            
+            // Se a resposta estiver dentro de "original", buscar a URL correta
+            if (typeof response.original === "object" && response.original.redirect) {
+                redirectUrl = response.original.redirect;
+            }
+        
+            if (typeof redirectUrl === "string" && redirectUrl.startsWith("http")) {
+                console.log("Abrindo link correto:", redirectUrl.trim());
                 setTimeout(() => {
-                    window.open(response.redirect.trim(), '_blank'); // Abre a aba corretamente
+                    window.open(redirectUrl.trim(), '_blank'); // Abre a aba corretamente
                 }, 500);
             } else {
-                console.error("Erro: Link de pagamento inválido.", response.redirect);
+                console.error("Erro: Link de pagamento inválido.", redirectUrl);
                 alert('Erro inesperado. Tente novamente.');
             }
         },

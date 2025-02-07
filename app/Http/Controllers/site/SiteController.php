@@ -154,8 +154,9 @@ class SiteController extends Controller
             DebugLog::create(['mensagem' => 'Link de pagamento enviado ao frontend: ' . json_encode($linkPagamento)]);
 
             return response()->json([
-                'redirect' => json_decode($linkPagamento, true)['redirect'] ?? $linkPagamento
-            ], 200, ['Content-Type' => 'application/json']);
+                'redirect' => isset($linkPagamento['redirect']) ? $linkPagamento['redirect'] : $linkPagamento
+            ]);
+            
             
         } catch (\Exception $e) {
         
