@@ -152,7 +152,7 @@ class SiteController extends Controller
             $linkPagamento = $this->gerarLinkPagamento($primeiraReserva->id);
     
             return response()->json([
-                'redirect' => $linkPagamento
+                'redirect' => (string) $linkPagamento // Garante que o retorno seja sempre uma string
             ]);
         } catch (\Exception $e) {
             Log::error('Erro ao confirmar reserva:', ['error' => $e->getMessage()]);
