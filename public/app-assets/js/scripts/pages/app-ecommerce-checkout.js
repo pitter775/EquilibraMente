@@ -33,20 +33,20 @@ $(function () {
               metodo_pagamento: metodoPagamento
           },
           success: function (response) {
-              console.log("Resposta do servidor (bruta):", response);
-          
-              if (response.error) {
-                  alert('Erro: ' + response.error);
-              } else if (typeof response.redirect === "string" && response.redirect.startsWith("http")) {
-                  console.log("Abrindo link correto:", response.redirect);
-                  setTimeout(() => {
-                      window.open(response.redirect.trim(), '_blank'); // Abre a aba corretamente
-                  }, 500);
-              } else {
-                  console.error("Erro: Link de pagamento inválido.", response.redirect);
-                  alert('Erro inesperado. Tente novamente.');
-              }
-          },
+            console.log("Resposta do servidor (bruta):", response);
+        
+            if (response.error) {
+                alert('Erro: ' + response.error);
+            } else if (typeof response.redirect === "string" && response.redirect.startsWith("http")) {
+                console.log("Abrindo link correto:", response.redirect.trim());
+                setTimeout(() => {
+                    window.open(response.redirect.trim(), '_blank'); // Abre a aba corretamente
+                }, 500);
+            } else {
+                console.error("Erro: Link de pagamento inválido.", response.redirect);
+                alert('Erro inesperado. Tente novamente.');
+            }
+        },
           error: function (xhr) {
               console.error("Erro na requisição AJAX:", xhr.responseText);
               alert('Erro ao processar a reserva: ' + xhr.responseText);

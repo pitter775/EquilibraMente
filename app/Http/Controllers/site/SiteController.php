@@ -146,16 +146,19 @@ class SiteController extends Controller
             $primeiraReserva = $reservasCriadas[0];
             session(['reserva_id' => $primeiraReserva->id]); // Mantém o ID da reserva na sessão
     
-            Log::info('Chamando geração de link de pagamento.', ['reserva_id' => $primeiraReserva->id]);
+           
             DebugLog::create(['mensagem' => 'Chamando geração de link de pagamento. ' . json_encode($primeiraReserva->id)]);
     
             $linkPagamento = $this->gerarLinkPagamento($primeiraReserva->id);
-    
+
+            DebugLog::create(['mensagem' => 'Link de pagamento enviado ao frontend: ' . json_encode($linkPagamento)]);
+
             return response()->json([
-                'redirect' => trim($linkPagamento) // Garante que retorna apenas a URL sem caracteres extras
+                'redirect' => json_decode($linkPagamento, true)['redirect'] ?? $linkPagamento
             ], 200, ['Content-Type' => 'application/json']);
+            
         } catch (\Exception $e) {
-            Log::error('Erro ao confirmar reserva:', ['error' => $e->getMessage()]);
+        
             DebugLog::create(['mensagem' => 'Erro ao confirmar reserva:' . json_encode($e->getMessage())]);
             return response()->json(['success' => false, 'message' => 'Erro ao confirmar a reserva.', 'error' => $e->getMessage()]);
         }
