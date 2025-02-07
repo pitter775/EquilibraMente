@@ -26,7 +26,7 @@ $(function () {
       var metodoPagamento = $('#metodo_pagamento_input').val();
     
       $.ajax({
-          url: '/reserva/confirmar', // Chama o backend, que já sabe a reservaId
+          url: '/reserva/confirmar',
           method: 'POST',
           data: {
               _token: $('meta[name="csrf-token"]').attr('content'),
@@ -34,10 +34,13 @@ $(function () {
           },
           success: function (response) {
               console.log("Resposta do servidor:", response);
+    
               if (response.error) {
                   alert('Erro: ' + response.error);
               } else if (response.redirect) {
-                  window.open(response.redirect, '_blank'); // Abre o link de pagamento
+                  setTimeout(() => {
+                      window.open(response.redirect, '_blank'); // Aguarda antes de abrir o link
+                  }, 500); 
               } else {
                   alert('Erro inesperado. Tente novamente.');
               }

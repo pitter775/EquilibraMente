@@ -114,15 +114,6 @@ class SiteController extends Controller
             return response()->json(['success' => false, 'message' => 'Dados da reserva inválidos.']);
         }
     
-        // Atualizar valor total para garantir que está correto
-        $valorTotalCorrigido = 0;
-        foreach ($reservaData['horarios'] as $horario) {
-            $sala = Sala::find($reservaData['sala_id']);
-            $valorTotalCorrigido += $sala->valor;
-        }
-        
-        session(['reserva.valor_total' => $valorTotalCorrigido]);
-    
         try {
             Log::info('Iniciando confirmação de reserva.', ['reservaData' => $reservaData]);
             DebugLog::create(['mensagem' => 'Iniciando confirmação de reserva: ' . json_encode($reservaData)]);
@@ -144,15 +135,16 @@ class SiteController extends Controller
             }
     
             $primeiraReserva = $reservasCriadas[0];
-            session(['reserva_id' => $primeiraReserva->id]); // Mantém o ID da reserva na sessão
+            session(['reserva_id' => $primeiraReserva->id]); // Armazena na sessão
     
             Log::info('Chamando geração de link de pagamento.', ['reserva_id' => $primeiraReserva->id]);
-            DebugLog::create(['mensagem' => 'Chamando geração de link de pagamento. ' . json_encode($primeiraReserva->id)]);
+            DebugLog::create(['mensagem' => 'Chamando geração de link de pagamento.' . json_encode($primeiraReserva->id)]);
     
             $linkPagamento = $this->gerarLinkPagamento($primeiraReserva->id);
     
             return response()->json([
-                'redirect' => $linkPagamento
+                'redirect' => $linkPagamento,
+                'reserva_id' => $primeiraReserva->id
             ]);
         } catch (\Exception $e) {
             Log::error('Erro ao confirmar reserva:', ['error' => $e->getMessage()]);
