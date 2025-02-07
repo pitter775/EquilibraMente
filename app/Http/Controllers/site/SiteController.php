@@ -261,10 +261,18 @@ class SiteController extends Controller
                 'customer' => $clienteData,
                 'description' => 'Pagamento da reserva ' . $reserva->id,
                 'amount' => [
-                    'value' => (int) ($reserva->sala->valor * 100), // Ajuste para centavos
+                    'value' => (int) ($reserva->sala->valor * 100),
                     'currency' => 'BRL'
                 ],
-                'expiration_date' => now()->addDay()->toIso8601String(), // Expira em 24h
+                'items' => [
+                    [
+                        'reference_id' => 'reserva_item_' . $reserva->id,
+                        'name' => 'Reserva Sala ' . $reserva->sala->nome,
+                        'quantity' => 1,
+                        'unit_amount' => (int) ($reserva->sala->valor * 100),
+                    ]
+                ],
+                'expiration_date' => now()->addDay()->toIso8601String(),
                 'payment_methods' => [
                     ["type" => "credit_card"],
                     ["type" => "PIX"],
@@ -274,6 +282,7 @@ class SiteController extends Controller
                     'https://www.espacoequilibramente.com.br/pagbank/callback',
                 ]
             ];
+            
     
             DebugLog::create(['mensagem' => 'Dados de envio (payload):' . json_encode($payload)]);
     
