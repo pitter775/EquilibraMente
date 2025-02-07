@@ -114,6 +114,15 @@ class SiteController extends Controller
             return response()->json(['success' => false, 'message' => 'Dados da reserva inválidos.']);
         }
     
+        // Atualizar valor total para garantir que está correto
+        $valorTotalCorrigido = 0;
+        foreach ($reservaData['horarios'] as $horario) {
+            $sala = Sala::find($reservaData['sala_id']);
+            $valorTotalCorrigido += $sala->valor;
+        }
+        
+        session(['reserva.valor_total' => $valorTotalCorrigido]);
+    
         try {
             Log::info('Iniciando confirmação de reserva.', ['reservaData' => $reservaData]);
             DebugLog::create(['mensagem' => 'Iniciando confirmação de reserva: ' . json_encode($reservaData)]);
@@ -135,19 +144,33 @@ class SiteController extends Controller
             }
     
             $primeiraReserva = $reservasCriadas[0];
-            session(['reserva_id' => $primeiraReserva->id]); // Armazena na sessão
+            session(['reserva_id' => $primeiraReserva->id]); // Mantém o ID da reserva na sessão
     
-            Log::info('Chamando geração de link de pagamento.', ['reserva_id' => $primeiraReserva->id]);
-            DebugLog::create(['mensagem' => 'Chamando geração de link de pagamento.' . json_encode($primeiraReserva->id)]);
+           
+            DebugLog::create(['mensagem' => 'Chamando geração de link de pagamento. ' . json_encode($primeiraReserva->id)]);
     
             $linkPagamento = $this->gerarLinkPagamento($primeiraReserva->id);
-    
+
+            DebugLog::create(['mensagem' => 'Link de pagamento linkPagamento: ' . json_encode($linkPagamento)]);
+
+            // Se já for um JSONResponse, decodificar corretamente
+            $linkPagamento = $linkPagamento instanceof \Illuminate\Http\JsonResponse 
+            ? json_decode($linkPagamento->getContent(), true) 
+            : $linkPagamento;
+
+            // Extrai corretamente a URL do link de pagamento
+            $checkoutUrl = $linkPagamento['redirect'] ?? $linkPagamento;
+
+            DebugLog::create(['mensagem' => 'Link de pagamento checkoutUrl: ' . json_encode($linkPagamento)]);
+
+            // Retorna apenas a URL correta
             return response()->json([
-                'redirect' => $linkPagamento,
-                'reserva_id' => $primeiraReserva->id
-            ]);
+            'redirect' => $checkoutUrl
+            ], 200, ['Content-Type' => 'application/json']);
+            
+            
         } catch (\Exception $e) {
-            Log::error('Erro ao confirmar reserva:', ['error' => $e->getMessage()]);
+        
             DebugLog::create(['mensagem' => 'Erro ao confirmar reserva:' . json_encode($e->getMessage())]);
             return response()->json(['success' => false, 'message' => 'Erro ao confirmar a reserva.', 'error' => $e->getMessage()]);
         }

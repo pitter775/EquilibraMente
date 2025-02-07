@@ -257,6 +257,12 @@ class SiteController extends Controller
             $telefone = preg_replace('/[^0-9]/', '', $usuario->telefone);
             $cpf = preg_replace('/[^0-9]/', '', $usuario->cpf);
     
+            // Buscar endereço do usuário
+            $endereco = $usuario->endereco;
+            if (!$endereco) {
+                throw new \Exception("O cliente não possui um endereço cadastrado.");
+            }
+    
             $clienteData = [
                 'name' => $usuario->name,
                 'email' => $usuario->email,
@@ -268,6 +274,16 @@ class SiteController extends Controller
                         'number' => substr($telefone, 2),
                         'type' => 'MOBILE',
                     ]
+                ],
+                'address' => [
+                    'street' => $endereco->rua,
+                    'number' => $endereco->numero,
+                    'complement' => $endereco->complemento ?? "",
+                    'district' => $endereco->bairro,
+                    'city' => $endereco->cidade,
+                    'state' => $endereco->estado,
+                    'country' => 'BRA',
+                    'postal_code' => $endereco->cep
                 ]
             ];
     
@@ -290,14 +306,12 @@ class SiteController extends Controller
                 'expiration_date' => now()->addDay()->toIso8601String(),
                 'payment_methods' => [
                     ["type" => "credit_card"],
-                    ["type" => "PIX"],
-                    ["type" => "BOLETO"]
+                    ["type" => "PIX"]
                 ],
                 'notification_urls' => [
                     'https://www.espacoequilibramente.com.br/pagbank/callback',
                 ]
             ];
-            
     
             DebugLog::create(['mensagem' => 'Dados de envio (payload):' . json_encode($payload)]);
     
@@ -305,12 +319,12 @@ class SiteController extends Controller
                 'Authorization' => 'Bearer ' . env('PAGBANK_TOKEN'),
                 'accept' => 'application/json',
                 'content-type' => 'application/json',
-            ])->post('https://sandbox.api.pagseguro.com/checkouts', $payload); // Endpoint correto
+            ])->post('https://sandbox.api.pagseguro.com/checkouts', $payload);
     
             if ($response->successful()) {
                 $data = $response->json();
                 DebugLog::create(['mensagem' => 'Link de pagamento gerado com sucesso:' . json_encode($data)]);
-            
+    
                 // Buscar o link correto dentro de "links"
                 $checkoutUrl = null;
                 if (isset($data['links'])) {
@@ -321,24 +335,25 @@ class SiteController extends Controller
                         }
                     }
                 }
-            
+    
                 if ($checkoutUrl) {
                     return response()->json(['redirect' => $checkoutUrl]); // Retorna o link correto
                 }
-            
+    
                 throw new \Exception('Nenhum link de pagamento encontrado na resposta do PagBank.');
             } else {
                 $error = $response->json();
                 DebugLog::create(['mensagem' => 'Erro na resposta da API do PagBank:' . json_encode($error)]);
-            
+    
                 throw new \Exception('Erro ao gerar o link de pagamento: ' . json_encode($error));
             }
-            
+    
         } catch (\Exception $e) {
             DebugLog::create(['mensagem' => 'Exceção ao gerar link de pagamento:' . json_encode($e->getMessage())]);
             return response()->json(['error' => 'Erro ao gerar link de pagamento.'], 500);
         }
     }
+    
     
     
     
