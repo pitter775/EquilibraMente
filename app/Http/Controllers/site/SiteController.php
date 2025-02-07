@@ -295,19 +295,30 @@ class SiteController extends Controller
             if ($response->successful()) {
                 $data = $response->json();
                 DebugLog::create(['mensagem' => 'Link de pagamento gerado com sucesso:' . json_encode($data)]);
-    
-                // Retorna o link de pagamento gerado pelo PagBank
-                if (isset($data['url'])) { // Ajuste para o campo correto
-                    return response()->json(['redirect' => $data['url']]); // Link correto
+            
+                // Buscar o link correto dentro de "links"
+                $checkoutUrl = null;
+                if (isset($data['links'])) {
+                    foreach ($data['links'] as $link) {
+                        if ($link['rel'] === 'PAY') {
+                            $checkoutUrl = $link['href'];
+                            break;
+                        }
+                    }
                 }
-    
+            
+                if ($checkoutUrl) {
+                    return response()->json(['redirect' => $checkoutUrl]); // Retorna o link correto
+                }
+            
                 throw new \Exception('Nenhum link de pagamento encontrado na resposta do PagBank.');
             } else {
                 $error = $response->json();
                 DebugLog::create(['mensagem' => 'Erro na resposta da API do PagBank:' . json_encode($error)]);
-    
+            
                 throw new \Exception('Erro ao gerar o link de pagamento: ' . json_encode($error));
             }
+            
         } catch (\Exception $e) {
             DebugLog::create(['mensagem' => 'Exceção ao gerar link de pagamento:' . json_encode($e->getMessage())]);
             return response()->json(['error' => 'Erro ao gerar link de pagamento.'], 500);
