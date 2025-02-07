@@ -13,59 +13,88 @@ $(function () {
   $(document).ready(function () {
     atualizarDetalhes();
 
+    // Antes de confirmar a reserva, buscar os dados do cliente do backend
+    function buscarDadosCliente(reservaId) {
+      return $.ajax({
+        url: '/reserva/dados/' + reservaId, // Nova rota para obter os dados do backend
+        method: 'GET',
+        dataType: 'json'
+      });
+    }
+
     $('#confirmar-reserva').on('click', function () {
       var metodoPagamento = $('#metodo_pagamento_input').val();
-      var reservaId = $(this).data('reserva-id');
-      var clienteNome = $('#cliente_nome').val();
-      var clienteEmail = $('#cliente_email').val();
-      var clienteCPF = $('#cliente_cpf').val();
-      var clienteTelefone = $('#cliente_telefone').val();
-      var valorTotal = parseFloat($('#valor_total').text().replace('R$', '').replace(',', '.'));
+      var reservaId = $(this).data('reserva-id') || $('#confirmar-reserva').attr('data-reserva-id');
 
-      console.log("Dados capturados:", {
-        metodoPagamento,
-        reservaId,
-        clienteNome,
-        clienteEmail,
-        clienteCPF,
-        clienteTelefone,
-        valorTotal
-      });
-
-      // Verifica se os dados estão preenchidos
-      if (!reservaId || !clienteNome || !clienteEmail || !clienteCPF || !clienteTelefone || isNaN(valorTotal)) {
-        alert('Preencha todas as informações corretamente antes de confirmar a reserva.');
-        console.error("Erro: Alguns campos estão vazios ou inválidos.");
+      if (!reservaId) {
+        alert('Erro: ID da reserva não encontrado.');
+        console.error('Erro: reservaId não definido.');
         return;
       }
 
-      $.ajax({
-          url: '/reserva/confirmar', // Chama o SiteController
-          method: 'POST',
-          data: {
-              _token: $('meta[name="csrf-token"]').attr('content'),
-              reserva_id: reservaId,
-              cliente_nome: clienteNome,
-              cliente_email: clienteEmail,
-              cliente_cpf: clienteCPF,
-              cliente_telefone: clienteTelefone,
-              valor_total: valorTotal,
-              metodo_pagamento: metodoPagamento
-          },
-          success: function (response) {
-              console.log("Resposta do servidor:", response);
-              if (response.error) {
-                  alert('Erro: ' + response.error);
-              } else if (response.redirect) {
-                  window.open(response.redirect, '_blank'); // Abre o link de pagamento
-              } else {
-                  alert('Erro inesperado. Tente novamente.');
-              }
-          },
-          error: function (xhr) {
-              console.error("Erro na requisição AJAX:", xhr.responseText);
-              alert('Erro ao processar a reserva: ' + xhr.responseText);
-          }
+      // Buscar os dados do backend antes de continuar
+      buscarDadosCliente(reservaId).done(function (dados) {
+        console.log("Dados do backend:", dados);
+
+        if (!dados || !dados.cliente || !dados.valor_total) {
+          alert('Erro ao buscar os dados do cliente.');
+          return;
+        }
+
+        var clienteNome = dados.cliente.name;
+        var clienteEmail = dados.cliente.email;
+        var clienteCPF = dados.cliente.cpf;
+        var clienteTelefone = dados.cliente.telefone;
+        var valorTotal = dados.valor_total;
+
+        console.log("Dados capturados:", {
+          metodoPagamento,
+          reservaId,
+          clienteNome,
+          clienteEmail,
+          clienteCPF,
+          clienteTelefone,
+          valorTotal
+        });
+
+        // Verifica se os dados estão preenchidos
+        if (!clienteNome || !clienteEmail || !clienteCPF || !clienteTelefone || isNaN(valorTotal)) {
+          alert('Preencha todas as informações corretamente antes de confirmar a reserva.');
+          console.error("Erro: Alguns campos estão vazios ou inválidos.");
+          return;
+        }
+
+        $.ajax({
+            url: '/reserva/confirmar', 
+            method: 'POST',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                reserva_id: reservaId,
+                cliente_nome: clienteNome,
+                cliente_email: clienteEmail,
+                cliente_cpf: clienteCPF,
+                cliente_telefone: clienteTelefone,
+                valor_total: valorTotal,
+                metodo_pagamento: metodoPagamento
+            },
+            success: function (response) {
+                console.log("Resposta do servidor:", response);
+                if (response.error) {
+                    alert('Erro: ' + response.error);
+                } else if (response.redirect) {
+                    window.open(response.redirect, '_blank'); // Abre o link de pagamento
+                } else {
+                    alert('Erro inesperado. Tente novamente.');
+                }
+            },
+            error: function (xhr) {
+                console.error("Erro na requisição AJAX:", xhr.responseText);
+                alert('Erro ao processar a reserva: ' + xhr.responseText);
+            }
+        });
+
+      }).fail(function () {
+        alert('Erro ao buscar os dados do cliente.');
       });
     });
   

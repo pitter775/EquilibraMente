@@ -21,6 +21,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Models\DebugLog;
 
 
+Route::get('/reserva/dados/{id}', [SiteController::class, 'buscarDadosReserva']);
 
 Route::post('/pagbank/callback', [PagBankController::class, 'callback'])->name('pagbank.callback');
 Route::get('/pagamento/sucesso', function () {

@@ -86,35 +86,25 @@ class SiteController extends Controller
         ]);
     }
 
-
-    public function confirmar2(Request $request)
+    public function buscarDadosReserva($id)
     {
-        $reservaData = session('reserva');
-    
-        if (!$reservaData) {
-            return response()->json(['success' => false, 'message' => 'Reserva inválida.']);
+        $reserva = Reserva::with('sala')->find($id);
+
+        if (!$reserva) {
+            return response()->json(['error' => 'Reserva não encontrada.'], 404);
         }
-    
-        try {
-            // Criar a reserva no banco de dados
-            foreach ($reservaData['horarios'] as $horario) {
-                Reserva::create([
-                    'usuario_id' => auth()->id(),
-                    'sala_id' => $reservaData['sala_id'],
-                    'data_reserva' => $horario['data_reserva'],
-                    'hora_inicio' => $horario['hora_inicio'],
-                    'hora_fim' => $horario['hora_fim'],
-                ]);
-            }
-    
-            // Limpar a sessão da reserva
-            session()->forget('reserva');
-    
-            return response()->json(['success' => true, 'message' => 'Reserva confirmada com sucesso!']);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Erro ao confirmar a reserva.', 'error' => $e->getMessage()]);
-        }
+
+        return response()->json([
+            'cliente' => [
+                'name' => auth()->user()->name,
+                'email' => auth()->user()->email,
+                'cpf' => auth()->user()->cpf,
+                'telefone' => auth()->user()->telefone,
+            ],
+            'valor_total' => (float) $reserva->sala->valor,
+        ]);
     }
+
 
     public function confirmar(Request $request)
     {
