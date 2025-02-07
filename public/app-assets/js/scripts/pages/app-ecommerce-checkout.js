@@ -22,9 +22,20 @@ $(function () {
       var clienteTelefone = $('#cliente_telefone').val();
       var valorTotal = parseFloat($('#valor_total').text().replace('R$', '').replace(',', '.'));
 
+      console.log("Dados capturados:", {
+        metodoPagamento,
+        reservaId,
+        clienteNome,
+        clienteEmail,
+        clienteCPF,
+        clienteTelefone,
+        valorTotal
+      });
+
       // Verifica se os dados estão preenchidos
       if (!reservaId || !clienteNome || !clienteEmail || !clienteCPF || !clienteTelefone || isNaN(valorTotal)) {
         alert('Preencha todas as informações corretamente antes de confirmar a reserva.');
+        console.error("Erro: Alguns campos estão vazios ou inválidos.");
         return;
       }
 
@@ -42,6 +53,7 @@ $(function () {
               metodo_pagamento: metodoPagamento
           },
           success: function (response) {
+              console.log("Resposta do servidor:", response);
               if (response.error) {
                   alert('Erro: ' + response.error);
               } else if (response.redirect) {
@@ -51,6 +63,7 @@ $(function () {
               }
           },
           error: function (xhr) {
+              console.error("Erro na requisição AJAX:", xhr.responseText);
               alert('Erro ao processar a reserva: ' + xhr.responseText);
           }
       });
