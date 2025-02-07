@@ -14,31 +14,47 @@ $(function () {
     atualizarDetalhes();
 
     $('#confirmar-reserva').on('click', function () {
-      // Captura a forma de pagamento escolhida (se necessário no futuro)
       var metodoPagamento = $('#metodo_pagamento_input').val();
-  
-      // Requisição AJAX para o backend
+      var reservaId = $(this).data('reserva-id');
+      var clienteNome = $('#cliente_nome').val();
+      var clienteEmail = $('#cliente_email').val();
+      var clienteCPF = $('#cliente_cpf').val();
+      var clienteTelefone = $('#cliente_telefone').val();
+      var valorTotal = parseFloat($('#valor_total').text().replace('R$', '').replace(',', '.'));
+
+      // Verifica se os dados estão preenchidos
+      if (!reservaId || !clienteNome || !clienteEmail || !clienteCPF || !clienteTelefone || isNaN(valorTotal)) {
+        alert('Preencha todas as informações corretamente antes de confirmar a reserva.');
+        return;
+      }
+
       $.ajax({
-          url: '/reserva/confirmar', // Endpoint que processa a reserva
+          url: '/reserva/confirmar', // Chama o SiteController
           method: 'POST',
           data: {
               _token: $('meta[name="csrf-token"]').attr('content'),
-              metodo_pagamento: metodoPagamento // Forma de pagamento
+              reserva_id: reservaId,
+              cliente_nome: clienteNome,
+              cliente_email: clienteEmail,
+              cliente_cpf: clienteCPF,
+              cliente_telefone: clienteTelefone,
+              valor_total: valorTotal,
+              metodo_pagamento: metodoPagamento
           },
           success: function (response) {
-              if (response.redirect) {
-                  // Redireciona para o PagBank
-                  window.open(response.redirect, '_blank');
-              } else if (response.error) {
-                  // Mostra mensagens de erro, caso haja
+              if (response.error) {
                   alert('Erro: ' + response.error);
+              } else if (response.redirect) {
+                  window.open(response.redirect, '_blank'); // Abre o link de pagamento
+              } else {
+                  alert('Erro inesperado. Tente novamente.');
               }
           },
-          error: function () {
-              alert('Erro ao processar a reserva. Tente novamente.');
+          error: function (xhr) {
+              alert('Erro ao processar a reserva: ' + xhr.responseText);
           }
       });
-  });
+    });
   
   
   
