@@ -151,11 +151,22 @@ class SiteController extends Controller
     
             $linkPagamento = $this->gerarLinkPagamento($primeiraReserva->id);
 
-            DebugLog::create(['mensagem' => 'Link de pagamento enviado ao frontend: ' . json_encode($linkPagamento)]);
+            DebugLog::create(['mensagem' => 'Link de pagamento linkPagamento: ' . json_encode($linkPagamento)]);
 
+            // Se já for um JSONResponse, decodificar corretamente
+            $linkPagamento = $linkPagamento instanceof \Illuminate\Http\JsonResponse 
+            ? json_decode($linkPagamento->getContent(), true) 
+            : $linkPagamento;
+
+            // Extrai corretamente a URL do link de pagamento
+            $checkoutUrl = $linkPagamento['redirect'] ?? $linkPagamento;
+
+            DebugLog::create(['mensagem' => 'Link de pagamento checkoutUrl: ' . json_encode($linkPagamento)]);
+
+            // Retorna apenas a URL correta
             return response()->json([
-                'redirect' => isset($linkPagamento['redirect']) ? $linkPagamento['redirect'] : $linkPagamento
-            ]);
+            'redirect' => $checkoutUrl
+            ], 200, ['Content-Type' => 'application/json']);
             
             
         } catch (\Exception $e) {
