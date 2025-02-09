@@ -252,43 +252,50 @@ html .content {
             <!-- END: Content-->
 
 
-
-            <div class="modal fade" id="modalSucesso" tabindex="-1" role="dialog" aria-labelledby="modalSucessoLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
+            <!-- Modal de Aguardando Pagamento -->
+            <div class="modal fade" id="modal-aguardando-pagamento" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalSucessoLabel">Reserva Confirmada!</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Aguardando Pagamento...</h5>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p>Estamos aguardando a confirmação do seu pagamento. Isso pode levar alguns segundos.</p>
+                        <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Carregando...</span>
                         </div>
-                        <div class="modal-body">
-                            Sua reserva foi confirmada com sucesso!
-                        </div>
-                        <div class="modal-footer">
-                            <button id="modal-ok-button" type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-                        </div>
+                    </div>
                     </div>
                 </div>
             </div>
 
-
-            <div class="modal fade" id="modalPix" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
+            <!-- Modal de Sucesso -->
+            <div class="modal fade" id="modal-sucesso-pagamento" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Pagamento via PIX</h5>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body text-center">
-                            <p>Escaneie o QR Code abaixo para efetuar o pagamento:</p>
-                            <img id="qrCodeImage" src="" alt="QR Code PIX" style="width: 100%; max-width: 300px;">
-                        </div>
+                    <div class="modal-header">
+                        <h5 class="modal-title text-success">Pagamento Confirmado</h5>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p>Seu pagamento foi confirmado com sucesso!</p>
+                    </div>
                     </div>
                 </div>
             </div>
 
-
+            <!-- Modal de Erro -->
+            <div class="modal fade" id="modal-erro-pagamento" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-danger">Erro no Pagamento</h5>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p>Não conseguimos confirmar seu pagamento. Tente novamente.</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>

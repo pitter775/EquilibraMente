@@ -22,6 +22,8 @@ use App\Models\DebugLog;
 
 
 Route::get('/reserva/dados/{id}', [SiteController::class, 'buscarDadosReserva']);
+Route::get('/pagbank/status/{reference_id}', [PagBankController::class, 'verificarStatus'])->name('pagbank.status');
+
 
 // Route::post('/pagbank/callback', [PagBankController::class, 'callback'])->name('pagbank.callback');
 Route::match(['get', 'post'], '/pagbank/callback', [PagBankController::class, 'callback'])->name('pagbank.callback');

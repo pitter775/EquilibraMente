@@ -17,6 +17,18 @@ class PagBankController extends Controller
         $this->apiUrl = env('PAGBANK_URL', 'https://sandbox.api.pagseguro.com');
         $this->token = env('PAGBANK_TOKEN');
     }
+    public function verificarStatus($referenceId)
+    {
+        $transacao = \App\Models\Transacao::where('reference_id', $referenceId)->first();
+
+        if (!$transacao) {
+            return response()->json(['error' => 'Transação não encontrada'], 404);
+        }
+
+        return response()->json([
+            'status' => $transacao->status,
+        ]);
+    }
 
     public function processarPagamento($dados)
     {

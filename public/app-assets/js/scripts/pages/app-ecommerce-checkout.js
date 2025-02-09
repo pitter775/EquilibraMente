@@ -10,6 +10,46 @@
 $(function () {
   'use strict';
 
+  let pagamentoVerificado = false;
+  
+
+
+  function iniciarVerificacaoPagamento(referenceId) {
+      let tentativas = 0;
+      let intervalo = setInterval(() => {
+          if (pagamentoVerificado || tentativas >= 60) { // Para após 5 minutos (60 tentativas)
+              clearInterval(intervalo);
+              $('#modal-aguardando-pagamento').modal('hide');
+              if (!pagamentoVerificado) {
+                  $('#modal-erro-pagamento').modal('show');
+              }
+              return;
+          }
+  
+          $.ajax({
+              url: '/pagbank/status/' + referenceId,
+              method: 'GET',
+              success: function (response) {
+                  console.log("Status do pagamento:", response);
+                  if (response.status === 'PAID') {
+                      pagamentoVerificado = true;
+                      clearInterval(intervalo);
+                      $('#modal-aguardando-pagamento').modal('hide');
+                      $('#modal-sucesso-pagamento').modal('show');
+                      setTimeout(() => {
+                          window.location.href = '/cliente/reservas';
+                      }, 3000);
+                  }
+              },
+              error: function (xhr) {
+                  console.error("Erro ao verificar pagamento:", xhr.responseText);
+              }
+          });
+  
+          tentativas++;
+      }, 5000); // Verifica a cada 5 segundos
+  }
+
   $(document).ready(function () {
     atualizarDetalhes();
 
@@ -24,42 +64,45 @@ $(function () {
 
     $('#confirmar-reserva').on('click', function () {
       var metodoPagamento = $('#metodo_pagamento_input').val();
-
+  
       $.ajax({
-          url: '/reserva/confirmar', // Apenas o backend sabe o link correto
+          url: '/reserva/confirmar',
           method: 'POST',
           data: {
               _token: $('meta[name="csrf-token"]').attr('content'),
               metodo_pagamento: metodoPagamento
           },
           success: function (response) {
-            console.log("Resposta do servidor (bruta):", response);
-        
-            let redirectUrl = response.redirect;
-            
-            // Se a resposta estiver dentro de "original", buscar a URL correta
-            if (typeof response.original === "object" && response.original.redirect) {
-                redirectUrl = response.original.redirect;
-            }
-        
-            if (typeof redirectUrl === "string" && redirectUrl.startsWith("http")) {
-                console.log("Abrindo link correto:", redirectUrl.trim());
-                setTimeout(() => {
-                    window.open(redirectUrl.trim(), '_blank'); // Abre a aba corretamente
-                }, 500);
-            } else {
-                console.error("Erro: Link de pagamento inválido.", redirectUrl);
-                alert('Erro inesperado. Tente novamente.');
-            }
-        },
+              console.log("Resposta do servidor (bruta):", response);
+          
+              let redirectUrl = response.redirect;
+              
+              if (typeof response.original === "object" && response.original.redirect) {
+                  redirectUrl = response.original.redirect;
+              }
+          
+              if (typeof redirectUrl === "string" && redirectUrl.startsWith("http")) {
+                  console.log("Abrindo link correto:", redirectUrl.trim());
+                  window.open(redirectUrl.trim(), '_blank'); // Abre a aba para pagamento
+
+                  // Mostra a modal de "Aguardando pagamento"
+                  $('#modal-aguardando-pagamento').modal('show');
+
+                  // Inicia a verificação do pagamento
+                  iniciarVerificacaoPagamento(response.reference_id);
+              } else {
+                  console.error("Erro: Link de pagamento inválido.", redirectUrl);
+                  alert('Erro inesperado. Tente novamente.');
+              }
+          },
           error: function (xhr) {
               console.error("Erro na requisição AJAX:", xhr.responseText);
               alert('Erro ao processar a reserva: ' + xhr.responseText);
           }
       });
-
-      return false; // Previne comportamentos inesperados
-    });  
+  
+      return false; // Previne comportamento inesperado
+  });
   
   
 
