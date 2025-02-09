@@ -64,7 +64,6 @@ $(function () {
         dataType: 'json'
       });
     }
-
     $('#confirmar-reserva').on('click', function () {
       if (pagbankLink) {
           console.log("Reutilizando link de pagamento:", pagbankLink);
@@ -72,7 +71,7 @@ $(function () {
           $('#modal-aguardando-pagamento').modal('show');
           return false;
       }
-
+  
       var metodoPagamento = $('#metodo_pagamento_input').val();
   
       $.ajax({
@@ -84,30 +83,35 @@ $(function () {
           },
           success: function (response) {
               console.log("Resposta do servidor (bruta):", response);
-          
+  
               let redirectUrl = response.redirect;
               
               if (typeof response.original === "object" && response.original.redirect) {
                   redirectUrl = response.original.redirect;
               }
-          
-              if (typeof redirectUrl === "string" && redirectUrl.startsWith("http")) {
+  
+              // Extraindo o "code" da URL do PagBank
+              let urlParams = new URL(redirectUrl);
+              let orderId = urlParams.searchParams.get("code"); 
+  
+              if (typeof redirectUrl === "string" && redirectUrl.startsWith("http") && orderId) {
                   console.log("Abrindo link correto:", redirectUrl.trim());
-
-                  // Salva o link para reutilização
+                  console.log("Order ID extraído:", orderId); // Debug
+  
+                  // Salva o link e orderId para reutilização
                   pagbankLink = redirectUrl.trim();
-                  referenceId = response.reference_id;
-
+                  referenceId = orderId; // Agora referenceId contém o code do PagBank
+  
                   // Abre o link na nova aba
                   window.open(pagbankLink, '_blank');
-
+  
                   // Exibe a modal de "Aguardando Pagamento"
                   $('#modal-aguardando-pagamento').modal('show');
-
+  
                   // Inicia a verificação do pagamento
                   iniciarVerificacaoPagamento(referenceId);
               } else {
-                  console.error("Erro: Link de pagamento inválido.", redirectUrl);
+                  console.error("Erro: Link de pagamento ou referência inválida.", redirectUrl, orderId);
                   alert('Erro inesperado. Tente novamente.');
               }
           },
@@ -116,9 +120,10 @@ $(function () {
               alert('Erro ao processar a reserva: ' + xhr.responseText);
           }
       });
-
+  
       return false;
-  });
+    });
+  
   
   
 

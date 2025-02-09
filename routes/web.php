@@ -22,7 +22,8 @@ use App\Models\DebugLog;
 
 
 Route::get('/reserva/dados/{id}', [SiteController::class, 'buscarDadosReserva']);
-Route::get('/pagbank/status/{reference_id}', [PagBankController::class, 'verificarStatus'])->name('pagbank.status');
+Route::get('/pagbank/status/{orderId}', [PagBankController::class, 'verificarStatus'])->name('pagbank.status');
+
 
 
 
