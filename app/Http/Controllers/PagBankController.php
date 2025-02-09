@@ -37,40 +37,51 @@ class PagBankController extends Controller
 
     public function callback(Request $request)
     {
-        DebugLog::create(['mensagem' => 'PagBank callback acessado.']);
-        // Captura todos os dados enviados pelo PagBank
         $data = $request->all();
     
-        // Salva no log para depuração
-        DebugLog::create(['mensagem' => 'Callback PagBank: ' . json_encode($data)]);
+        DebugLog::create(['mensagem' => 'Callback PagBank recebido: ' . json_encode($data)]);
     
-        // Verifica se o 'order_id' existe nos dados recebidos
-        if (!isset($data['order_id'])) {
-            return response()->json(['error' => 'order_id não encontrado'], 400);
+        // Verifica se os dados necessários estão presentes
+        if (!isset($data['id'], $data['reference_id'], $data['charges'][0]['status'])) {
+            return response()->json(['error' => 'Dados incompletos'], 400);
         }
     
-        // Busca a transação no banco
-        $transacao = Transacao::where('pagbank_order_id', $data['order_id'])->first();
+        // Pegando os dados principais
+        $pagbank_order_id = $data['id'];
+        $reference_id = $data['reference_id'];
+        $status_pagamento = $data['charges'][0]['status'];
+        $valor = $data['charges'][0]['amount']['value'] / 100; // Convertendo centavos para reais
+        $detalhes_json = json_encode($data); // Guardando o JSON completo
     
-        if (!$transacao) {
-            return response()->json(['error' => 'Transação não encontrada'], 404);
+        // Buscando o usuário e a sala baseados na referência
+        $reserva_id = str_replace('reserva_', '', $reference_id);
+        $reserva = \App\Models\Reserva::find($reserva_id);
+    
+        if (!$reserva) {
+            return response()->json(['error' => 'Reserva não encontrada'], 404);
         }
     
-        // Atualiza o status da transação
-        $transacao->update([
-            'status' => $data['status'] === 'PAID' ? 'PAGA' : 'CANCELADA',
-            'detalhes' => json_encode($data), // Guarda o retorno completo para análise
+        // Criando ou atualizando a transação
+        $transacao = \App\Models\Transacao::updateOrCreate(
+            ['pagbank_order_id' => $pagbank_order_id],
+            [
+                'usuario_id' => $reserva->usuario_id,
+                'sala_id' => $reserva->sala_id,
+                'reference_id' => $reference_id,
+                'valor' => $valor,
+                'status' => $status_pagamento === 'PAID' ? 'PAGA' : 'CANCELADA',
+                'detalhes' => $detalhes_json,
+            ]
+        );
+    
+        // Atualizando o status da reserva
+        $reserva->update([
+            'status' => $status_pagamento === 'PAID' ? 'CONFIRMADA' : 'CANCELADA',
         ]);
     
-        // Atualiza o status da reserva vinculada (se existir)
-        if ($transacao->reservas) {
-            $transacao->reservas()->update([
-                'status' => $data['status'] === 'PAID' ? 'CONFIRMADA' : 'CANCELADA',
-            ]);
-        }
-    
-        return response()->json(['message' => 'Status atualizado com sucesso.']);
+        return response()->json(['message' => 'Transação salva com sucesso.']);
     }
+    
     
     
 }
