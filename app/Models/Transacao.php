@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transacao extends Model
 {
+    protected $table = 'transacoes';
+    
     const STATUS_PENDENTE = 'PENDING';
     const STATUS_PAGA = 'PAID';
     const STATUS_CANCELADA = 'CANCELLED';
