@@ -254,48 +254,49 @@ html .content {
 
             <!-- Modal de Aguardando Pagamento -->
             <div class="modal fade" id="modal-aguardando-pagamento" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Aguardando Pagamento...</h5>
-                    </div>
-                    <div class="modal-body text-center">
-                        <p>Estamos aguardando a confirmação do seu pagamento. Isso pode levar alguns segundos.</p>
-                        <div class="spinner-border text-primary" role="status">
-                        <span class="sr-only">Carregando...</span>
-                        </div>
-                    </div>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Aguardando Pagamento...</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Estamos aguardando a confirmação do seu pagamento. Isso pode levar alguns segundos.</p>
+                    <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Carregando...</span>
                     </div>
                 </div>
+                </div>
+            </div>
             </div>
 
             <!-- Modal de Sucesso -->
             <div class="modal fade" id="modal-sucesso-pagamento" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-success">Pagamento Confirmado</h5>
-                    </div>
-                    <div class="modal-body text-center">
-                        <p>Seu pagamento foi confirmado com sucesso!</p>
-                    </div>
-                    </div>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success">Pagamento Confirmado</h5>
                 </div>
+                <div class="modal-body text-center">
+                    <p>Seu pagamento foi confirmado com sucesso!</p>
+                </div>
+                </div>
+            </div>
             </div>
 
             <!-- Modal de Erro -->
             <div class="modal fade" id="modal-erro-pagamento" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-danger">Erro no Pagamento</h5>
-                    </div>
-                    <div class="modal-body text-center">
-                        <p>Não conseguimos confirmar seu pagamento. Tente novamente.</p>
-                    </div>
-                    </div>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Erro no Pagamento</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Não conseguimos confirmar seu pagamento. Tente novamente.</p>
+                </div>
                 </div>
             </div>
+            </div>
+
 
         </div>
     </div>

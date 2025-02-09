@@ -11,7 +11,9 @@ $(function () {
   'use strict';
 
   let pagamentoVerificado = false;
-  
+  let pagbankLink = null; // Armazena o link de pagamento
+  let referenceId = null; // Armazena o ID da reserva
+
 
 
   function iniciarVerificacaoPagamento(referenceId) {
@@ -25,7 +27,7 @@ $(function () {
               }
               return;
           }
-  
+
           $.ajax({
               url: '/pagbank/status/' + referenceId,
               method: 'GET',
@@ -45,10 +47,11 @@ $(function () {
                   console.error("Erro ao verificar pagamento:", xhr.responseText);
               }
           });
-  
+
           tentativas++;
-      }, 5000); // Verifica a cada 5 segundos
-  }
+      }, 5000);
+    }
+
 
   $(document).ready(function () {
     atualizarDetalhes();
@@ -63,6 +66,13 @@ $(function () {
     }
 
     $('#confirmar-reserva').on('click', function () {
+      if (pagbankLink) {
+          console.log("Reutilizando link de pagamento:", pagbankLink);
+          window.open(pagbankLink, '_blank'); // Abre o link já salvo
+          $('#modal-aguardando-pagamento').modal('show');
+          return false;
+      }
+
       var metodoPagamento = $('#metodo_pagamento_input').val();
   
       $.ajax({
@@ -83,13 +93,19 @@ $(function () {
           
               if (typeof redirectUrl === "string" && redirectUrl.startsWith("http")) {
                   console.log("Abrindo link correto:", redirectUrl.trim());
-                  window.open(redirectUrl.trim(), '_blank'); // Abre a aba para pagamento
 
-                  // Mostra a modal de "Aguardando pagamento"
+                  // Salva o link para reutilização
+                  pagbankLink = redirectUrl.trim();
+                  referenceId = response.reference_id;
+
+                  // Abre o link na nova aba
+                  window.open(pagbankLink, '_blank');
+
+                  // Exibe a modal de "Aguardando Pagamento"
                   $('#modal-aguardando-pagamento').modal('show');
 
                   // Inicia a verificação do pagamento
-                  iniciarVerificacaoPagamento(response.reference_id);
+                  iniciarVerificacaoPagamento(referenceId);
               } else {
                   console.error("Erro: Link de pagamento inválido.", redirectUrl);
                   alert('Erro inesperado. Tente novamente.');
@@ -100,8 +116,8 @@ $(function () {
               alert('Erro ao processar a reserva: ' + xhr.responseText);
           }
       });
-  
-      return false; // Previne comportamento inesperado
+
+      return false;
   });
   
   
