@@ -37,19 +37,39 @@ class PagBankController extends Controller
 
     public function callback(Request $request)
     {
+        // Captura todos os dados enviados pelo PagBank
         $data = $request->all();
     
-        $transacao = Transacao::where('pagbank_order_id', $data['order_id'])->firstOrFail();
+        // Salva no log para depuração
+        DebugLog::create(['mensagem' => 'Callback PagBank: ' . json_encode($data)]);
+    
+        // Verifica se o 'order_id' existe nos dados recebidos
+        if (!isset($data['order_id'])) {
+            return response()->json(['error' => 'order_id não encontrado'], 400);
+        }
+    
+        // Busca a transação no banco
+        $transacao = Transacao::where('pagbank_order_id', $data['order_id'])->first();
+    
+        if (!$transacao) {
+            return response()->json(['error' => 'Transação não encontrada'], 404);
+        }
+    
+        // Atualiza o status da transação
         $transacao->update([
-            'status' => $data['status'] === 'PAID' ? Transacao::STATUS_PAGA : Transacao::STATUS_CANCELADA,
+            'status' => $data['status'] === 'PAID' ? 'PAGA' : 'CANCELADA',
+            'detalhes' => json_encode($data), // Guarda o retorno completo para análise
         ]);
-        
-        // Atualizar status das reservas vinculadas, se necessário
-        $transacao->reservas()->update([
-            'status' => $data['status'] === 'PAID' ? 'CONFIRMADA' : 'CANCELADA',
-        ]);
+    
+        // Atualiza o status da reserva vinculada (se existir)
+        if ($transacao->reservas) {
+            $transacao->reservas()->update([
+                'status' => $data['status'] === 'PAID' ? 'CONFIRMADA' : 'CANCELADA',
+            ]);
+        }
     
         return response()->json(['message' => 'Status atualizado com sucesso.']);
     }
+    
     
 }
