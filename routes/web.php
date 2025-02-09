@@ -23,7 +23,9 @@ use App\Models\DebugLog;
 
 Route::get('/reserva/dados/{id}', [SiteController::class, 'buscarDadosReserva']);
 
-Route::post('/pagbank/callback', [PagBankController::class, 'callback'])->name('pagbank.callback');
+// Route::post('/pagbank/callback', [PagBankController::class, 'callback'])->name('pagbank.callback');
+Route::match(['get', 'post'], '/pagbank/callback', [PagBankController::class, 'callback'])->name('pagbank.callback');
+
 Route::get('/pagamento/sucesso', function () {
     return response()->json(['message' => 'Pagamento realizado com sucesso!']);
 })->name('pagamento.sucesso');

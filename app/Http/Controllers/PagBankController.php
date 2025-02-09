@@ -37,6 +37,7 @@ class PagBankController extends Controller
 
     public function callback(Request $request)
     {
+        DebugLog::create(['mensagem' => 'PagBank callback acessado.']);
         // Captura todos os dados enviados pelo PagBank
         $data = $request->all();
     
