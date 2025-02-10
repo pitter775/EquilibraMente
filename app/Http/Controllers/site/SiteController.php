@@ -165,8 +165,10 @@ class SiteController extends Controller
 
             // Retorna apenas a URL correta
             return response()->json([
-            'redirect' => $checkoutUrl
+                'redirect' => $checkoutUrl,
+                'reference_id' => 'reserva_' . $primeiraReserva->id // Retorna a referência correta para a verificação
             ], 200, ['Content-Type' => 'application/json']);
+            
             
             
         } catch (\Exception $e) {
