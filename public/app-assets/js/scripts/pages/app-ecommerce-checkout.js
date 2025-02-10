@@ -90,14 +90,10 @@ $(function () {
                   redirectUrl = response.original.redirect;
               }
   
-              // Agora pegamos o `reference_id` correto
-              referenceId = response.reference_id; 
-  
-              if (typeof redirectUrl === "string" && redirectUrl.startsWith("http") && referenceId) {
+              if (typeof redirectUrl === "string" && redirectUrl.startsWith("http")) {
                   console.log("Abrindo link correto:", redirectUrl.trim());
-                  console.log("Reference ID extraído:", referenceId); // Debug
   
-                  // Salva o link e referenceId para reutilização
+                  // Salva o link para reutilização
                   pagbankLink = redirectUrl.trim();
   
                   // Abre o link na nova aba
@@ -106,10 +102,17 @@ $(function () {
                   // Exibe a modal de "Aguardando Pagamento"
                   $('#modal-aguardando-pagamento').modal('show');
   
-                  // Inicia a verificação do pagamento
-                  iniciarVerificacaoPagamento(referenceId);
+                  // Agora, pega o reference_id que já está cadastrado na transação
+                  referenceId = response.reference_id; 
+  
+                  if (referenceId) {
+                      console.log("Reference ID extraído:", referenceId); // Debug
+  
+                      // Inicia a verificação do pagamento
+                      iniciarVerificacaoPagamento(referenceId);
+                  }
               } else {
-                  console.error("Erro: Link de pagamento ou referência inválida.", redirectUrl, referenceId);
+                  console.error("Erro: Link de pagamento inválido.", redirectUrl);
                   alert('Erro inesperado. Tente novamente.');
               }
           },
@@ -120,8 +123,9 @@ $(function () {
       });
   
       return false;
-   });
+    });
   
+
   
   
   
