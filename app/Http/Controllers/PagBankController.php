@@ -19,12 +19,13 @@ class PagBankController extends Controller
     }
     public function verificarStatus($referenceId)
     {
+        // Busca a transação onde a coluna reference_id é igual à referência passada
         $transacao = \App\Models\Transacao::where('reference_id', $referenceId)->first();
-    
+
         if (!$transacao) {
             return response()->json(['error' => 'Transação não encontrada'], 404);
         }
-    
+
         return response()->json([
             'status' => $transacao->status,
         ]);

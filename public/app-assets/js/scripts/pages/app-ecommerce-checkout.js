@@ -90,17 +90,15 @@ $(function () {
                   redirectUrl = response.original.redirect;
               }
   
-              // Extraindo o "code" da URL do PagBank
-              let urlParams = new URL(redirectUrl);
-              let orderId = urlParams.searchParams.get("code"); 
+              // Agora pegamos o `reference_id` correto
+              referenceId = response.reference_id; 
   
-              if (typeof redirectUrl === "string" && redirectUrl.startsWith("http") && orderId) {
+              if (typeof redirectUrl === "string" && redirectUrl.startsWith("http") && referenceId) {
                   console.log("Abrindo link correto:", redirectUrl.trim());
-                  console.log("Order ID extraído:", orderId); // Debug
+                  console.log("Reference ID extraído:", referenceId); // Debug
   
-                  // Salva o link e orderId para reutilização
+                  // Salva o link e referenceId para reutilização
                   pagbankLink = redirectUrl.trim();
-                  referenceId = orderId; // Agora referenceId contém o code do PagBank
   
                   // Abre o link na nova aba
                   window.open(pagbankLink, '_blank');
@@ -111,7 +109,7 @@ $(function () {
                   // Inicia a verificação do pagamento
                   iniciarVerificacaoPagamento(referenceId);
               } else {
-                  console.error("Erro: Link de pagamento ou referência inválida.", redirectUrl, orderId);
+                  console.error("Erro: Link de pagamento ou referência inválida.", redirectUrl, referenceId);
                   alert('Erro inesperado. Tente novamente.');
               }
           },
@@ -122,7 +120,8 @@ $(function () {
       });
   
       return false;
-    });
+   });
+  
   
   
   
