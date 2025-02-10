@@ -33,7 +33,7 @@ $(function () {
             method: 'GET',
             success: function (response) {
                 console.log("Status do pagamento:", response);
-                if (response.status === 'PAID') {
+                if (response.status === 'PAGA') {
                     pagamentoVerificado = true;
                     clearInterval(intervalo);
                     $('#modal-aguardando-pagamento').modal('hide');
