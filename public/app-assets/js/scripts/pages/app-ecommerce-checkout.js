@@ -17,40 +17,40 @@ $(function () {
 
 
   function iniciarVerificacaoPagamento(referenceId) {
-      let tentativas = 0;
-      let intervalo = setInterval(() => {
-          if (pagamentoVerificado || tentativas >= 60) { // Para após 5 minutos (60 tentativas)
-              clearInterval(intervalo);
-              $('#modal-aguardando-pagamento').modal('hide');
-              if (!pagamentoVerificado) {
-                  $('#modal-erro-pagamento').modal('show');
-              }
-              return;
-          }
+    let tentativas = 0;
+    let intervalo = setInterval(() => {
+        if (pagamentoVerificado || tentativas >= 60) { // Para após 5 minutos (60 tentativas)
+            clearInterval(intervalo);
+            $('#modal-aguardando-pagamento').modal('hide');
+            if (!pagamentoVerificado) {
+                $('#modal-erro-pagamento').modal('show');
+            }
+            return;
+        }
 
-          $.ajax({
-              url: '/pagbank/status/' + referenceId,
-              method: 'GET',
-              success: function (response) {
-                  console.log("Status do pagamento:", response);
-                  if (response.status === 'PAGA') {
-                      pagamentoVerificado = true;
-                      clearInterval(intervalo);
-                      $('#modal-aguardando-pagamento').modal('hide');
-                      $('#modal-sucesso-pagamento').modal('show');
-                      setTimeout(() => {
-                          window.location.href = '/cliente/reservas';
-                      }, 3000);
-                  }
-              },
-              error: function (xhr) {
-                  console.error("Erro ao verificar pagamento:", xhr.responseText);
-              }
-          });
+        $.ajax({
+            url: '/pagbank/status/' + referenceId,
+            method: 'GET',
+            success: function (response) {
+                console.log("Status do pagamento:", response);
+                if (response.status === 'PAID') {
+                    pagamentoVerificado = true;
+                    clearInterval(intervalo);
+                    $('#modal-aguardando-pagamento').modal('hide');
+                    $('#modal-sucesso-pagamento').modal('show');
+                    setTimeout(() => {
+                        window.location.href = '/cliente/reservas';
+                    }, 3000);
+                }
+            },
+            error: function (xhr) {
+                console.error("Erro ao verificar pagamento:", xhr.responseText);
+            }
+        });
 
-          tentativas++;
-      }, 5000);
-    }
+        tentativas++;
+    }, 5000);
+}
 
 
   $(document).ready(function () {
@@ -71,9 +71,9 @@ $(function () {
           $('#modal-aguardando-pagamento').modal('show');
           return false;
       }
-  
+
       var metodoPagamento = $('#metodo_pagamento_input').val();
-  
+
       $.ajax({
           url: '/reserva/confirmar',
           method: 'POST',
@@ -83,31 +83,31 @@ $(function () {
           },
           success: function (response) {
               console.log("Resposta do servidor (bruta):", response);
-  
+
               let redirectUrl = response.redirect;
-              
+
               if (typeof response.original === "object" && response.original.redirect) {
                   redirectUrl = response.original.redirect;
               }
-  
+
               if (typeof redirectUrl === "string" && redirectUrl.startsWith("http")) {
                   console.log("Abrindo link correto:", redirectUrl.trim());
-  
+
                   // Salva o link para reutilização
                   pagbankLink = redirectUrl.trim();
-  
+
                   // Abre o link na nova aba
                   window.open(pagbankLink, '_blank');
-  
+
                   // Exibe a modal de "Aguardando Pagamento"
                   $('#modal-aguardando-pagamento').modal('show');
-  
+
                   // Agora, pega o reference_id que já está cadastrado na transação
                   referenceId = response.reference_id; 
-  
+
                   if (referenceId) {
                       console.log("Reference ID extraído:", referenceId); // Debug
-  
+
                       // Inicia a verificação do pagamento
                       iniciarVerificacaoPagamento(referenceId);
                   }
@@ -121,9 +121,9 @@ $(function () {
               alert('Erro ao processar a reserva: ' + xhr.responseText);
           }
       });
-  
+
       return false;
-    });
+  });
   
 
   

@@ -32,6 +32,7 @@ class PagBankController extends Controller
     }
     
     
+    
 
     public function processarPagamento($dados)
     {
