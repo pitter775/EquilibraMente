@@ -1025,7 +1025,7 @@ footer.footer-border {
 
 .main-menu.menu-dark .navigation > li > ul li:not(.has-sub) {
   margin : 0 15px;
-}Roboto
+}Poppins
 
 .main-menu.menu-dark .navigation > li > ul li.has-sub > a {
   margin : 0 15px;
@@ -1242,14 +1242,14 @@ footer.footer-border {
 
 .navigation {
   font-size : 1.1rem;
-  font-family : 'Roboto', Helvetica, Arial, serif;
+  font-family : 'Poppins', Helvetica, Arial, serif;
   font-weight : 400;
   overflow-y : hidden;
   padding-bottom : 20px;
 }
 
 .navigation .navigation-header {
-  font-family : 'Roboto', Helvetica, Arial, serif;
+  font-family : 'Poppins', Helvetica, Arial, serif;
   font-weight : 500;
   line-height : 1.2;
   padding : 12px 22px;

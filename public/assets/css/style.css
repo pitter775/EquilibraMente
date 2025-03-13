@@ -9,7 +9,7 @@
 # General
 --------------------------------------------------------------*/
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #444444;
 }
 
@@ -23,7 +23,7 @@ a:hover {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 
@@ -115,7 +115,6 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.5s;
   z-index: 997;
   transition: all 0.5s;
-  padding: 15px 0;
   background: #fff;
 
 }
@@ -138,11 +137,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #header .logo h1 {
-  font-size: 24px;
+  /* font-size: 24px; */
   margin: 0;
-  line-height: 1;
-  font-weight: 700;
-  letter-spacing: 1px;
+  /* letter-spacing: 1px; */
   font-family: "Poppins", sans-serif;
   text-transform: uppercase;
 }
@@ -157,12 +154,12 @@ h1, h2, h3, h4, h5, h6 {
 #header .logo img {
   padding: 0;
   margin: 0;
-  max-height: 60px;
+  /* max-height: 60px; */
 }
 
 @media (max-width: 768px) {
   #header.header-scrolled {
-    padding: 15px 0;
+    /* padding: 15px 0; */
   }
   
 }
@@ -181,23 +178,23 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   white-space: nowrap;
   float: left;
-  background: rgba(255, 255, 255, 0.2);
+  /* background: rgba(255, 255, 255, 0.2); */
 }
 
 .nav-menu a {
   display: block;
   position: relative;
-  color: #556050;
-  padding: 20px 15px;
+  color: #fff;
+  padding: 15px 15px;
   transition: 0.3s;
-  font-size: 18px;
   /* font-family: "Poppins", sans-serif; */
   /* text-transform: uppercase; */
   font-weight: 500;
 }
 
 .nav-menu a:hover, .nav-menu .active > a, .nav-menu li:hover > a {
-  background: rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid #fff; /* Cor e espessura da linha */
+  background: none; /* Remove o background */
   text-decoration: none;
 }
 
@@ -639,6 +636,16 @@ section {
 }
 
 /*--------------------------------------------------------------
+# inicio
+--------------------------------------------------------------*/
+.inicio {
+  /* background: url("../img/about-bg.jpg") center center no-repeat; */
+  background-size: cover;
+  padding: 60px 0;
+  position: relative;
+}
+
+/*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
 .about {
@@ -830,7 +837,7 @@ section {
 .counts .count-box p {
   padding: 15px 0 0 0;
   margin: 0 0 0 60px;
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 14px;
   color: #49788c;
 }
@@ -869,7 +876,7 @@ section {
 }
 
 .cta .cta-btn {
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
   text-transform: uppercase;
   font-weight: 500;
   font-size: 16px;
@@ -1429,7 +1436,7 @@ section {
   font-size: 14px;
   line-height: 24px;
   margin-bottom: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 #footer .footer-top .social-links a {

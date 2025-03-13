@@ -11,8 +11,8 @@
   font-family : 'Slabo 27px';
 }
 
-.ql-toolbar .ql-font span[data-label='Roboto Slab']::before {
-  font-family : 'Roboto Slab';
+.ql-toolbar .ql-font span[data-label='Poppins Slab']::before {
+  font-family : 'Poppins Slab';
 }
 
 .ql-toolbar .ql-font span[data-label='Inconsolata']::before {
@@ -33,7 +33,7 @@
 }
 
 .ql-font-roboto {
-  font-family : 'Roboto Slab';
+  font-family : 'Poppins Slab';
 }
 
 .ql-font-inconsolata {
@@ -94,7 +94,7 @@
 
 .ql-container {
   border-color : #D8D6DE !important;
-  font-family : 'Roboto', Helvetica, Arial, serif;
+  font-family : 'Poppins', Helvetica, Arial, serif;
 }
 
 .ql-editor a {

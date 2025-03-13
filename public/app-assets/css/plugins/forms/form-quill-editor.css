@@ -8,8 +8,8 @@
 .ql-toolbar .ql-font span[data-label='Slabo 27px']::before {
   font-family: 'Slabo 27px'; }
 
-.ql-toolbar .ql-font span[data-label='Roboto Slab']::before {
-  font-family: 'Roboto Slab'; }
+.ql-toolbar .ql-font span[data-label='Poppins Slab']::before {
+  font-family: 'Poppins Slab'; }
 
 .ql-toolbar .ql-font span[data-label='Inconsolata']::before {
   font-family: 'Inconsolata'; }
@@ -25,7 +25,7 @@
   font-family: 'Slabo 27px'; }
 
 .ql-font-roboto {
-  font-family: 'Roboto Slab'; }
+  font-family: 'Poppins Slab'; }
 
 .ql-font-inconsolata {
   font-family: 'Inconsolata'; }
@@ -79,7 +79,7 @@
 
 .ql-container {
   border-color: #d8d6de !important;
-  font-family: "Roboto", Helvetica, Arial, serif; }
+  font-family: "Poppins", Helvetica, Arial, serif; }
 
 .ql-editor a {
   color: #545e51; }

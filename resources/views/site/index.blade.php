@@ -19,6 +19,8 @@
   <meta name="twitter:title" content="Espaço Equilibra Mente - Aluguel de Salas Modernas" />
   <meta name="twitter:description" content="Descubra o espaço perfeito para reuniões, eventos e atendimentos. Salas modernas, bem localizadas e totalmente equipadas." />
   <meta name="twitter:image" content="https://equilibramente-production.up.railway.app/assets/img/sala1.jpg" /> 
+
+
   <!-- Meta Tags para SEO -->
   <meta name="description" content="Descubra o espaço perfeito para o seu próximo evento, reunião ou atendimento. Salas modernas, bem localizadas e equipadas para atender suas necessidades." />
   <meta name="keywords" content="aluguel de salas, salas para eventos, salas para reuniões, espaço para workshops, Equilibra Mente" />
@@ -31,7 +33,10 @@
   <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  {{-- <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet"> --}}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -55,6 +60,183 @@
 
     gtag('config', 'G-GRG4XXWLH3');
   </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        #inicio {
+            margin-top: -100px;
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            overflow: hidden;
+            background: black;
+        }
+        #hero::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(241, 241, 241, 0.7);
+          z-index: 1;
+        }
+        .slides {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .slide::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+        }
+        .slide.active {
+            opacity: 1;
+        }
+        .text-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: #eee;
+        }
+        .logbanner {
+            filter: brightness(.8) invert(1);
+            margin-bottom: 10px;
+            width: 300px;
+        }
+        .dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            z-index: 2;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            margin: 5px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+        .dot.active {
+            opacity: 1;
+        }
+
+        #comofunciona {
+            position: relative;
+            margin-top: -100px;
+        }
+        .comofunciona {
+            background: white;
+            padding: 50px;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            box-shadow: 0px -15px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .comotext {          
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+        }
+        .comofunciona-text {
+            flex: 1;
+            text-align: left;
+        }
+        .comofunciona-text h2 {
+            font-size: 20px;
+            color: #333;
+        }
+        .comofunciona-text h2 span {
+            color: #216C2E;
+        }
+        .comofunciona-text p {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        .steps {
+            flex: 2.5;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 30px;
+            position: relative;
+        }
+        .step {
+            width: 20%;
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+        .step i {
+            font-size: 24px;
+            color: #216C2E;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .step p {
+            margin-top: 10px;
+            font-size: 13px;
+        }
+        .step::after {
+            content: '\f105'; /* Ícone de seta para a direita do FontAwesome */
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 24px;
+            color: #216C2E;
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .step:last-child::after {
+            content: '';
+        }
+
+        .contentg { text-align: center; margin: 0 auto}
+        .contentg h3 {
+            font-size: 20px;
+            color: #333;
+            font-weight: 600;
+        }
+        .contentg p { font-size: 13px}
+        .contentg h3 span {
+            color: #216C2E;
+        }
+    </style>
 
 </head>
 
@@ -72,10 +254,11 @@
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li class="active"><a href="#hero">Home</a></li>
-          <li><a href="#about">Salas</a></li>
-          <li><a href="#sobre">Sobre Nós</a></li>
-             <li>
+          <li class="active"><a href="#inicio">Início</a></li>
+          <li><a href="#about">Como usar</a></li>
+          <li><a href="#about">Diferencias</a></li>
+          <li><a href="#about">Salas</a></li>          
+          <li>
               @if(auth()->check())
                   @if(auth()->user()->tipo_usuario === 'admin')
                       <a href="{{ route('admin.dashboard') }}">Gestão</a>
@@ -93,38 +276,63 @@
     </div>
   </header><!-- End Header -->
 
-  <!-- ======= Hero Section ======= -->
-  <section id="hero">
-  <div class="hero-container" data-aos="fade-up" >
-   
-      <div class="divheropaddd">
-       <div class="row">
-        <div class="content col-md-6 centercont" data-aos="fade-up" >
-          <img src="/assets/img/logoescuro.png" alt="" class="img-fluid logohero" > 
-          <h1 class="h1hero">Aluguel de Salas Modernas e Bem Localizadas para seus Negócios</h1>
-          <a href="#about" class="btn-get-started scrollto mt-3"><i class="bx bx-chevrons-down"></i></a>
 
-          
+      <section id="inicio">
+        <div class="text-overlay">
+          <img src="/assets/img/logoescuro.png" alt="" class="logbanner">
+          <p style="font-size: 25px">Salas com Infraestrutura completa, conforto e segurança para o seu melhor atendimento.</p>
         </div>
-        <div class="col-md-6" style=" padding:0; margin:0"> 
-          <img src="https://equilibramente-production.up.railway.app/assets/img/sala1.jpg" alt="" class="img-fluid imgboxhero"> 
+        <div class="slides">
+            <div class="slide active" style="background-image: url('/assets/img/salas/sala1.jfif');"></div>
+            <div class="slide" style="background-image: url('/assets/img/salas/sala2.jfif');"></div>
+            <div class="slide" style="background-image: url('/assets/img/salas/sala3.jfif');"></div>
+            <div class="slide" style="background-image: url('/assets/img/salas/sala4.jfif');"></div>
         </div>
-      </div> 
-    </div>   
-  </div> 
-
-  </section><!-- End Hero -->
+        <div class="dots">
+            <span class="dot active" onclick="goToSlide(0)"></span>
+            <span class="dot" onclick="goToSlide(1)"></span>
+            <span class="dot" onclick="goToSlide(2)"></span>
+            <span class="dot" onclick="goToSlide(3)"></span>
+        </div>
+      </section>
+    <section id="comofunciona">
+        <div class="container">
+            <div class="comofunciona comotext">
+                <div class="comofunciona-text">
+                  <h2>Como funciona nossa plataforma <span>para alugar as salas.</span></h2>            
+                </div>
+                <div class="steps">
+                    <div class="step">
+                        <i class='bx bxs-institution'></i>
+                        <p>Encontre o consultório ideal</p>
+                    </div>
+                    <div class="step">
+                        <i class="bx bx-calendar"></i>
+                        <p>Reserve os horários disponíveis</p>
+                    </div>
+                    <div class="step">
+                        <i class="bx bx-lock"></i>
+                        <p>Cadastre-se e pague com segurança</p>
+                    </div>
+                    <div class="step">
+                        <i class='bx bxs-navigation'></i>
+                        <p>Vá até o consultório na data reservada</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
   <main id="main">
 
     <!-- ======= About Section ======= -->
-    <section id="about" class="about">
+    <section id="about" class="about" style="margin-top: -40px">
       <div class="container">
         <div class="row no-gutters">
           <div class="content col-xl-12 d-flex align-items-stretch" data-aos="fade-up">
-            <div class="content">
-              <h3>Nossas Unidades</h3>
-              <p>Descubra o espaço perfeito para o seu próximo evento, reunião ou atendimento. Oferecemos salas modernas e bem equipadas, projetadas para atender às suas necessidades profissionais, sejam elas pequenas reuniões, sessões individuais ou workshops. Confira as opções disponíveis e encontre o ambiente ideal para você e seus clientes.</p>
+            <div class="contentg">
+              <h3>Escolha <span> a melhor opção</span></h3>
+              <p>Todas as unidades estão situadas em regiões próximas às estações e com fácil acesso.</p>
             </div>
           </div>
         </div>
@@ -175,19 +383,13 @@
 
         <div class=" mb-5" data-aos="fade-in" data-aos-delay="100">
 
-          <h3>Sobre Nós</h3>   
-          <p class="mb-5">Somos uma empresa dedicada a oferecer espaços modernos, práticos e confortáveis para profissionais e empresas que buscam ambientes ideais para atender seus clientes ou realizar reuniões e eventos. Nosso objetivo é criar uma experiência única, onde cada detalhe foi pensado para proporcionar funcionalidade e bem-estar. <br><br>
 
-                Com salas totalmente equipadas, flexibilidade de horários e localização estratégica, atendemos às necessidades de psicólogos, terapeutas, coaches, empresários e diversos outros profissionais. Seja para um atendimento individual, um workshop ou uma reunião corporativa, aqui você encontra o ambiente perfeito para alcançar seus objetivos.<br><br>
-
-                Nossa missão é simplificar sua rotina e oferecer o suporte que você precisa para focar no que realmente importa: seus clientes e negócios.<br><br>
-
-                Venha conhecer nossas salas e transforme seu dia a dia profissional com um espaço feito para você!</p>
-
-                <hr>
-
-          <h3 class="mt-5">O que dizem do nossos espaço</h3>     
-          <p>Nossos espaços foram cuidadosamente planejados para atender às necessidades de profissionais das mais diversas áreas, como psicólogos, terapeutas, coaches, e muitos outros. Aqui, cada detalhe foi pensado para garantir conforto, praticidade e um ambiente profissional. Veja o que alguns de nossos parceiros têm a dizer sobre suas experiências:</p>
+            <div class="contentg">
+              <h3>O que dizem das <span> nossas salas</span></h3>
+               <p>Nossos espaços foram cuidadosamente planejados para atender às necessidades de profissionais das mais diversas áreas, como psicólogos, terapeutas, coaches, e muitos outros. Veja o que alguns de nossos parceiros têm a dizer sobre suas experiências:</p>
+            </div>
+   
+         
         </div>
 
         <div class="owl-carousel testimonials-carousel">
@@ -278,7 +480,7 @@
           </div>
 
           <div class="col-lg-4 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="250">
-              <h4>Nossos Serviços</h4>
+              <h4>Nossos Serviços </h4>
               <ul>
                   <li><i class="bx bx-chevron-right"></i> Atendimento Personalizado</li>
                   <li><i class="bx bx-chevron-right"></i> Aluguel de Salas</li>
@@ -329,6 +531,32 @@
   <!-- Template Main JS File -->
   <script src="/assets/js/main.js"></script>
   <script>
+        //banner
+
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        
+        function goToSlide(index) {
+            slides[currentIndex].classList.remove('active');
+            dots[currentIndex].classList.remove('active');
+            currentIndex = index;
+            slides[currentIndex].classList.add('active');
+            dots[currentIndex].classList.add('active');
+        }
+        
+        function nextSlide() {
+            let nextIndex = (currentIndex + 1) % slides.length;
+            goToSlide(nextIndex);
+        }
+        
+        setInterval(nextSlide, 5000); // Troca automática a cada 3 segundos
+
+
+        // fim banner
+
+
+
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.querySelector('form[action="/newsletter"]');
 

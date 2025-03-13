@@ -10,7 +10,7 @@
 
     <title>Instituto Educação para o Futuro</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('paper') }}/assets/img/icon_logo_ge.png">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">   
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet">   
 
     <meta name="theme-color" content="#66619c">
     <meta name="author" content="pitter775@gmail.com">

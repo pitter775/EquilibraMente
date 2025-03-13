@@ -718,11 +718,11 @@ $(function () {
           dataLabels: {
             name: {
               fontSize: '2rem',
-              fontFamily: 'Roboto'
+              fontFamily: 'Poppins'
             },
             value: {
               fontSize: '1rem',
-              fontFamily: 'Roboto'
+              fontFamily: 'Poppins'
             },
             total: {
               show: true,
@@ -852,11 +852,11 @@ $(function () {
               show: true,
               name: {
                 fontSize: '2rem',
-                fontFamily: 'Roboto'
+                fontFamily: 'Poppins'
               },
               value: {
                 fontSize: '1rem',
-                fontFamily: 'Roboto',
+                fontFamily: 'Poppins',
                 formatter: function (val) {
                   return parseInt(val) + '%';
                 }

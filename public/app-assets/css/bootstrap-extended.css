@@ -840,8 +840,8 @@ input[type='number']::-webkit-outer-spin-button {
 ================================================================================================*/
 .header-navbar {
   padding: 0px;
-  min-height: 4.45rem;
-  font-family: "Roboto", Helvetica, Arial, serif;
+  /* min-height: 4.45rem; */
+  font-family: "Poppins", Helvetica, Arial, serif;
   transition: 300ms ease all, background 0s;
   z-index: 997; }
 
@@ -867,8 +867,8 @@ input[type='number']::-webkit-outer-spin-button {
 .header-navbar.floating-nav {
   position: fixed;
   right: 0;
-  margin: 1.3rem 2rem 0;
-  width: calc(100vw - (100vw - 100%) - calc(2rem * 2) - 260px);
+  /* margin: 1.3rem 2rem 0; */
+  /* width: calc(100vw - (100vw - 100%) - calc(2rem * 2) - 260px); */
   border-radius: 0.428rem;
   z-index: 12; }
 
