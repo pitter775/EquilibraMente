@@ -31,8 +31,12 @@
   <link href="/assets/img/favicon.png" rel="icon">
   <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-  <!-- Google Fonts -->  
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  {{-- <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet"> --}}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
 
   <!-- Template Main CSS File -->
   
@@ -90,25 +94,26 @@
 
       <div class="logo mr-auto">
         {{-- <h1 class="text-light"><a href="/"><span>Equilibra Mente</span></a></h1> --}}
-          <a href="/"><img src="/assets/img/logofinoescuro.png" style="height: 30px"> </a>
+          {{-- <a href="/"><img src="/assets/img/logofinoescuro.png" style="height: 30px"> </a> --}}
+          <a href="/"><img src="/assets/img/logotextopp.png" > </a>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li><a href="/#hero">Home</a></li>
-          <li><a href="/#about">Salas</a></li>
-          <li><a href="/#contact">Contato</a></li>
+          <li><a href="/#hero" style="color: #556050">Detalhe</a></li>
+          <li><a href="/#about"  style="color: #556050">Salas</a></li>
+          <li><a href="/#faq"  style="color: #556050">Perguntas</a></li> 
           <li>
               @if(auth()->check())
                   @if(auth()->user()->tipo_usuario === 'admin')
-                      <a href="{{ route('admin.dashboard') }}">Gestão</a>
+                      <a href="{{ route('admin.dashboard') }}"  style="color: #556050">Gestão</a>
                   @else
-                      <a href="{{ route('cliente.reservas') }}">Minhas Reservas</a>
+                      <a href="{{ route('cliente.reservas') }}"  style="color: #556050">Minhas Reservas</a>
                   @endif
               @else
-                  <a href="{{ route('login') }}">Entre</a>
+                  <a href="{{ route('login') }}"  style="color: #556050">Entre</a>
               @endif
           </li>
 

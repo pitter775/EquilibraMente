@@ -53,6 +53,7 @@
   
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GRG4XXWLH3"></script>
+  {{-- icons https://www.streamlinehq.com/icons/streamline-colors/travel?icon=ico_YY8fEshC5TqBXh1J --}}
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -61,6 +62,10 @@
     gtag('config', 'G-GRG4XXWLH3');
   </script>
     <style>
+
+        .icon-verde {
+                filter: sepia(70%) saturate(200%) hue-rotate(90deg) brightness(90%);
+            }
         * {
             margin: 0;
             padding: 0;
@@ -107,7 +112,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.5);
         }
         .slide.active {
             opacity: 1;
@@ -125,7 +130,7 @@
             color: #eee;
         }
         .logbanner {
-            filter: brightness(.8) invert(1);
+            filter: brightness(1) invert(1);
             margin-bottom: 10px;
             width: 300px;
         }
@@ -156,12 +161,13 @@
             margin-top: -100px;
         }
         .comofunciona {
-            background: white;
+
             padding: 50px;
             border-top-left-radius: 30px;
             border-top-right-radius: 30px;
-            box-shadow: 0px -15px 10px rgba(0, 0, 0, 0.3);
+
             text-align: center;
+            background-color: #fafafa;
         }
         .comotext {          
             margin: 0 auto;
@@ -195,7 +201,7 @@
         }
         .step {
             width: 20%;
-            background: #f8f8f8;
+            background: #fff;
             padding: 10px;
             border-radius: 10px;
             text-align: center;
@@ -206,6 +212,15 @@
             color: #216C2E;
             display: block;
             margin-bottom: 10px;
+        }
+        .step video {
+            width: 80px;
+            height: auto; /* Mantém a proporção */
+            image-rendering: smooth; /* Suaviza o serrilhado */
+            cursor: pointer;
+            object-fit: contain;
+            image-rendering: auto;
+            will-change: transform;
         }
         .step p {
             margin-top: 10px;
@@ -228,59 +243,66 @@
 
         .contentg { text-align: center; margin: 0 auto}
         .contentg h3 {
-            font-size: 20px;
+            font-size: 24px;
             color: #333;
             font-weight: 600;
         }
-        .contentg p { font-size: 13px}
+        .contentg p { font-size: 15px; color: #555}
         .contentg h3 span {
             color: #216C2E;
         }
+
+        .icospteps{
+             height: 40px; 
+             margin-top: 20px
+
+        }
+
+
+
+
     </style>
 
 </head>
 
 <body>
 
-  <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top header-transparent">
-    <div class="container d-flex align-items-center hero-content">
 
-      <div class="logo mr-auto">
-        <a href="/"><img src="/assets/img/logofinoescuro.png" style="height: 30px; opacity: 0;"> </a>
-        <!-- Uncomment below if you prefer to use an image logo -->
-        <!-- <a href="index.html"><img src="/assets/img/logo.png" alt="" class="img-fluid"></a>-->
-      </div>
+    <header id="header" class="fixed-top header-transparent">
+        <div class="container d-flex align-items-center hero-content">
 
-      <nav class="nav-menu d-none d-lg-block">
-        <ul>
-          <li class="active"><a href="#inicio">Início</a></li>
-          <li><a href="#about">Como usar</a></li>
-          <li><a href="#about">Diferencias</a></li>
-          <li><a href="#about">Salas</a></li>          
-          <li>
-              @if(auth()->check())
-                  @if(auth()->user()->tipo_usuario === 'admin')
-                      <a href="{{ route('admin.dashboard') }}">Gestão</a>
-                  @else
-                      <a href="{{ route('cliente.reservas') }}">Minhas Reservas</a>
-                  @endif
-              @else
-                  <a href="{{ route('login') }}">Entre</a>
-              @endif
-          </li>
+        <div class="logo mr-auto">
+            <a href="/"><img src="/assets/img/logotextopp.png" style="opacity: 0;"> </a>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html"><img src="/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
 
-        </ul>
-      </nav><!-- .nav-menu -->
+        <nav class="nav-menu d-none d-lg-block">
+            <ul>
+                <li class="active"><a href="#inicio">Início</a></li>
+                <li><a href="#about">Salas</a></li>          
+                <li><a href="#atendimento">Atendimento</a></li>          
+                <li>
+                    @if(auth()->check())
+                        @if(auth()->user()->tipo_usuario === 'admin')
+                            <a href="{{ route('admin.dashboard') }}">Gestão</a>
+                        @else
+                            <a href="{{ route('cliente.reservas') }}">Minhas Reservas</a>
+                        @endif
+                    @else
+                        <a href="{{ route('login') }}">Entre</a>
+                    @endif
+                </li>
+            </ul>
+        </nav><!-- .nav-menu -->
 
-    </div>
-  </header><!-- End Header -->
+        </div>
+    </header>
 
-
-      <section id="inicio">
-        <div class="text-overlay">
-          <img src="/assets/img/logoescuro.png" alt="" class="logbanner">
-          <p style="font-size: 25px">Salas com Infraestrutura completa, conforto e segurança para o seu melhor atendimento.</p>
+    <section id="inicio">
+        <div class="text-overlay" style="margin-top: 60px">
+            <img src="/assets/img/logoescuro.png" alt="" class="logbanner" data-aos="fade">
+            <p style="font-size: 25px" data-aos="fade-up">Espaço Coworking para Profissionais da Saúde</p>
         </div>
         <div class="slides">
             <div class="slide active" style="background-image: url('/assets/img/salas/sala1.jfif');"></div>
@@ -294,7 +316,101 @@
             <span class="dot" onclick="goToSlide(2)"></span>
             <span class="dot" onclick="goToSlide(3)"></span>
         </div>
-      </section>
+    </section>
+
+
+
+    <style>
+        .item-sala { padding: 10px; }
+        
+        .card-sala {
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sala-imagem {
+            width: 100%;
+            height: 240px; /* Ajuste a altura como preferir */
+            background-size: cover;
+            background-position: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .card-sala .content {
+            padding: 10px 10px 15px 10px ;
+        }
+
+
+        .card-sala h4 { font-size: 18px }
+        .textop{ font-size: 12px}
+
+
+
+        .metragem {
+            text-align: right;
+        }
+        
+    </style>
+    <section id="about" class="about" style="margin-top: -40px">
+        <div class="container">
+            <div class="row">
+                <div class="content col-xl-12 d-flex align-items-stretch">
+                    <div class="contentg">
+                        <h3>Escolha <span>a melhor opção</span></h3>
+                        <p>Espaços planejados para inspirar e proporcionar bem-estar, ambientes modernos, aconchegantes com conforto e praticidade.</p>
+                    </div>
+                </div>
+            </div>
+
+            @if ($salas->count() > 0)
+                <div class="owl-carousel carousel-sala">
+                    @foreach ($salas as $sala)
+                        <div class="item-sala" data-aos="fade-up">
+                            <div class="card-sala">
+                                @php
+                                    $imagem = $sala->imagens->isNotEmpty() ? "url('{$sala->imagens->first()->imagem_base64}')" : "url('/img/default-sala.jpg')";
+                                @endphp
+                                <div class="sala-imagem" style="background-image: {{ $imagem }};"></div>
+                                <div class="content textop">
+                                    <h4>{{ $sala->nome }}</h4>
+
+                                    <div class="info-linha">
+                                        <span>
+                                            <img src="/assets/img/icons/mundo.png" class="icon-verde" style="width: 15px;">
+                                            Bela Vista, São Paulo - SP
+                                        </span>
+                                        <span class="metragem">
+                                            <img src="/assets/img/icons/metragem.png" class="icon-verde" style="width: 15px;">
+                                            35 m²
+                                        </span>
+                                    </div>
+
+                                    <hr>
+
+                                    <div class="info-linha">
+                                        <span>
+                                        <h4>R$ 80,00/h</h4>
+                                        </span>
+                                        <span class="metragem">
+                                            <a href="{{ route('site.sala.detalhes', $sala->id) }}" class=" about-btn">Ver Detalhes</a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <p class="text-center">Nenhuma sala disponível no momento.</p>
+            @endif
+        </div>
+        <div id="atendimento"></div>
+    </section>
+
+
     <section id="comofunciona">
         <div class="container">
             <div class="comofunciona comotext">
@@ -303,19 +419,20 @@
                 </div>
                 <div class="steps">
                     <div class="step">
-                        <i class='bx bxs-institution'></i>
-                        <p>Encontre o consultório ideal</p>
+               
+                        <img src="/assets/img/icons/mesa.png" alt="" class="icon-verde icospteps" style=""> 
+                        <p>Escolha um dos nossos consultório disponiveis</p>
                     </div>
                     <div class="step">
-                        <i class="bx bx-calendar"></i>
+                        <img src="/assets/img/icons/calendar.png" alt="" class="icon-verde icospteps" style=""> 
                         <p>Reserve os horários disponíveis</p>
                     </div>
                     <div class="step">
-                        <i class="bx bx-lock"></i>
+                        <img src="/assets/img/icons/cadastro.png" alt="" class="icon-verde icospteps" style=""> 
                         <p>Cadastre-se e pague com segurança</p>
                     </div>
                     <div class="step">
-                        <i class='bx bxs-navigation'></i>
+                        <img src="/assets/img/icons/mapa.png" alt="" class="icon-verde icospteps" style=""> 
                         <p>Vá até o consultório na data reservada</p>
                     </div>
                 </div>
@@ -323,193 +440,327 @@
         </div>
     </section>
 
-  <main id="main">
+    <style>
+        .profissionais-section {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 450px;
+            padding: 40px 20px;
+        }
 
-    <!-- ======= About Section ======= -->
-    <section id="about" class="about" style="margin-top: -40px">
-      <div class="container">
-        <div class="row no-gutters">
-          <div class="content col-xl-12 d-flex align-items-stretch" data-aos="fade-up">
-            <div class="contentg">
-              <h3>Escolha <span> a melhor opção</span></h3>
-              <p>Todas as unidades estão situadas em regiões próximas às estações e com fácil acesso.</p>
-            </div>
-          </div>
-        </div>
+        .profissionais-section .container {
+        
+            display: flex;
+            align-items: center;
+            position: relative;
+            justify-content: center;
+        }
 
-        <div class="row">
-          @foreach($salas as $sala)
-            <div class="col-md-6 icon-box m-0 p-0" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-              
-              
-              <div class="card m-3 cardunidades">
-                <!-- Carrossel de Imagens da Sala com Intervalo Personalizado -->
-                @if($sala->imagens->isNotEmpty())
-                  <div id="carouselSala{{ $sala->id }}" class="carousel slide" data-ride="carousel" data-interval="{{ 10000 + ($loop->index * 1000) }}">
-                    <div class="carousel-inner">
-                      @foreach($sala->imagens as $index => $imagem)
-                        <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                          <img src="{{ $imagem->imagem_base64 }}" class="d-block w-100" alt="{{ $sala->nome }}">
-                        </div>
-                      @endforeach
-                    </div>
-                    <a class="carousel-control-prev" href="#carouselSala{{ $sala->id }}" role="button" data-slide="prev">
-                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                      <span class="sr-only">Anterior</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselSala{{ $sala->id }}" role="button" data-slide="next">
-                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                      <span class="sr-only">Próximo</span>
-                    </a>
-                  </div>
-                @endif
-                <div class="p-4">
-                  <h4 class='mt-3'>{{ $sala->nome }}</h4>
-                  <p>{!! \Illuminate\Support\Str::limit($sala->descricao, 100, '...') !!}</p>
-                  <a href="{{ route('site.sala.detalhes', $sala->id) }}" class="about-btn">Ver Detalhes e Reservar <i class="bx bx-chevron-right"></i></a>
+        /* Imagem no fundo */
+        .image-box {
+            width: 50%;
+            height: 400px;
+            background: url('/assets/img/960x0.jpg') center center no-repeat;
+            background-size: cover; /* Maior para preencher melhor */
+            border-radius: 8px;
+            position: absolute;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        /* Caixa de texto sobreposta */
+        .profissionais-section .content {
+            width: 50%;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            position: relative;
+            z-index: 2; /* Para ficar acima da imagem */
+            
+            margin-left: 40%; /* Move a div um pouco para a direita */
+        }
+
+        .profissionais-section h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .profissionais-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .profissionais-section ul li {
+            font-size: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .profissionais-section .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .image-box {
+                width: 100%;
+                height: 250px;
+                position: static;
+                transform: none;
+            }
+
+            .profissionais-section .content {
+                width: 100%;
+                padding: 20px;
+            }
+        }
+
+    </style>
+
+        <div class="container">
+            <div class="content col-xl-12 d-flex align-items-stretch">
+                <div class="contentg">
+                    <h3>Ofereça o melhor atendimento <span>para seus pacientes</span></h3>                    
                 </div>
-               
-              </div>
             </div>
-          @endforeach
         </div>
-      </div>
-    </section>
-    <!-- End About Section -->
 
-    <!-- ======= Testimonials Section ======= -->
+      
+
+        <section id="profissionais" class="profissionais-section">
+            
+            <div class="container">
+
+
+                <div class="image-box"></div> <!-- Imagem como fundo -->
+                
+                <div class="content">
+                    <p>Atenda seus clientes em um ambiente confortável, sofisticado e privado. Nosso espaço é ideal para profissionais liberais da área da saúde, incluindo:</p>
+                    
+                    <ul>
+                        <li><img src="/assets/img/icons/pisicologo.png" class="icon-verde icon-prof" style="width: 30px;"> Psicólogos</li>
+                        <li><img src="/assets/img/icons/pisic.png" class="icon-verde icon-prof" style="width: 30px;"> Psiquiatras</li>
+                        <li><img src="/assets/img/icons/tera.png" class="icon-verde icon-prof" style="width: 30px;"> Terapeutas</li>
+                        <li><img src="/assets/img/icons/fisioterapia.png" class=" icon-verde icon-prof" style="width: 30px;"> Fisioterapeutas</li>
+                        <li><img src="/assets/img/icons/nutricionista.png" class="icon-verde icon-prof" style="width: 30px;"> Nutricionistas</li>
+                        <li><img src="/assets/img/icons/medico.png" class="icon-verde icon-prof" style="width: 30px;"> Médicos de diversas especialidades</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    <style>
+            .faq {
+                padding: 40px 20px;  
+                margin-top: -20px;
+            }
+
+            .faq h3 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .faq-item {
+            border-radius: 5px;
+                margin-bottom: 10px;
+                overflow: hidden;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .faq-question {
+                width: 100%;
+                padding: 15px;
+                background: #fff;
+                color: #444;
+                border: none;
+                text-align: left;
+                font-size: 16px;
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .faq-question .arrow {
+                font-size: 18px;
+            }
+
+            .faq-answer {
+                max-height: 0;
+                overflow: hidden;
+                padding: 0 10px;
+                transition: max-height 0.3s ease, padding 0.3s ease;
+                background: white;
+            }
+
+            .faq-answer p {
+                padding: 0;
+                font-size: 14px;
+                color: #777;
+                margin-top: -20px;
+            }
+
+    </style>
+    <section id="faq" class="faq">
+        <div class="container">
+            <div class="row">
+                <div class="content col-xl-12 d-flex align-items-stretch">
+                    <div class="contentg">
+                        <h3>Algumas das perguntas<span> frequentes</span></h3>                    
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">Como faço para reservar uma sala? <span class="arrow">+</span></button>
+                <div class="faq-answer">
+                    <p>Para reservar uma sala, basta acessar nossa página, escolher a unidade desejada e selecionar a opção "Reservar".</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">Quais são os métodos de pagamento aceitos? <span class="arrow">+</span></button>
+                <div class="faq-answer">
+                    <p>Aceitamos pagamentos via cartão de crédito, boleto bancário e transferência PIX.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">Posso cancelar minha reserva? <span class="arrow">+</span></button>
+                <div class="faq-answer">
+                    <p>Sim, é possível cancelar sua reserva com até 24 horas de antecedência para reembolso total.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
     <section id="sobre" class="testimonials section-bg" style="padding:10px; margin:0">
-      <div class="container mt-5">
+        <div class="container mt-5">
 
         <div class=" mb-5" data-aos="fade-in" data-aos-delay="100">
 
 
             <div class="contentg">
-              <h3>O que dizem das <span> nossas salas</span></h3>
-               <p>Nossos espaços foram cuidadosamente planejados para atender às necessidades de profissionais das mais diversas áreas, como psicólogos, terapeutas, coaches, e muitos outros. Veja o que alguns de nossos parceiros têm a dizer sobre suas experiências:</p>
+                <h3>O que dizem das <span> nossas salas</span></h3>
+                <p>Nossos espaços foram cuidadosamente planejados para atender às necessidades de profissionais das mais diversas áreas, como psicólogos, terapeutas, coaches, e muitos outros. Veja o que alguns de nossos parceiros têm a dizer sobre suas experiências:</p>
             </div>
-   
-         
+
+            
         </div>
 
         <div class="owl-carousel testimonials-carousel">
 
-          <div class="testimonial-item" data-aos="fade-up">
-              <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"style="color: #ff5722;"></i>
-                  As salas são perfeitas para atender meus pacientes. O ambiente é acolhedor e profissional, exatamente o que eu precisava para oferecer um serviço de qualidade.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"style="color: #ff5722;"></i>
-              </p>
-              <h3>Dr. Ricardo Almeida</h3>
-              <h4>Psicólogo</h4>
-          </div>
+            <div class="testimonial-item" data-aos="fade-up">
+                <p>
+                    <i class="bx bxs-quote-alt-left quote-icon-left"style="color: #216C2E;"></i>
+                    As salas são perfeitas para atender meus pacientes. O ambiente é acolhedor e profissional, exatamente o que eu precisava para oferecer um serviço de qualidade.
+                    <i class="bx bxs-quote-alt-right quote-icon-right"style="color: #216C2E;"></i>
+                </p>
+                <h3>Dr. Ricardo Almeida</h3>
+                <h4>Psicólogo</h4>
+            </div>
 
 
-          <div class="testimonial-item" data-aos="fade-up">
-              <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"style="color: #ff5722;"></i>
-                  Encontrei um espaço incrível para realizar minhas terapias. A organização e a estrutura são impecáveis, e meus clientes também elogiam.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"style="color: #ff5722;"></i>
-              </p>
-              <h3>Maria Beatriz Rocha</h3>
-              <h4>Terapeuta</h4>
-          </div>
+            <div class="testimonial-item" data-aos="fade-up">
+                <p>
+                    <i class="bx bxs-quote-alt-left quote-icon-left"style="color: #216C2E;"></i>
+                    Encontrei um espaço incrível para realizar minhas terapias. A organização e a estrutura são impecáveis, e meus clientes também elogiam.
+                    <i class="bx bxs-quote-alt-right quote-icon-right"style="color: #216C2E;"></i>
+                </p>
+                <h3>Maria Beatriz Rocha</h3>
+                <h4>Terapeuta</h4>
+            </div>
 
 
-          <div class="testimonial-item" data-aos="fade-up">
-              <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"style="color: #ff5722;"></i>
-                  Atender aqui é um diferencial. A flexibilidade de horários e a infraestrutura moderna me ajudam a causar uma ótima impressão nos meus clientes.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"style="color: #ff5722;"></i>
-              </p>
-              <h3>Paulo Mendes</h3>
-              <h4>Terapeuta</h4>
-          </div>
+            <div class="testimonial-item" data-aos="fade-up">
+                <p>
+                    <i class="bx bxs-quote-alt-left quote-icon-left"style="color: #216C2E;"></i>
+                    Atender aqui é um diferencial. A flexibilidade de horários e a infraestrutura moderna me ajudam a causar uma ótima impressão nos meus clientes.
+                    <i class="bx bxs-quote-alt-right quote-icon-right"style="color: #216C2E;"></i>
+                </p>
+                <h3>Paulo Mendes</h3>
+                <h4>Terapeuta</h4>
+            </div>
 
 
-          <div class="testimonial-item" data-aos="fade-up">
-              <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"style="color: #ff5722;"></i>
-                  A localização estratégica e o ambiente organizado me ajudam a fidelizar meus clientes. Recomendo para qualquer profissional da área da saúde.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"style="color: #ff5722;"></i>
-              </p>
-              <h3>Luiza Martins</h3>
-              <h4>Nutricionista</h4>
-          </div>
+            <div class="testimonial-item" data-aos="fade-up">
+                <p>
+                    <i class="bx bxs-quote-alt-left quote-icon-left"style="color: #216C2E;"></i>
+                    A localização estratégica e o ambiente organizado me ajudam a fidelizar meus clientes. Recomendo para qualquer profissional da área da saúde.
+                    <i class="bx bxs-quote-alt-right quote-icon-right"style="color: #216C2E;"></i>
+                </p>
+                <h3>Luiza Martins</h3>
+                <h4>Nutricionista</h4>
+            </div>
 
 
-          <div class="testimonial-item" data-aos="fade-up">
-              <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"style="color: #ff5722;"></i>
-                  As salas atendem perfeitamente às minhas necessidades. Conforto e privacidade para os atendimentos são pontos fortes do espaço.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"style="color: #ff5722;"></i>
-              </p>
-              <h3>Juliana Torres</h3>
-              <h4>Psicopedagoga</h4>
-          </div>
+            <div class="testimonial-item" data-aos="fade-up">
+                <p>
+                    <i class="bx bxs-quote-alt-left quote-icon-left"style="color: #216C2E;"></i>
+                    As salas atendem perfeitamente às minhas necessidades. Conforto e privacidade para os atendimentos são pontos fortes do espaço.
+                    <i class="bx bxs-quote-alt-right quote-icon-right"style="color: #216C2E;"></i>
+                </p>
+                <h3>Juliana Torres</h3>
+                <h4>Psicopedagoga</h4>
+            </div>
 
 
         </div>
 
-      </div>
-    </section><!-- End Testimonials Section -->
-    <!-- ======= Contact Section ======= -->
+        </div>
+    </section>
 
-    
-    <!-- End Contact Section -->
-
-  </main>
-  <!-- End #main -->
-
-  <!-- ======= Footer ======= -->
-  <footer id="footer">
+    <footer id="footer">
     <div class="footer-top">
-      <div class="container">
+        <div class="container">
         <div class="row">
 
-          <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-md-6">
             <div class="footer-info" data-aos="fade-up" data-aos-delay="50">
-              <img src="/assets/img/logoescuro.png" alt="" class="img-fluid mb-4" style=" width: 70%;"> 
-              <div class="social-links mt-3">
+                <img src="/assets/img/logoescuro.png" alt="" class="img-fluid mb-4" style=" width: 70%;"> 
+                <div class="social-links mt-3">
                 <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
                 <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
                 <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
                 <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
-              </div>
+                </div>
             </div>
-          </div>
+            </div>
 
-          <div class="col-lg-4 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="250">
-              <h4>Nossos Serviços </h4>
-              <ul>
-                  <li><i class="bx bx-chevron-right"></i> Atendimento Personalizado</li>
-                  <li><i class="bx bx-chevron-right"></i> Aluguel de Salas</li>
-                  <li><i class="bx bx-chevron-right"></i> Espaços para Eventos</li>
-                  <li><i class="bx bx-chevron-right"></i> Salas de Reunião</li>                  
-                  <li><i class="bx bx-chevron-right"></i> Ambientes Equipados</li>
-              </ul>
-          </div>
+            <div class="col-lg-4 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="250">
+                <h4>Nossos Serviços </h4>
+                <ul>
+                    <li><i class="bx bx-chevron-right"></i> Atendimento Personalizado</li>
+                    <li><i class="bx bx-chevron-right"></i> Aluguel de Salas</li>
+                    <li><i class="bx bx-chevron-right"></i> Espaços para Eventos</li>
+                    <li><i class="bx bx-chevron-right"></i> Salas de Reunião</li>                  
+                    <li><i class="bx bx-chevron-right"></i> Ambientes Equipados</li>
+                </ul>
+            </div>
 
 
-          <div class="col-lg-4 col-md-6 footer-newsletter" data-aos="fade-up" data-aos-delay="350">
+            <div class="col-lg-4 col-md-6 footer-newsletter" data-aos="fade-up" data-aos-delay="350">
             <h4>Inscreva-se na nossa Newsletter</h4>
             <p>Fique por dentro das nossas ofertas, disponibilidade e Atualizações das salas.</p>
             <form action="/newsletter" method="post">
-              <input type="email" name="email"><input type="submit" value="Inscrever-se">
+                <input type="email" name="email"><input type="submit" value="Inscrever-se">
             </form>
-          </div>
+            </div>
 
         </div>
-      </div>
+        </div>
     </div>
 
-    <div class="container">
-      <div class="copyright">
-        &copy; Copyright <strong><span>Equilibra Mente</span></strong>. Todos os direitos reservados.
-      </div>
-
-    </div>
-  </footer>
+    </footer>
   
   <!-- End Footer -->
 
@@ -532,28 +783,59 @@
   <script src="/assets/js/main.js"></script>
   <script>
         //banner
-
         let currentIndex = 0;
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
-        
-        function goToSlide(index) {
-            slides[currentIndex].classList.remove('active');
-            dots[currentIndex].classList.remove('active');
-            currentIndex = index;
-            slides[currentIndex].classList.add('active');
-            dots[currentIndex].classList.add('active');
+        const totalSlides = slides.length -1;
+
+        // Verifica se há slides suficientes para evitar erros
+        if (totalSlides > 0) {
+            function goToSlide(index) {
+                // Remove a classe 'active' de todos os slides e dots
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+
+                // Atualiza o índice e adiciona a classe 'active' ao slide correto
+                currentIndex = index % totalSlides;
+                slides[currentIndex].classList.add('active');
+                dots[currentIndex].classList.add('active');
+            }
+
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % totalSlides; // Garante o loop correto
+                goToSlide(currentIndex);
+            }
+
+            // Inicia o loop do banner
+            setInterval(nextSlide, 5000);
+
+            // Ativa o primeiro slide ao carregar a página
+            goToSlide(0);
+        } else {
+            console.error("Erro: Nenhum slide encontrado!");
         }
-        
-        function nextSlide() {
-            let nextIndex = (currentIndex + 1) % slides.length;
-            goToSlide(nextIndex);
-        }
-        
-        setInterval(nextSlide, 5000); // Troca automática a cada 3 segundos
+
+
 
 
         // fim banner
+
+
+
+        //como funciona
+
+        document.querySelectorAll('.step').forEach(step => {
+            const video = step.querySelector('video');
+
+            step.addEventListener('mouseenter', () => {
+                video.play();
+            });
+
+            step.addEventListener('mouseleave', () => {
+                video.pause();
+                video.currentTime = 0;
+            });
+        });
 
 
 
@@ -589,7 +871,33 @@
             });
         });
     });
-</script>
+
+
+
+    document.querySelectorAll('.faq-question').forEach(button => {
+        button.addEventListener('click', () => {
+            const answer = button.nextElementSibling;
+            const isOpen = answer.style.maxHeight;
+
+            // Fecha todas as respostas antes de abrir outra
+            document.querySelectorAll('.faq-answer').forEach(item => {
+                item.style.maxHeight = null;
+                item.style.padding = "0 15px";
+                item.previousElementSibling.querySelector('.arrow').textContent = "+";
+            });
+
+            // Se não estava aberto, abre a resposta
+            if (!isOpen || isOpen === "0px") {
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                answer.style.padding = "15px";
+                button.querySelector('.arrow').textContent = "−";
+            }
+        });
+    });
+
+
+
+  </script>
 
 
 

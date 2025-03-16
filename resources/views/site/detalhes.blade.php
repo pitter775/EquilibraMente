@@ -64,6 +64,8 @@
             padding: 5px; /* Adiciona espaço entre as colunas */
         }
 
+        .sala-detalhes h3 { color: #777; font-size: 18px; font-weight: 500}
+
 
         @media (max-width: 768px) {
             .carousel-inner img {
@@ -100,7 +102,7 @@
         <div class="container">
           <div class="row">
             <div class="col-12">
-              <h2>{{ $sala->nome }}</h2>
+              <h3>{{ $sala->nome }}</h3>
             </div>
             <div class="col-lg-12 mb-5">
                 @if($sala->imagens->isNotEmpty())
