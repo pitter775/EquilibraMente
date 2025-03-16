@@ -1,7 +1,7 @@
 <style>
 
 .btn-entrar {
-    background-color: #545e51 !important; /* Cor azul para chamar atenção */
+    background-color: #508540 !important; /* Cor azul para chamar atenção */
     color: #fff; /* Cor do texto */
     border-radius: 5px; /* Bordas arredondadas */
     padding: 10px 20px; /* Espaçamento interno */

@@ -42,7 +42,7 @@
 }
 
 .kanban-application .kanban-wrapper .kanban-container .kanban-board .kanban-board-header .kanban-title-board {
-  color : #545e51;
+  color : #508540;
   font-size : 1.1rem;
   padding : 0.5rem;
   font-weight : 500;
@@ -105,7 +105,7 @@
 }
 
 .kanban-application .kanban-wrapper .kanban-container .kanban-board .kanban-item i, .kanban-application .kanban-wrapper .kanban-container .kanban-board .kanban-item svg {
-  stroke : #545e51;
+  stroke : #508540;
 }
 
 .kanban-application .kanban-wrapper .kanban-container .kanban-board .kanban-item .kanban-text {
@@ -149,7 +149,7 @@
 }
 
 .kanban-application .update-item-sidebar .avatar-add-member i, .kanban-application .update-item-sidebar .avatar-add-member svg {
-  stroke : #545e51;
+  stroke : #508540;
 }
 
 .kanban-application .update-item-sidebar .comment-editor .ql-editor {

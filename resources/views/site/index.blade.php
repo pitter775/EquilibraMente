@@ -63,9 +63,7 @@
   </script>
     <style>
 
-        .icon-verde {
-                filter: sepia(70%) saturate(200%) hue-rotate(90deg) brightness(90%);
-            }
+  
         * {
             margin: 0;
             padding: 0;
@@ -258,7 +256,14 @@
 
         }
 
+      .icon-verde {
+                filter: sepia(70%) saturate(200%) hue-rotate(90deg) brightness(90%);
+            }
 
+        .icon-waht{
+             filter: sepia(100%) saturate(10%) hue-rotate(90deg) brightness(100%);
+             height: 20px; padding-right: 10px
+        }
 
 
     </style>
@@ -299,10 +304,14 @@
         </div>
     </header>
 
-    <section id="inicio">
-        <div class="text-overlay" style="margin-top: 60px">
-            <img src="/assets/img/logoescuro.png" alt="" class="logbanner" data-aos="fade">
-            <p style="font-size: 25px" data-aos="fade-up">Espaço Coworking para Profissionais da Saúde</p>
+    <section id="inicio" >
+        <div class="text-overlay" style="margin-top: 60px" >
+            <img src="/assets/img/logoescuro.png" alt="" class="logbanner" data-aos="fade" >
+            <p style="font-size: 25px" >Espaço Coworking para Profissionais da Saúde</p>
+
+            <a href="#" class=" about-btn" style="margin-top: 30px">  <img src="/assets/img/icons/whats.png" alt="" class="icon-waht" style="" > Chamar no Whats </a>
+           
+            
         </div>
         <div class="slides">
             <div class="slide active" style="background-image: url('/assets/img/salas/sala1.jfif');"></div>
@@ -368,7 +377,7 @@
             @if ($salas->count() > 0)
                 <div class="owl-carousel carousel-sala">
                     @foreach ($salas as $sala)
-                        <div class="item-sala" data-aos="fade-up">
+                        <div class="item-sala">
                             <div class="card-sala">
                                 @php
                                     $imagem = $sala->imagens->isNotEmpty() ? "url('{$sala->imagens->first()->imagem_base64}')" : "url('/img/default-sala.jpg')";
@@ -413,7 +422,7 @@
 
     <section id="comofunciona">
         <div class="container">
-            <div class="comofunciona comotext">
+            <div class="comofunciona comotext" data-aos="fade">
                 <div class="comofunciona-text">
                   <h2>Como funciona nossa plataforma <span>para alugar as salas.</span></h2>            
                 </div>
@@ -525,7 +534,7 @@
 
     </style>
 
-        <div class="container">
+        <div class="container" data-aos="fade">
             <div class="content col-xl-12 d-flex align-items-stretch">
                 <div class="contentg">
                     <h3>Ofereça o melhor atendimento <span>para seus pacientes</span></h3>                    
@@ -537,7 +546,7 @@
 
         <section id="profissionais" class="profissionais-section">
             
-            <div class="container">
+            <div class="container" data-aos="fade">
 
 
                 <div class="image-box"></div> <!-- Imagem como fundo -->
@@ -609,7 +618,7 @@
             }
 
     </style>
-    <section id="faq" class="faq">
+    <section id="faq" class="faq" data-aos="fade">
         <div class="container">
             <div class="row">
                 <div class="content col-xl-12 d-flex align-items-stretch">
@@ -643,7 +652,7 @@
         </div>
     </section>
 
-    <section id="sobre" class="testimonials section-bg" style="padding:10px; margin:0">
+    <section id="sobre" class="testimonials section-bg" style="padding:10px; margin:0" data-aos="fade">
         <div class="container mt-5">
 
         <div class=" mb-5" data-aos="fade-in" data-aos-delay="100">
@@ -816,26 +825,6 @@
         }
 
 
-
-
-        // fim banner
-
-
-
-        //como funciona
-
-        document.querySelectorAll('.step').forEach(step => {
-            const video = step.querySelector('video');
-
-            step.addEventListener('mouseenter', () => {
-                video.play();
-            });
-
-            step.addEventListener('mouseleave', () => {
-                video.pause();
-                video.currentTime = 0;
-            });
-        });
 
 
 

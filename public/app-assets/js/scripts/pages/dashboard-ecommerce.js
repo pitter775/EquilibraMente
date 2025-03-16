@@ -16,7 +16,7 @@ $(window).on('load', function () {
   var $budgetStrokeColor2 = '#dcdae3';
   var $goalStrokeColor2 = '#51e5a8';
   var $strokeColor = '#ebe9f1';
-  var $textHeadingColor = '#545e51';
+  var $textHeadingColor = '#508540';
   var $earningsStrokeColor2 = '#28c76f66';
   var $earningsStrokeColor3 = '#28c76f33';
 

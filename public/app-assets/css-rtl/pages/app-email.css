@@ -44,11 +44,11 @@
 
 .email-application .content-area-wrapper .sidebar .list-group .list-group-item:hover, .email-application .content-area-wrapper .sidebar .list-group .list-group-item:focus, .email-application .content-area-wrapper .sidebar .list-group .list-group-item.active {
   background : transparent;
-  color : #545e51;
+  color : #508540;
 }
 
 .email-application .content-area-wrapper .sidebar .list-group .list-group-item.active {
-  border-color : #545e51;
+  border-color : #508540;
 }
 
 .email-application .content-area-wrapper .content-right {
@@ -25241,7 +25241,7 @@
 }
 
 .email-application .app-action .action-right .dropdown-toggle {
-  color : #545e51;
+  color : #508540;
   white-space : normal;
 }
 

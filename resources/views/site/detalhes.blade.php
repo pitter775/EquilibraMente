@@ -50,12 +50,13 @@
             align-items: center;
         }
 
-        .mb-2 img {
-            border: 2px solid #ddd; /* Adiciona borda ao redor das imagens menores */
+        .menores {
+           
             transition: transform 0.3s ease, border-color 0.3s ease; /* Efeito suave ao passar o mouse */
+            
         }
 
-        .mb-2 img:hover {
+        .menores img:hover {
             transform: scale(1.05); /* Aumenta levemente a imagem ao passar o mouse */
             border-color: #007bff; /* Muda a cor da borda ao passar o mouse */
         }
@@ -64,7 +65,7 @@
             padding: 5px; /* Adiciona espaço entre as colunas */
         }
 
-        .sala-detalhes h3 { color: #777; font-size: 18px; font-weight: 500}
+        .sala-detalhes .titisala { color: #777; font-size: 18px; font-weight: 500; }
 
 
         @media (max-width: 768px) {
@@ -94,22 +95,30 @@
             h3{ font-size: 16px !important}
         }
 
+         .contentg h3 {
+            font-size: 20px;
+            color: #333;
+            font-weight: 600;
+        }
+        .contentg p { font-size: 15px; color: #555}
+        .contentg h3 span {
+            color: #216C2E;
+        }
+
   </style>
 
-    <main id="main" style="margin-top: 70px">
+    <main id="main" style="margin-top: 40px">
 
       <section class="sala-detalhes pb-0">
         <div class="container">
           <div class="row">
-            <div class="col-12">
-              <h3>{{ $sala->nome }}</h3>
-            </div>
-            <div class="col-lg-12 mb-5">
+      
+            <div class="col-lg-12 ">
                 @if($sala->imagens->isNotEmpty())
                     <div class="row">
                         <!-- Imagem principal do carrossel -->
                         <div class="col-lg-8 col-md-12">
-                            <div id="carouselSalaDetalhes" class="carousel slide" data-ride="carousel">
+                            <div id="carouselSalaDetalhes" class="carousel slide carousel-fade" data-ride="carousel">
                                 <div class="carousel-inner">
                                     @foreach($sala->imagens as $index => $imagem)
                                         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
@@ -129,43 +138,73 @@
                         </div>
 
                         <!-- Imagens menores na lateral -->
-                        <div class="col-lg-4">
-                            <div class="row"> <!-- Reduz o espaçamento entre imagens -->
-                                @foreach($sala->imagens->take(6) as $imagem)
-                                    <div class="col-6 mb-2">
-                                        <img src="{{ $imagem->imagem_base64 }}" class="img-fluid img-thumbnail" alt="Imagem da sala" style="cursor: pointer;" onclick="trocarImagemPrincipal('{{ $imagem->imagem_base64 }}')">
+                        <div class="col-lg-4 d-flex flex-column" style="padding:0 0 10px 10px">
+                            <div class="row">
+                                <!-- Primeira imagem grande -->
+                                <div class="col-12 menores">
+                                    @if(isset($sala->imagens[0]))
+                                        <img src="{{ $sala->imagens[0]->imagem_base64 }}" class="img-fluid rounded w-100 menores" 
+                                            alt="Imagem da sala" style="height: 90%;" 
+                                            onclick="trocarImagemPrincipal('{{ $sala->imagens[0]->imagem_base64 }}')">
+                                    @else
+                                        <div class="d-flex align-items-center justify-content-center rounded w-100" 
+                                            style="height: 140px; background-color: #f1f1f1; color: #777;">
+                                            Sem imagem
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding: 10px; margin-top: -20px">
+                                @for($i = 1; $i <= 4; $i++)
+                                    <div class="col-6 menores ">
+                                        @if(isset($sala->imagens[$i]))
+                                            <img src="{{ $sala->imagens[$i]->imagem_base64 }}" class="img-fluid rounded w-100 menores" 
+                                                alt="Imagem da sala" style=" height: 100px;" 
+                                                onclick="trocarImagemPrincipal('{{ $sala->imagens[$i]->imagem_base64 }}')">
+                                        @else
+                                            <div class="d-flex align-items-center justify-content-center rounded w-100" 
+                                                style="height: 100px; background-color: #f1f1f1; color: #777;">
+                                                <!-- Espaço vazio -->
+                                            </div>
+                                        @endif
                                     </div>
-                                @endforeach
+                                @endfor
                             </div>
                         </div>
 
+
+
+
+
+
+
                     </div>
                 @endif
+
+               <div class="contentg">
+                        <h3>Sobre a<span> {{ $sala->nome }}</span></h3>                    
+                    </div>
             </div>
 
           </div>
+         
         </div>
         <div style="background: #fff" >
             <div class="container">
               <div class="row">
-
                 <!-- Nome e Descrição da Sala -->
-                <div class="col-lg-8 mb-5">
-
-                  <h3 class="mt-4">Sobre {{ $sala->nome }}</h3>
-                    <div class="quill-content">
+                <div class="col-lg-8 mb-5 mt-3">                  
+                    <div>
                         <!-- Conteúdo completo inicialmente escondido -->
-                        <div id="descricao-completa" style="display: none;">
+                        <div id="descricao-completa">
                             {!! $sala->descricao !!}
                         </div>
-
-                        <!-- Botão para alternar -->
-                        <button id="toggle-descricao" class="btn btn-primary btn-sm mt-2">Ver descrição completa</button>
                     </div>
 
 
                     <hr>
-                    <h3 class="mb-4">Conveniências</h3>
+                
                     <div class="d-flex flex-wrap ">
                       
                           @forelse($sala->conveniencias as $conveniencia)
@@ -191,12 +230,32 @@
         
                     <div class="card p-4" style="margin-top: -40px">
                       <div class="row">
+                        <div class="col-12 d-flex justify-content-between align-items-center">
+                          <!-- Valor alinhado à esquerda -->
+                          <p class="mt-2 mb-4 mb-0" style="font-size:25px; color: #000">
+                              R$ {{ number_format($sala->valor, 2, ',', '.') }}/h
+                          </p>
+
+                          <!-- Metragem alinhada à direita -->
+                          <div class="d-flex align-items-center">
+                              <i class="fa-solid fa-ruler-combined me-2 pr-2" style="font-size: 15px; color: #76aa66"></i>
+                              <span style="font-size: 15px; color: #333;">45 m²</span>
+                          </div>
+                        </div>
                         <div class="col-12">
 
-                            
-                            <p class="mt-2 mb-4" ><span style="font-size:30px; color: #000">R$ {{ number_format($sala->valor, 2, ',', '.') }}</span> por hora</p>
+                        <a href="/login" class="btn btn-primary">Horários disponíveis</a>   
 
-                            <p> <strong>Endereço:</strong> {{ $sala->endereco->rua }}, {{ $sala->endereco->numero }}, {{ $sala->endereco->bairro }} - {{ $sala->endereco->cidade }}, {{ $sala->endereco->estado }}</p>
+
+                        </div>
+                      </div>
+                    
+                    </div>
+
+                    <div class="card p-4" style="margin-top: -20px">
+                        
+                            <p> <i class="fa-solid fa-map-marker-alt me-2 pr-1 mr-1" style="font-size: 15px; color: #76aa66"></i>
+                                {{ $sala->endereco->rua }}, {{ $sala->endereco->numero }}, {{ $sala->endereco->bairro }} - {{ $sala->endereco->cidade }}, {{ $sala->endereco->estado }}</p>
 
                               <iframe
                                   width="100%"
@@ -209,21 +268,21 @@
 
                             <div class="row mt-3">
                               <div class="col-lg-12 ">
-                                <h4 id="selected-date" class="mb-3 mt-3" style=" font-size: 16px">Selecione uma data no calendário.</h4>
+
+
+                                {{-- <h4 id="selected-date" class="mb-3 mt-3" style=" font-size: 16px">Selecione uma data no calendário.</h4>
                                 @if(auth()->check())
                                   <div id="calendar"></div>
                                 @else
                                   <p>Para ver a disponibilidade e fazer reservas, faça login.</p>
                                   <a href="/login" class="btn btn-primary">Entrar</a>                                  
-                                @endif
+                                @endif --}}
                               </div>
                             </div>
-                        </div>
-                      </div>
                     
                     </div>
 
-                    <div class="card p-4" style="margin-top: 0px">
+                    <div class="card p-4" style="margin-top: -20px">
                         <p class="text-success mb-2">
                             <i class="fas fa-lock"></i> Este é um ambiente seguro!
                         </p>
@@ -437,34 +496,6 @@ function confirmarReserva() {
       }
       window.trocarImagemPrincipal = trocarImagemPrincipal;
 
-      //alternar entre a descrição curta e completa
-      document.addEventListener('DOMContentLoaded', function () {
-        const descricaoCompleta = document.getElementById('descricao-completa');
-        const toggleButton = document.getElementById('toggle-descricao');
-
-        // Define o limite de caracteres para exibição inicial
-        const limiteCaracteres = 300; // Ajuste conforme necessário
-
-        // Clona o conteúdo completo e cria a versão curta
-        const descricaoOriginal = descricaoCompleta.innerHTML;
-        const descricaoCurta = descricaoOriginal.substring(0, limiteCaracteres) + '...';
-
-        // Exibe a descrição curta inicialmente
-        let descricaoVisivel = false;
-        descricaoCompleta.innerHTML = descricaoCurta;
-        descricaoCompleta.style.display = 'block';
-
-        // Alterna entre curta e completa
-        toggleButton.addEventListener('click', function () {
-            if (descricaoVisivel) {
-                descricaoCompleta.innerHTML = descricaoCurta;
-                toggleButton.textContent = 'Ver descrição completa';
-            } else {
-                descricaoCompleta.innerHTML = descricaoOriginal;
-                toggleButton.textContent = 'Ver descrição reduzida';
-            }
-            descricaoVisivel = !descricaoVisivel;
-        });
-    });
+    
   </script>
 @endpush

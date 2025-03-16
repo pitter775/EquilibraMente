@@ -18,11 +18,11 @@
 }
 
 .swiper-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active {
-  background-color : #545e51;
+  background-color : #508540;
 }
 
 .swiper-pagination.swiper-pagination-progressbar .swiper-pagination-progressbar-fill {
-  background-color : #545e51;
+  background-color : #508540;
 }
 
 .swiper-centered-slides.swiper-container .swiper-slide {
@@ -36,11 +36,11 @@
 }
 
 .swiper-centered-slides.swiper-container .swiper-slide.swiper-slide-active {
-  border : 2px solid #545e51;
+  border : 2px solid #508540;
 }
 
 .swiper-centered-slides.swiper-container .swiper-slide.swiper-slide-active i, .swiper-centered-slides.swiper-container .swiper-slide.swiper-slide-active svg {
-  color : #545e51;
+  color : #508540;
 }
 
 .swiper-centered-slides .swiper-button-next:after {
@@ -58,7 +58,7 @@
 
 .swiper-centered-slides .swiper-button-next:after, .swiper-centered-slides .swiper-button-prev:after {
   border-radius : 50%;
-  background-color : #545e51;
+  background-color : #508540;
   box-shadow : 0 2px 4px 0 rgba(34, 41, 47, 0.5) !important;
   background-size : 24px !important;
   height : 40px !important;
@@ -83,7 +83,7 @@
 
 .swiper-centered-slides-2.swiper-container .swiper-slide.swiper-slide-active {
   color : #FFFFFF;
-  background-color : #545e51 !important;
+  background-color : #508540 !important;
   box-shadow : 0 3px 6px 0 rgba(84, 94, 81, 0.5) !important;
 }
 
