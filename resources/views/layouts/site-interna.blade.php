@@ -134,7 +134,7 @@
         <div class="row">
 
           <div class="col-lg-4 col-md-6">
-            <div class="footer-info" data-aos="fade-up" data-aos-delay="50">
+            <div class="footer-info" >
               <img src="/assets/img/logoescuro.png" alt="" class="img-fluid mb-4" style=" width: 70%;"> 
               <div class="social-links mt-3">
                 <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
@@ -145,7 +145,7 @@
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="250">
+          <div class="col-lg-4 col-md-6 footer-links" >
               <h4>Nossos Serviços</h4>
               <ul>
                   <li><i class="bx bx-chevron-right"></i> Atendimento Personalizado</li>
@@ -157,7 +157,7 @@
           </div>
 
 
-          <div class="col-lg-4 col-md-6 footer-newsletter" data-aos="fade-up" data-aos-delay="350">
+          <div class="col-lg-4 col-md-6 footer-newsletter">
             <h4>Inscreva-se na nossa Newsletter</h4>
             <p>Fique por dentro das nossas ofertas, disponibilidade e Atualizações das salas.</p>
             <form action="" method="post">

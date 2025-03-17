@@ -164,17 +164,13 @@ html .content {
                                                 <div class="card">
                                                     <div class="card-header flex-column align-items-start">
                                                         <h4 class="card-title">Opções de Pagamento</h4>
-                                                        <p class="card-text text-muted mt-25">Escolha a forma de pagamento desejada</p>
+                                                        <p class="card-text text-muted mt-25">Ao confirmar a reserva, você será redirecionado para o PagBank, onde poderá escolher a forma de pagamento que preferir.</p>
                                                     </div>
                                                     <hr class="my-2" />
                                                     <div class="card-body">
                                                         <!-- Opções de Pagamento -->
-                                                 
-
-                                                        <!-- Campo oculto para enviar a forma de pagamento -->
-                                                        <input type="hidden" name="metodo_pagamento" id="metodo_pagamento_input" value="PIX">
-
-                                                        <div class="mt-5">
+                                  
+                                                        <div class="mt-3">
                                                             <div class="card ecommerce-card" style="grid-template-columns: 1fr 3fr !important;">
                                                                 <div class="item-img">
                                                                     <a href="{{ route('site.sala.detalhes', session('reserva.sala_id')) }}">

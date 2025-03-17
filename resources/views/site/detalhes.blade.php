@@ -319,7 +319,7 @@
             </div>
             <div class="modal-body">
               {{-- <h3 class="mb-4 mt-3"><span id="modalSalaNome">{{ $sala->nome }}</span></h3> --}}
-              <p>Escolha uma data</p>
+              <p style='font-size: 16px'>Escolha uma data</p>
 
               <p>
                   <span class="mr-0">
@@ -347,7 +347,7 @@
 
               <div id="divhorarios" style="display: none">
                   <hr>
-                   <p><i class="fas fa-clock"></i> Horários disponíveis para <span id='datasele'></span></p>
+                   <p><i class="fas fa-clock"></i> <span style='font-size: 16px'> Horários disponíveis para <span id='datasele'></span></span></p>
                    <div id="horarios-disponiveis">
                     <!-- Horários serão carregados aqui via AJAX -->
                   </div>
