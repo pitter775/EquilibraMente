@@ -244,7 +244,14 @@
                         </div>
                         <div class="col-12">
 
-                        <a href="/login" class="btn btn-primary">Horários disponíveis</a>   
+                        
+
+                        <a href="{{ auth()->check() ? '#' : route('login') }}" 
+                          class="btn btn-primary" 
+                          data-toggle="{{ auth()->check() ? 'modal' : '' }}" 
+                          data-target="{{ auth()->check() ? '#modalHorarios' : '' }}">
+                          Horários disponíveis
+                        </a>
 
 
                         </div>
@@ -305,28 +312,50 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="modalHorariosLabel">Selecione os horários</h5>
+              <h5 class="modal-title" id="modalHorariosLabel">Reservando - {{ $sala->nome }}</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h3 class="mb-4 mt-3"><span id="modalSalaNome">{{ $sala->nome }}</span></h3>
-              <p> 
-                    <span class="mr-5">
-                      <i class="fas fa-calendar-alt"></i> <!-- Ícone de calendário -->
-                      <strong>Data:</strong> <span id="modalDataReserva"></span>
-                    </span>
-                    <span style="float: right"><span   style="font-size: 18px; color: #000;"> R$ <span id="valorHora">{{ number_format($sala->valor, 2, ',', '.') }}</span></span> por hora</span>
+              {{-- <h3 class="mb-4 mt-3"><span id="modalSalaNome">{{ $sala->nome }}</span></h3> --}}
+              <p>Escolha uma data</p>
+
+              <p>
+                  <span class="mr-0">
+                      <div class="input-group" style="width: 140px;">
+                          <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                  <i class="fas fa-calendar-alt"></i> <!-- Ícone de calendário -->
+                              </span>
+                          </div>
+                          <input type="text" id="datepicker" class="form-control" placeholder="Data">
+                      </div>
+                  </span>
+
+                  <span style="float: right; margin-top: -30px">
+                      <span style="font-size: 18px; color: #000;">
+                          R$ <span id="valorHora">{{ number_format($sala->valor, 2, ',', '.') }}</span>
+                      </span>/h
+                  </span>
               </p>
+
+            
+
         
-              <p>Selecione os horários disponíveis para sua reserva.</p>
-              
-              <div id="horarios-disponiveis">
-                <!-- Horários serão carregados aqui via AJAX -->
+             
+
+              <div id="divhorarios" style="display: none">
+                  <hr>
+                   <p><i class="fas fa-clock"></i> Horários disponíveis para <span id='datasele'></span></p>
+                   <div id="horarios-disponiveis">
+                    <!-- Horários serão carregados aqui via AJAX -->
+                  </div>
               </div>
+              
+         
             </div>
-            <div class="modal-footer d-flex justify-content-between align-items-center">
+            <div class="modal-footer d-flex justify-content-between align-items-center mt-4">
                 <p class="mb-0"><strong>Total:</strong> R$ <span id="valorTotal">0,00</span></p>
                 <div>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -350,57 +379,43 @@
         let horariosSelecionados = []; // Array para armazenar os horários selecionados
         const valorPorHora = {{ $sala->valor }}; // Valor por hora da sala
 
-        document.addEventListener('DOMContentLoaded', function () {
-          var calendarEl = document.getElementById('calendar');
-          var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            selectable: true,
-            locale: 'pt-br',
-            validRange: {
-              start: new Date().toISOString().split('T')[0] // Bloqueia datas passadas
-            },
-            headerToolbar: {
-              // Botões de navegação (anterior e próximo)
-              left: 'title',   // Título centralizado
-              right: 'prev,next'        // Remove o botão "Today" e visualizações desnecessárias
-            },
-            select: function(info) {
-              var selectedDate = info.startStr;
-              mostrarModalHorarios(selectedDate);
-            }
-          });
-          calendar.render();
-        });
-
-
-
         function mostrarModalHorarios(data_reserva) {
-          horariosSelecionados = []; // Reseta a seleção de horários quando abre a modal
-          $('#modalHorarios').modal('show');
-          // Converte a data para o formato brasileiro (dd/mm/yyyy)
-            const dataFormatada = new Date(data_reserva).toLocaleDateString('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            });
-          document.getElementById('modalDataReserva').innerText = dataFormatada; // Mostra a data selecionada
+            horariosSelecionados = []; // Reseta a seleção de horários quando abre a modal
 
-          fetch(`/horarios-disponiveis/{{ $sala->id }}/${data_reserva}`)
-            .then(response => response.json())
-            .then(data => {
-              let horariosDisponiveisContainer = document.getElementById('horarios-disponiveis');
-              horariosDisponiveisContainer.innerHTML = '';
-              data.horarios.forEach(horario => {
-                horariosDisponiveisContainer.innerHTML += `
-                  <button class="btn btn-secondary horario-btn bthorasdis" onclick="selecionarHorario('${data_reserva}', '${horario.inicio}', '${horario.fim}', this)">
-                    ${horario.inicio} - ${horario.fim}
-                  </button>
-                `;
-              });
-              atualizarValorTotal(); // Reseta o valor total ao abrir a modal
-            })
-            .catch(error => console.error('Erro:', error));
+            // Converte "20/03/2025" para "2025-03-20"
+            const partesData = data_reserva.split("/");
+            const dataFormatada = `${partesData[2]}-${partesData[1]}-${partesData[0]}`;
+
+            //document.getElementById('modalDataReserva').innerText = data_reserva; // Mostra a data formatada no modal
+
+            fetch(`/horarios-disponiveis/{{ $sala->id }}/${dataFormatada}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erro na API: ${response.status} - ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    let horariosDisponiveisContainer = document.getElementById('horarios-disponiveis');
+                    horariosDisponiveisContainer.innerHTML = '';
+
+                    document.getElementById('divhorarios').style.display = "block";
+                    document.getElementById('datasele').innerText = data_reserva;
+
+                    data.horarios.forEach(horario => {
+                        horariosDisponiveisContainer.innerHTML += `
+                            <button class="btn btn-secondary horario-btn bthorasdis" 
+                                onclick="selecionarHorario('${data_reserva}', '${horario.inicio}', '${horario.fim}', this)">
+                                ${horario.inicio} - ${horario.fim}
+                            </button>
+                        `;
+                    });
+
+                    atualizarValorTotal();
+                })
+                .catch(error => console.error('Erro:', error));
         }
+
 
         function selecionarHorario(data_reserva, hora_inicio, hora_fim, button) {
           const horario = { data_reserva, hora_inicio, hora_fim };
@@ -428,62 +443,63 @@
           document.getElementById('valorTotal').innerText = total.toFixed(2).replace('.', ',');
         }
 
-function confirmarReserva() {
-    if (horariosSelecionados.length === 0) {
-        toastr.warning('Por favor, selecione pelo menos um horário.');
-        return;
-    }
-
-    fetch('/reserva/revisao', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({
-            sala_id: {{ $sala->id }},
-            horarios: horariosSelecionados
-        })
-    })
-    .then(async response => {
-        console.log('response', response);
-
-        // Verifica se a resposta não é JSON válido
-        if (!response.ok) {
-            if (response.status === 401) {
-                throw new Error('Usuário não autenticado. Faça login para continuar.');
+        function confirmarReserva() {
+            if (horariosSelecionados.length === 0) {
+                toastr.warning('Por favor, selecione pelo menos um horário.');
+                return;
             }
-            if (response.status === 403) {
-                throw new Error('Acesso negado. Apenas clientes podem realizar reservas.');
-            }
-            throw new Error(`Erro no servidor (status: ${response.status}).`);
+
+            // Converter datas para YYYY-MM-DD antes de enviar
+            let horariosFormatados = horariosSelecionados.map(horario => {
+                let partesData = horario.data_reserva.split("/"); // Divide "20/03/2025" em ["20", "03", "2025"]
+                let dataFormatada = `${partesData[2]}-${partesData[1]}-${partesData[0]}`; // Converte para "2025-03-20"
+
+                return {
+                    data_reserva: dataFormatada,
+                    hora_inicio: horario.hora_inicio,
+                    hora_fim: horario.hora_fim
+                };
+            });
+
+            console.log('Horários Formatados para envio:', JSON.stringify(horariosFormatados, null, 2)); // Veja se as datas estão corretas
+
+            $.ajax({
+                url: '/reserva/revisao',
+                type: 'POST',
+                data: {
+                    sala_id: {{ $sala->id }},
+                    horarios: horariosFormatados, // Agora está no formato correto!
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.redirect) {
+                        window.location.href = response.redirect;
+                    } else if (response.error) {
+                        toastr.error(response.error);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erro no AJAX:', xhr.responseText);
+                    toastr.error('Erro ao processar a reserva. Tente novamente.');
+                }
+            });
         }
 
-        // Tenta converter o corpo da resposta para JSON
-        try {
-            const data = await response.json();
-            console.log('data', data);
-
-            // Verifica as condições da resposta JSON
-            if (data.redirect) {
-                window.location.href = data.redirect;
-            } else if (data.error) {
-                toastr.error(data.error);
-            } else {
-                toastr.error('Erro desconhecido ao continuar.');
-            }
-        } catch (err) {
-            throw new Error('Resposta do servidor não está no formato JSON esperado.');
-        }
-    })
-    .catch(error => {
-        console.error('Erro no fetch:', error.message);
-        toastr.error(error.message || 'Erro inesperado. Tente novamente.');
-    });
-}
 
 
 
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#datepicker", {
+                enableTime: false, // Apenas data
+                dateFormat: "d/m/Y", // Formato brasileiro
+                minDate: "today", // Bloqueia datas passadas
+                locale: "pt", // Deixa os nomes dos meses e dias em português
+                onChange: function(selectedDates, dateStr, instance) {
+                    mostrarModalHorarios(dateStr); // Chama a função passando a data selecionada
+                }
+            });
+        });
 
 
       @endif
@@ -495,6 +511,9 @@ function confirmarReserva() {
           }
       }
       window.trocarImagemPrincipal = trocarImagemPrincipal;
+
+
+
 
     
   </script>

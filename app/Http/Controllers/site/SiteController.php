@@ -10,6 +10,7 @@ use App\Models\Sala;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Models\DebugLog;
+use Illuminate\Support\Facades\Auth;
 
 class SiteController extends Controller
 {
@@ -26,13 +27,14 @@ class SiteController extends Controller
         // Busca a sala pelo ID, ou retorna 404 se não encontrada
         $sala = Sala::with('conveniencias')->findOrFail($id);
 
+        
+
         // Renderiza uma view para exibir os detalhes da sala
         return view('site.detalhes', compact('sala'));
     }
 
     public function revisao(Request $request)
     {
-    
         $validated = $request->validate([
             'sala_id' => 'required|exists:salas,id',
             'horarios' => 'required|array|min:1',
@@ -45,23 +47,24 @@ class SiteController extends Controller
             $sala = Sala::with('imagens')->findOrFail($validated['sala_id']);
             $valorTotal = count($validated['horarios']) * $sala->valor;
     
-            // $imagemPrincipal = $sala->imagens->where('imagem_base64', true)->first();
-    
+            // Salva os dados da reserva na sessão
             session([
                 'reserva' => [
                     'sala_id' => $validated['sala_id'],
                     'sala_nome' => $sala->nome,
-                    // 'imagem_principal' => $imagemPrincipal ? $imagemPrincipal->imagem_base64 : 'default.jpg',
                     'horarios' => $validated['horarios'],
                     'valor_total' => $valorTotal,
                 ],
             ]);
     
-            return response()->json(['redirect' => route('reserva.revisao')]);
+            // Em vez de redirecionar diretamente, retorna um JSON com a URL
+            return response()->json(['redirect' => route('reserva.revisao')], 200);
+            
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Erro interno.', 'message' => $e->getMessage()], 500);
+            return response()->json(['error' => 'Erro ao processar a reserva.'], 500);
         }
     }
+    
     
     public function exibirRevisao()
     {

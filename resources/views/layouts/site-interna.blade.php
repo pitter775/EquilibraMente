@@ -197,6 +197,7 @@
   <script src="{{ asset('app-assets/vendors/js/extensions/moment.min.js') }}"></script>
   <script src="{{ asset('app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
   <script src="{{ asset('app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/l10n/pt.js"></script>
   {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/locale/pt-br.min.js"></script> --}}
   
   <script src="../../../app-assets/vendors/js/extensions/toastr.min.js"></script>

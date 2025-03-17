@@ -169,14 +169,7 @@ html .content {
                                                     <hr class="my-2" />
                                                     <div class="card-body">
                                                         <!-- Opções de Pagamento -->
-                                                        <div class="custom-control custom-radio mb-2">
-                                                            <input type="radio" id="payment-pix" name="paymentOptions" class="custom-control-input" value="PIX" checked />
-                                                            <label class="custom-control-label" for="payment-pix">Pix</label>
-                                                        </div>
-                                                        <div class="custom-control custom-radio">
-                                                            <input type="radio" id="payment-card" name="paymentOptions" class="custom-control-input" value="CREDIT_CARD" />
-                                                            <label class="custom-control-label" for="payment-card">Cartão de Crédito ou Débito</label>
-                                                        </div>
+                                                 
 
                                                         <!-- Campo oculto para enviar a forma de pagamento -->
                                                         <input type="hidden" name="metodo_pagamento" id="metodo_pagamento_input" value="PIX">
