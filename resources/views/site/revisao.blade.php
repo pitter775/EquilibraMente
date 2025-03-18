@@ -164,7 +164,7 @@ html .content {
                                                 <div class="card">
                                                     <div class="card-header flex-column align-items-start">
                                                         <h4 class="card-title">Opções de Pagamento</h4>
-                                                        <p class="card-text text-muted mt-25">Ao confirmar a reserva, você será redirecionado para o PagBank, onde poderá escolher a forma de pagamento que preferir.</p>
+                                                        <p class="card-text text-muted mt-25">Ao confirmar a reserva, você será redirecionado para o <strong>PagBank</strong>, onde poderá escolher a forma de pagamento que preferir.</p>
                                                     </div>
                                                     <hr class="my-2" />
                                                     <div class="card-body">

@@ -309,10 +309,21 @@
 
       <!-- Modal para seleção de horários -->
       <div class="modal fade" id="modalHorarios" tabindex="-1" role="dialog" aria-labelledby="modalHorariosLabel" aria-hidden="true">
+
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="modalHorariosLabel">Reservando - {{ $sala->nome }}</h5>
+                   <span class="avatar">
+                      @if(auth()->check())
+                        @if(Auth::user()->photo == null)
+                          <img src=" {{asset('app-assets/images/avatars/avatar.png')}}" alt="avatar" height="40" width="40">
+                        @endif
+                        @if(Auth::user()->photo !== null)
+                          <img src="{{ Auth::user()->photo }}" alt="avatar" height="40" width="40">
+                        @endif
+                      @endif
+                  </span>
+              <h5 class="modal-title ml-3 mt-2" id="modalHorariosLabel">Reservando - {{ $sala->nome }}</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -345,10 +356,14 @@
         
              
 
-              <div id="divhorarios" style="display: none">
+              <div style="min-height: 170px;">
                   <hr>
-                   <p><i class="fas fa-clock"></i> <span style='font-size: 16px'> Horários disponíveis para <span id='datasele'></span></span></p>
+                   <p id="divhorarios" style="display: none"><i class="fas fa-clock"></i> <span style='font-size: 16px'> Horários disponíveis para -> <span id='datasele'></span></span></p>
                    <div id="horarios-disponiveis">
+                
+                    <div class="text-center mt-4">
+                        Aguardando selecionar a data para exibir os horários...
+                    </div>
                     <!-- Horários serão carregados aqui via AJAX -->
                   </div>
               </div>
