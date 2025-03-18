@@ -374,6 +374,8 @@
                 </div>
             </div>
 
+   
+
             @if ($salas->count() > 0)
                 <div class="owl-carousel carousel-sala">
                     @foreach ($salas as $sala)
@@ -388,8 +390,8 @@
 
                                     <div class="info-linha">
                                         <span>
-                                            <img src="/assets/img/icons/mundo.png" class="icon-verde" style="width: 15px;">
-                                            Bela Vista, São Paulo - SP
+                                            <img src="/assets/img/icons/mundo.png" class="icon-verde" style="width: 15px;">                            
+                                           {{ $sala->endereco->bairro }}, {{ $sala->endereco->cidade }} - {{ $sala->endereco->estado }}
                                         </span>
                                         <span class="metragem">
                                             <img src="/assets/img/icons/metragem.png" class="icon-verde" style="width: 15px;">
@@ -401,7 +403,7 @@
 
                                     <div class="info-linha">
                                         <span>
-                                        <h4>R$ 80,00/h</h4>
+                                        <h4>R$ {{$sala->valor}}/h</h4>
                                         </span>
                                         <span class="metragem">
                                             <a href="{{ route('site.sala.detalhes', $sala->id) }}" class=" about-btn">Ver Detalhes</a>
