@@ -304,7 +304,7 @@
 @endpush
 
 @push('js_page')
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
     <script src="../../../app-assets/js/scripts/pages/app-ge-salas.js"></script>
     <script src="../../../app-assets/js/scripts/forms/form-quill-editor.js"></script>
 
