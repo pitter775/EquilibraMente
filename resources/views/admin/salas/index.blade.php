@@ -48,7 +48,7 @@
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel17">Adicionar Nova Sala</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span >&times;</span>
                     </button>
                 </div>
                     <form class="add-new-sala modal-content pt-0" method="POST" id="add-new-sala-form" enctype="multipart/form-data" action="{{ route('salas.store') }}">                

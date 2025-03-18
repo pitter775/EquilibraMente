@@ -127,11 +127,11 @@
                                     @endforeach
                                 </div>
                                 <a class="carousel-control-prev" href="#carouselSalaDetalhes" role="button" data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="carousel-control-prev-icon"></span>
                                     <span class="sr-only">Anterior</span>
                                 </a>
                                 <a class="carousel-control-next" href="#carouselSalaDetalhes" role="button" data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="carousel-control-next-icon" ></span>
                                     <span class="sr-only">Próximo</span>
                                 </a>
                             </div>
@@ -308,7 +308,7 @@
       </section>
 
       <!-- Modal para seleção de horários -->
-      <div class="modal fade" id="modalHorarios" tabindex="-1" role="dialog" aria-labelledby="modalHorariosLabel" aria-hidden="true">
+      <div class="modal fade" id="modalHorarios" tabindex="-1" role="dialog" aria-labelledby="modalHorariosLabel" >
 
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
@@ -325,7 +325,7 @@
                   </span>
               <h5 class="modal-title ml-3 mt-2" id="modalHorariosLabel">Reservando - {{ $sala->nome }}</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                <span >&times;</span>
               </button>
             </div>
             <div class="modal-body">
