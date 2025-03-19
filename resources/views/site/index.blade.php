@@ -273,10 +273,14 @@
         }
 
 @media (max-width: 768px) {
+    .comofunciona{
+
+    }
     .comotext {
         flex-direction: column; /* Empilha os elementos */
         align-items: center;
         text-align: center;
+        padding: 0;
     }
 
     .comofunciona-text {
@@ -521,68 +525,71 @@
 
     <style>
         .profissionais-section {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 450px;
-            padding: 40px 20px;
-        }
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 450px;
+    padding: 40px 20px;
+    flex-wrap: wrap;
+}
 
-        .profissionais-section .container {
-        
-            display: flex;
-            align-items: center;
-            position: relative;
-            justify-content: center;
-        }
+/* Container alinhado corretamente */
+.profissionais-section .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1200px;
+    width: 100%;
+    position: relative;
+}
 
-        /* Imagem no fundo */
-        .image-box {
-            width: 50%;
-            height: 400px;
-            background: url('/assets/img/960x0.jpg') center center no-repeat;
-            background-size: cover; /* Maior para preencher melhor */
-            border-radius: 8px;
-            position: absolute;
-            left: 40px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 1;
-        }
+/* Imagem no fundo */
+.image-box {
+    width: 50%;
+    height: 400px;
+    background: url('/assets/img/960x0.jpg') center center no-repeat;
+    background-size: cover;
+    border-radius: 8px;
+    position: relative;
+    z-index: 1;
+}
 
-        /* Caixa de texto sobreposta */
-        .profissionais-section .content {
-            width: 50%;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
-            position: relative;
-            z-index: 2; /* Para ficar acima da imagem */
-            
-            margin-left: 40%; /* Move a div um pouco para a direita */
-        }
+/* Caixa de texto sobreposta */
+.profissionais-section .content {
+    width: 45%;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+}
 
-        .profissionais-section h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
+/* Lista de profissionais */
+.profissionais-section ul {
+    list-style: none;
+    padding: 0;
+}
 
-        .profissionais-section ul {
-            list-style: none;
-            padding: 0;
-        }
+.profissionais-section ul li {
+    font-size: 16px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        .profissionais-section ul li {
-            font-size: 16px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+/* Ícones */
+.icon-prof {
+    width: 30px;
+    height: auto;
+}
 
-        /* Responsividade */
+/* ✅ RESPONSIVO */
 @media (max-width: 768px) {
     .profissionais-section {
         flex-direction: column;
@@ -593,41 +600,36 @@
     .profissionais-section .container {
         flex-direction: column;
         align-items: center;
-        text-align: center;
+        text-align: left;
         position: relative;
     }
 
     .image-box {
-        width: 110%;  
+        width: 100%;
+        height: 250px;
         border-radius: 10px;
-        top: 180px;
         position: relative;
-        margin-left: -50px;
         z-index: 1;
+        margin-top: -40%;
     }
 
     .profissionais-section .content {
         width: 90%;
-        height: 400px;
         padding: 20px;
-        position: absolute;       
+        position: absolute;
         background: white;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
-        top: 200px;  
+        margin-top: 60%;
+        transform: translateY(-50%);
         z-index: 2;
-               margin-left: 20px;
     }
-    .quadroesquerdo p{ text-align: left; margin-bottom: 20px}
 
     .profissionais-section ul li {
-
-        margin-top: 10px
-        
+        justify-content: left;
     }
-
-    #faq{
-        margin-top: 200px
+    #faq{ 
+        margin-top: 60%;
     }
 
     /* Evita rolagem horizontal */
