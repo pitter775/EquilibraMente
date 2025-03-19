@@ -525,14 +525,14 @@
 
     <style>
         .profissionais-section {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 450px;
-    padding: 40px 20px;
-    flex-wrap: wrap;
-}
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 450px;
+            padding: 40px 20px;
+            flex-wrap: wrap;
+        }
 
 /* Container alinhado corretamente */
 .profissionais-section .container {
@@ -551,7 +551,8 @@
     background: url('/assets/img/960x0.jpg') center center no-repeat;
     background-size: cover;
     border-radius: 8px;
-    position: relative;
+    position: absolute;
+    left: 5%;
     z-index: 1;
 }
 
@@ -606,11 +607,12 @@
 
     .image-box {
         width: 100%;
-        height: 250px;
+        height: 450px;
         border-radius: 10px;
         position: relative;
+        left: 0;
         z-index: 1;
-        margin-top: -40%;
+        margin-top: 0px;
     }
 
     .profissionais-section .content {
@@ -620,7 +622,7 @@
         background: white;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
-        margin-top: 60%;
+        margin-top: 200px;
         transform: translateY(-50%);
         z-index: 2;
     }
@@ -629,7 +631,7 @@
         justify-content: left;
     }
     #faq{ 
-        margin-top: 60%;
+        margin-top: 180px !important;
     }
 
     /* Evita rolagem horizontal */
@@ -640,7 +642,7 @@
 
     </style>
 
-        <div class="container" data-aos="fade">
+        <div class="container mb-3" data-aos="fade">
             <div class="content col-xl-12 d-flex align-items-stretch">
                 <div class="contentg">
                     <h3>Ofereça o melhor atendimento <span>para seus pacientes</span></h3>                    
@@ -724,7 +726,7 @@
             }
 
     </style>
-    <section id="faq" class="faq" data-aos="fade">
+    <section id="faq" class="faq mt-3" data-aos="fade">
         <div class="container">
             <div class="row">
                 <div class="content col-xl-12 d-flex align-items-stretch">
@@ -865,7 +867,7 @@
 
             <div class="col-lg-4 col-md-6 footer-newsletter" data-aos="fade-up" data-aos-delay="350">
             <h4>Inscreva-se na nossa Newsletter</h4>
-            <p>Fique por dentro das nossas ofertas, disponibilidade e Atualizações das salas.</p>
+            <p>Fique por dentro das nossas novidades, disponibilidade e atualizações das salas.</p>
             <form action="/newsletter" method="post">
                 <input type="email" name="email"><input type="submit" value="Inscrever-se">
             </form>

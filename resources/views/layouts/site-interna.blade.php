@@ -159,7 +159,7 @@
 
           <div class="col-lg-4 col-md-6 footer-newsletter">
             <h4>Inscreva-se na nossa Newsletter</h4>
-            <p>Fique por dentro das nossas ofertas, disponibilidade e Atualizações das salas.</p>
+            <p>Fique por dentro das nossas novidades, disponibilidade e atualizações das salas.</p>
             <form action="" method="post">
               <input type="email" name="email"><input type="submit" value="Inscrever-se">
             </form>
