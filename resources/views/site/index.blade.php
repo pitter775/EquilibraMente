@@ -154,6 +154,13 @@
             opacity: 1;
         }
 
+
+
+
+
+
+
+
         #comofunciona {
             position: relative;
             margin-top: -100px;
@@ -256,14 +263,75 @@
 
         }
 
-      .icon-verde {
-                filter: sepia(70%) saturate(200%) hue-rotate(90deg) brightness(90%);
-            }
+        .icon-verde {
+                    filter: sepia(70%) saturate(200%) hue-rotate(90deg) brightness(90%);
+                }
 
         .icon-waht{
-             filter: sepia(100%) saturate(10%) hue-rotate(90deg) brightness(100%);
-             height: 20px; padding-right: 10px
+                filter: sepia(100%) saturate(10%) hue-rotate(90deg) brightness(100%);
+                height: 20px; padding-right: 10px
         }
+
+@media (max-width: 768px) {
+    .comotext {
+        flex-direction: column; /* Empilha os elementos */
+        align-items: center;
+        text-align: center;
+    }
+
+    .comofunciona-text {
+        margin-top: 80px;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px; /* Dá espaço entre o título e os passos */
+    }
+
+    .steps {
+        width: 100%; /* Ocupa toda a largura disponível */
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .step {
+        width: 90%;
+        max-width: 400px;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        text-align: left;
+        gap: 15px;
+    }
+
+    .step img {
+        width: 50px;
+        height: auto;
+    }
+
+    .step p {
+        margin: 0;
+        font-size: 14px;
+        flex: 1;
+    }
+
+
+
+
+    .profissionais-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+
+
+    .quadroesquerdo{
+
+    }
+
+
+}
+
+
 
 
     </style>
@@ -277,7 +345,7 @@
         <div class="container d-flex align-items-center hero-content">
 
         <div class="logo mr-auto">
-            <a href="/"><img src="/assets/img/logotextopp.png" style="opacity: 0;"> </a>
+            <a href="/"><img src="/assets/img/logotextopp.png" style="opacity: 0; padding: 13px"> </a>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="index.html"><img src="/assets/img/logo.png" alt="" class="img-fluid"></a>-->
         </div>
@@ -515,24 +583,58 @@
         }
 
         /* Responsividade */
-        @media (max-width: 768px) {
-            .profissionais-section .container {
-                flex-direction: column;
-                text-align: center;
-            }
+@media (max-width: 768px) {
+    .profissionais-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 15px;
+    }
 
-            .image-box {
-                width: 100%;
-                height: 250px;
-                position: static;
-                transform: none;
-            }
+    .profissionais-section .container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        position: relative;
+    }
 
-            .profissionais-section .content {
-                width: 100%;
-                padding: 20px;
-            }
-        }
+    .image-box {
+        width: 110%;  
+        border-radius: 10px;
+        top: 180px;
+        position: relative;
+        margin-left: -50px;
+        z-index: 1;
+    }
+
+    .profissionais-section .content {
+        width: 90%;
+        height: 400px;
+        padding: 20px;
+        position: absolute;       
+        background: white;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        top: 200px;  
+        z-index: 2;
+               margin-left: 20px;
+    }
+    .quadroesquerdo p{ text-align: left; margin-bottom: 20px}
+
+    .profissionais-section ul li {
+
+        margin-top: 10px
+        
+    }
+
+    #faq{
+        margin-top: 200px
+    }
+
+    /* Evita rolagem horizontal */
+    body {
+        overflow-x: hidden;
+    }
+}
 
     </style>
 
@@ -553,7 +655,7 @@
 
                 <div class="image-box"></div> <!-- Imagem como fundo -->
                 
-                <div class="content">
+                <div class="content quadroesquerdo">
                     <p>Atenda seus clientes em um ambiente confortável, sofisticado e privado. Nosso espaço é ideal para profissionais liberais da área da saúde, incluindo:</p>
                     
                     <ul>

@@ -11,13 +11,13 @@
 
 
 <!-- Modal para Adicionar/Editar Usuário -->
-<div class="modal fade" id="newUserModal" tabindex="-1" aria-labelledby="newUserModalLabel" aria-hidden="true">
+<div class="modal fade" id="newUserModal" tabindex="-1" aria-labelledby="newUserModalLabel">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="newUserModalLabel">Novo Usuário</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span >&times;</span>
                 </button>
             </div>
             <h3 class="mt-2 ml-2">Cadastro de Usuários</h3>
