@@ -5,7 +5,8 @@
 @section('content')
 
   <style>
-      .bthorasdis { margin: 5px}
+
+ 
       .fc-toolbar-title { font-size: 14px !important}
       .preco {
           font-family: Arial, sans-serif;
@@ -102,6 +103,8 @@
                 border-radius: 8px; /* Também arredonda as bordas da imagem principal, caso necessário */
             }
             h3{ font-size: 16px !important}
+
+            .totalreserv{ margin-bottom: 10px !important}
         }
 
       
@@ -377,7 +380,7 @@
 
               <p>
                   <span class="mr-0">
-                      <div class="input-group" style="width: 140px;">
+                      <div class="input-group" style="width: 160px;">
                           <div class="input-group-prepend">
                               <span class="input-group-text">
                                   <i class="fas fa-calendar-alt"></i> <!-- Ícone de calendário -->
@@ -401,7 +404,7 @@
 
               <div style="min-height: 170px;">
                   <hr>
-                   <p id="divhorarios" style="display: none"><i class="fas fa-clock"></i> <span style='font-size: 16px'> Horários disponíveis para -> <span id='datasele'></span></span></p>
+                   <p id="divhorarios" style="display: none"><i class="fas fa-clock"></i> <span style='font-size: 13px'> Horários disponíveis para -> <b><span id='datasele'></span></b></span></p>
                    <div id="horarios-disponiveis">
                 
                     <div class="text-center mt-4">
@@ -414,7 +417,7 @@
          
             </div>
             <div class="modal-footer d-flex justify-content-between align-items-center mt-4">
-                <p class="mb-0"><strong>Total:</strong> R$ <span id="valorTotal">0,00</span></p>
+                <p class="mb-0 totalreserv"><strong>Total:</strong> R$ <span id="valorTotal">0,00</span></p>
                 <div>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-primary" onclick="confirmarReserva()">Reservar</button>
@@ -464,9 +467,10 @@
                         horariosDisponiveisContainer.innerHTML += `
                             <button class="btn btn-secondary horario-btn bthorasdis" 
                                 onclick="selecionarHorario('${data_reserva}', '${horario.inicio}', '${horario.fim}', this)">
-                                ${horario.inicio} - ${horario.fim}
+                                ${horario.inicio.substring(0, 2)} - ${horario.fim.substring(0, 2)}
                             </button>
                         `;
+
                     });
 
                     atualizarValorTotal();
