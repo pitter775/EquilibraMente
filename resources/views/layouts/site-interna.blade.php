@@ -93,11 +93,7 @@
     <div class="container d-flex align-items-center hero-content">
 
       <div class="logo mr-auto">
-        {{-- <h1 class="text-light"><a href="/"><span>Equilibra Mente</span></a></h1> --}}
-          {{-- <a href="/"><img src="/assets/img/logofinoescuro.png" style="height: 30px"> </a> --}}
-          <a href="/"><img src="/assets/img/logotextopp.png" > </a>
-        <!-- Uncomment below if you prefer to use an image logo -->
-        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        <a href="/"><img src="/assets/img/logotextopp.png" style="opacity: 0; padding: 13px"> </a>
       </div>
 
       <nav class="nav-menu d-none d-lg-block">

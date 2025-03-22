@@ -67,8 +67,17 @@
 
         .sala-detalhes .titisala { color: #777; font-size: 18px; font-weight: 500; }
 
+        #divvalorP {display: none;}
+        @media (max-width: 968px) {
 
-        @media (max-width: 768px) {
+            #divvalor {display: none;}
+             #divvalorP {display: block !important;}
+
+            .sala-detalhes { margin-top: 40px}
+
+            .contentg h3 { margin-top: 40px}
+
+            .imgspequenas { display: none !important}
             .carousel-inner img {
                 max-height: 250px; /* Reduz a altura da imagem principal em telas menores */
             }
@@ -94,6 +103,8 @@
             }
             h3{ font-size: 16px !important}
         }
+
+      
 
          .contentg h3 {
             font-size: 20px;
@@ -138,7 +149,7 @@
                         </div>
 
                         <!-- Imagens menores na lateral -->
-                        <div class="col-lg-4 d-flex flex-column" style="padding:0 0 10px 10px">
+                        <div class="col-lg-4 d-flex flex-column imgspequenas" style="padding:0 0 10px 10px">
                             <div class="row">
                                 <!-- Primeira imagem grande -->
                                 <div class="col-12 menores">
@@ -155,7 +166,7 @@
                                 </div>
                             </div>
 
-                            <div class="row" style="padding: 10px; margin-top: -20px">
+                            <div class="row imgspequenas" style="padding: 10px; margin-top: -20px">
                                 @for($i = 1; $i <= 4; $i++)
                                     <div class="col-6 menores ">
                                         @if(isset($sala->imagens[$i]))
@@ -193,9 +204,41 @@
         <div style="background: #fff" >
             <div class="container">
               <div class="row">
+
+               
                 <!-- Nome e Descrição da Sala -->
                 <div class="col-lg-8 mb-5 mt-3">                  
                     <div>
+                     <div id="divvalorP" class="card p-4">
+                    <div class="row">
+                    <div class="col-12 d-flex justify-content-between align-items-center">
+                        <!-- Valor alinhado à esquerda -->
+                        <p class="mt-2 mb-4 mb-0" style="font-size:25px; color: #000">
+                            R$ {{ number_format($sala->valor, 2, ',', '.') }}/h
+                        </p>
+
+                        <!-- Metragem alinhada à direita -->
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-ruler-combined me-2 pr-2" style="font-size: 15px; color: #76aa66"></i>
+                            <span style="font-size: 15px; color: #333;">45 m²</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+
+                    
+
+                    <a href="{{ auth()->check() ? '#' : route('login') }}" 
+                        class="btn btn-primary" 
+                        data-toggle="{{ auth()->check() ? 'modal' : '' }}" 
+                        data-target="{{ auth()->check() ? '#modalHorarios' : '' }}">
+                        Horários disponíveis
+                    </a>
+
+
+                    </div>
+                    </div>
+                
+                </div>
                         <!-- Conteúdo completo inicialmente escondido -->
                         <div id="descricao-completa">
                             {!! $sala->descricao !!}
@@ -228,7 +271,7 @@
 
                   <div class="row">
         
-                    <div class="card p-4" style="margin-top: -40px">
+                    <div id="divvalor" class="card p-4" style="margin-top: -40px">
                       <div class="row">
                         <div class="col-12 d-flex justify-content-between align-items-center">
                           <!-- Valor alinhado à esquerda -->
