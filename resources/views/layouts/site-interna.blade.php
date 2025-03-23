@@ -7,23 +7,24 @@
    <meta name="theme-color" content="#556050"> 
 
   <title>Espaço Equilibra Mente - {{ $sala->nome ?? '' }}</title>
-<!-- Open Graph Meta Tags (para Facebook, WhatsApp e outros) -->
-<meta property="og:title" content="Espaço Equilibra Mente - Aluguel de Salas Modernas" />
-<meta property="og:description" content="Descubra o espaço perfeito para reuniões, eventos e atendimentos. Salas modernas, bem localizadas e totalmente equipadas." />
-<meta property="og:image" content="https://equilibramente-production.up.railway.app/assets/img/sala1.jpg" />
-<meta property="og:url" content="https://www.espacoequilibramente.com.br/" />
-<meta property="og:type" content="website" />
 
-<!-- Twitter Meta Tags -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Espaço Equilibra Mente - Aluguel de Salas Modernas" />
-<meta name="twitter:description" content="Descubra o espaço perfeito para reuniões, eventos e atendimentos. Salas modernas, bem localizadas e totalmente equipadas." />
-<meta name="twitter:image" content="https://equilibramente-production.up.railway.app/assets/img/sala1.jpg" />
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Espaço Equilibra Mente - Salas para Psicólogos e Terapeutas" />
+    <meta property="og:description" content="Salas modernas e acolhedoras para psicólogos, terapeutas e profissionais da saúde. Alugue por hora ou período, em um espaço pensado para o bem-estar." />
+    <meta property="og:image" content="https://equilibramente-production.up.railway.app/assets/img/sala1.jpg" />
+    <meta property="og:url" content="https://www.espacoequilibramente.com.br/" />
+    <meta property="og:type" content="website" />
 
-<!-- Meta Tags para SEO -->
-<meta name="description" content="Descubra o espaço perfeito para o seu próximo evento, reunião ou atendimento. Salas modernas, bem localizadas e equipadas para atender suas necessidades." />
-<meta name="keywords" content="aluguel de salas, salas para eventos, salas para reuniões, espaço para workshops, Equilibra Mente" />
-<meta name="author" content="Espaço Equilibra Mente" />
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Espaço Equilibra Mente - Salas para Psicólogos e Terapeutas" />
+    <meta name="twitter:description" content="Salas modernas e acolhedoras para psicólogos, terapeutas e profissionais da saúde. Alugue por hora ou período, em um espaço pensado para o bem-estar." />
+    <meta name="twitter:image" content="https://equilibramente-production.up.railway.app/assets/img/sala1.jpg" />
+
+    <!-- Meta Tags para SEO -->
+    <meta name="description" content="Aluguel de salas confortáveis e bem localizadas, ideais para psicólogos, terapeutas e outros profissionais da saúde. Ambiente tranquilo e profissional." />
+    <meta name="keywords" content="aluguel de salas para psicólogos, salas para terapeutas, consultório compartilhado, espaço terapêutico, Equilibra Mente" />
+    <meta name="author" content="Espaço Equilibra Mente" />
 
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
