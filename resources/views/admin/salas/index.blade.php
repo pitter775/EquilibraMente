@@ -75,6 +75,12 @@
                                 </div>
                                 <div class="col-3">
                                     <div class="form-group">
+                                        <label class="form-label" for="metragem">Metragem</label>
+                                        <input type="text" class="form-control" id="metragem" placeholder="Metragem da Sala" name="metragem" required>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group">
                                         <label class="form-label" for="valor">Valor R$ por hora</label>
                                         <input type="text" class="form-control" id="valor" placeholder="Valor Diaria" name="valor" required>
                                     </div>

@@ -11,6 +11,7 @@ class CriarSalasTabela extends Migration
         Schema::create('salas', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
+            $table->string('metragem');
             $table->text('descricao');
             $table->unsignedBigInteger('endereco_id')->nullable()->change();
             $table->decimal('valor', 8, 2)->nullable(); // Definir o valor da sala

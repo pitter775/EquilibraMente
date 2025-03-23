@@ -25,6 +25,13 @@
 
 .btn-google {
     background-color: #508540; /* Cor do botão Google */
+    padding: 5px !important;
+    
+}
+.btn-google img{
+   padding-right: 5px !important;
+   width: 25px;
+
 }
 
 .btn-google:hover {
@@ -95,7 +102,7 @@
 
 <div class="button-container">
     <a href="{{ route('login.google') }}" class="btn btn-google">
-       Login com Google
+       <img src="/assets/img/icons/google.png" style=" "> Login com Google
     </a>
     <a href="{{ route('completar.cadastro.form') }}" class="btn btn-secondary">
         Cadastro Manual

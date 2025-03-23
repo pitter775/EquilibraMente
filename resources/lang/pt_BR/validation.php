@@ -118,7 +118,7 @@ return [
     'starts_with' => 'O campo :attribute deve começar com um dos seguintes valores: :values.',
     'string' => 'O campo :attribute deve ser uma string.',
     'timezone' => 'O campo :attribute deve ser uma zona válida.',
-    'unique' => 'O campo :attribute já está em uso.',
+    'unique' => 'Este :attribute já está cadastrado no sistema.',
     'uploaded' => 'Falha ao fazer upload do campo :attribute.',
     'url' => 'O formato do campo :attribute é inválido.',
     'uuid' => 'O campo :attribute deve ser um UUID válido.',

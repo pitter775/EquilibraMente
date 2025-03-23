@@ -224,6 +224,7 @@ $(document).ready(function () {
                 $('#nome').val(data.sala.nome);
                 $('#descricao').val(data.sala.descricao);
                 $('#valor').val(data.sala.valor);
+                $('#metragem').val(data.sala.metragem);
                 $('#status').val(data.sala.status);
     
                 // Exibe as imagens existentes no modal

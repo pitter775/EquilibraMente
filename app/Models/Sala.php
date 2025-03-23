@@ -11,7 +11,7 @@ class Sala extends Model
     protected $table = 'salas';
 
     protected $fillable = [
-        'nome', 'descricao', 'valor', 'status'
+        'nome', 'descricao', 'valor', 'metragem', 'status'
     ];
 
     public function endereco()

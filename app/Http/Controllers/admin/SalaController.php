@@ -47,6 +47,7 @@ class SalaController extends Controller
             'descricao' => 'required|string',
             'status' => 'required|string',
             'valor' => 'required|numeric',
+            'metragem' => 'required|string',
             'endereco.rua' => 'required|string|max:255',
             'endereco.numero' => 'required|string|max:50',
             'endereco.bairro' => 'required|string|max:255',

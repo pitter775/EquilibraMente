@@ -5,7 +5,7 @@
 @section('content')
 
   <style>
-
+        .bthorasdis { margin: 5px}
  
       .fc-toolbar-title { font-size: 14px !important}
       .preco {
@@ -223,7 +223,7 @@
                         <!-- Metragem alinhada à direita -->
                         <div class="d-flex align-items-center">
                             <i class="fa-solid fa-ruler-combined me-2 pr-2" style="font-size: 15px; color: #76aa66"></i>
-                            <span style="font-size: 15px; color: #333;">45 m²</span>
+                            <span style="font-size: 15px; color: #333;">{{$sala->metragem}} m²</span>
                         </div>
                     </div>
                     <div class="col-12">
@@ -285,7 +285,7 @@
                           <!-- Metragem alinhada à direita -->
                           <div class="d-flex align-items-center">
                               <i class="fa-solid fa-ruler-combined me-2 pr-2" style="font-size: 15px; color: #76aa66"></i>
-                              <span style="font-size: 15px; color: #333;">45 m²</span>
+                              <span style="font-size: 15px; color: #333;">{{$sala->metragem}} m²</span>
                           </div>
                         </div>
                         <div class="col-12">
@@ -467,7 +467,7 @@
                         horariosDisponiveisContainer.innerHTML += `
                             <button class="btn btn-secondary horario-btn bthorasdis" 
                                 onclick="selecionarHorario('${data_reserva}', '${horario.inicio}', '${horario.fim}', this)">
-                                ${horario.inicio.substring(0, 2)} - ${horario.fim.substring(0, 2)}
+                                ${horario.inicio.substring(0, 2)}hs - ${horario.fim.substring(0, 2)}hs
                             </button>
                         `;
 

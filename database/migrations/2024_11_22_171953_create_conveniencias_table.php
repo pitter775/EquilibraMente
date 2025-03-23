@@ -29,7 +29,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('conveniencias');
-        Schema::dropIfExists('sala_conveniencias');
+        Schema::dropIfExists('sala_conveniencias'); // primeiro apaga a dependente
+        Schema::dropIfExists('conveniencias');      // depois apaga a principal
     }
 };

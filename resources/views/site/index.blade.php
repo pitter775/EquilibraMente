@@ -272,68 +272,68 @@
                 height: 20px; padding-right: 10px
         }
 
-@media (max-width: 768px) {
-    .comofunciona{
+        @media (max-width: 768px) {
+            .comofunciona{
 
-    }
-    .comotext {
-        flex-direction: column; /* Empilha os elementos */
-        align-items: center;
-        text-align: center;
-        padding: 0;
-    }
+            }
+            .comotext {
+                flex-direction: column; /* Empilha os elementos */
+                align-items: center;
+                text-align: center;
+                padding: 0;
+            }
 
-    .comofunciona-text {
-        margin-top: 80px;
-        width: 100%;
-        text-align: center;
-        margin-bottom: 20px; /* Dá espaço entre o título e os passos */
-    }
+            .comofunciona-text {
+                margin-top: 80px;
+                width: 100%;
+                text-align: center;
+                margin-bottom: 20px; /* Dá espaço entre o título e os passos */
+            }
 
-    .steps {
-        width: 100%; /* Ocupa toda a largura disponível */
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
+            .steps {
+                width: 100%; /* Ocupa toda a largura disponível */
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
 
-    .step {
-        width: 90%;
-        max-width: 400px;
-        padding: 15px;
-        display: flex;
-        align-items: center;
-        text-align: left;
-        gap: 15px;
-    }
+            .step {
+                width: 90%;
+                max-width: 400px;
+                padding: 15px;
+                display: flex;
+                align-items: center;
+                text-align: left;
+                gap: 15px;
+            }
 
-    .step img {
-        width: 50px;
-        height: auto;
-    }
+            .step img {
+                width: 50px;
+                height: auto;
+            }
 
-    .step p {
-        margin: 0;
-        font-size: 14px;
-        flex: 1;
-    }
-
-
-
-
-    .profissionais-section {
-        flex-direction: column;
-        text-align: center;
-    }
+            .step p {
+                margin: 0;
+                font-size: 14px;
+                flex: 1;
+            }
 
 
 
-    .quadroesquerdo{
 
-    }
+            .profissionais-section {
+                flex-direction: column;
+                text-align: center;
+            }
 
 
-}
+
+            .quadroesquerdo{
+
+            }
+
+
+        }
 
 
 
@@ -433,6 +433,31 @@
         .metragem {
             text-align: right;
         }
+
+        .owl-nav-custom {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+
+        .owl-prev-custom,
+        .owl-next-custom {
+            background: #216C2E;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .owl-prev-custom:hover,
+        .owl-next-custom:hover {
+            background:rgb(115, 223, 133);
+        }
         
     </style>
     <section id="about" class="about" style="margin-top: -40px">
@@ -449,6 +474,10 @@
    
 
             @if ($salas->count() > 0)
+                <div class="owl-nav-custom text-center mb-2">
+                    <button class="owl-prev-custom">❮</button>
+                    <button class="owl-next-custom">❯</button>
+                </div>
                 <div class="owl-carousel carousel-sala">
                     @foreach ($salas as $sala)
                         <div class="item-sala">
@@ -467,7 +496,7 @@
                                         </span>
                                         <span class="metragem">
                                             <img src="/assets/img/icons/metragem.png" class="icon-verde" style="width: 15px;">
-                                            35 m²
+                                            {{$sala->metragem}} m²
                                         </span>
                                     </div>
 
@@ -534,111 +563,111 @@
             flex-wrap: wrap;
         }
 
-/* Container alinhado corretamente */
-.profissionais-section .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 1200px;
-    width: 100%;
-    position: relative;
-}
+        /* Container alinhado corretamente */
+        .profissionais-section .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+            position: relative;
+        }
 
-/* Imagem no fundo */
-.image-box {
-    width: 50%;
-    height: 400px;
-    background: url('/assets/img/960x0.jpg') center center no-repeat;
-    background-size: cover;
-    border-radius: 8px;
-    position: absolute;
-    left: 5%;
-    z-index: 1;
-}
+        /* Imagem no fundo */
+        .image-box {
+            width: 50%;
+            height: 400px;
+            background: url('/assets/img/960x0.jpg') center center no-repeat;
+            background-size: cover;
+            border-radius: 8px;
+            position: absolute;
+            left: 5%;
+            z-index: 1;
+        }
 
-/* Caixa de texto sobreposta */
-.profissionais-section .content {
-    width: 45%;
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-}
+        /* Caixa de texto sobreposta */
+        .profissionais-section .content {
+            width: 45%;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
 
-/* Lista de profissionais */
-.profissionais-section ul {
-    list-style: none;
-    padding: 0;
-}
+        /* Lista de profissionais */
+        .profissionais-section ul {
+            list-style: none;
+            padding: 0;
+        }
 
-.profissionais-section ul li {
-    font-size: 16px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+        .profissionais-section ul li {
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-/* Ícones */
-.icon-prof {
-    width: 30px;
-    height: auto;
-}
+        /* Ícones */
+        .icon-prof {
+            width: 30px;
+            height: auto;
+        }
 
-/* ✅ RESPONSIVO */
-@media (max-width: 768px) {
-    .profissionais-section {
-        flex-direction: column;
-        text-align: center;
-        padding: 30px 15px;
-    }
+        /* ✅ RESPONSIVO */
+        @media (max-width: 768px) {
+            .profissionais-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 30px 15px;
+            }
 
-    .profissionais-section .container {
-        flex-direction: column;
-        align-items: center;
-        text-align: left;
-        position: relative;
-    }
+            .profissionais-section .container {
+                flex-direction: column;
+                align-items: center;
+                text-align: left;
+                position: relative;
+            }
 
-    .image-box {
-        width: 100%;
-        height: 450px;
-        border-radius: 10px;
-        position: relative;
-        left: 0;
-        z-index: 1;
-        margin-top: 0px;
-    }
+            .image-box {
+                width: 100%;
+                height: 450px;
+                border-radius: 10px;
+                position: relative;
+                left: 0;
+                z-index: 1;
+                margin-top: 0px;
+            }
 
-    .profissionais-section .content {
-        width: 90%;
-        padding: 20px;
-        position: absolute;
-        background: white;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        margin-top: 200px;
-        transform: translateY(-50%);
-        z-index: 2;
-    }
+            .profissionais-section .content {
+                width: 90%;
+                padding: 20px;
+                position: absolute;
+                background: white;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+                margin-top: 200px;
+                transform: translateY(-50%);
+                z-index: 2;
+            }
 
-    .profissionais-section ul li {
-        justify-content: left;
-    }
-    #faq{ 
-        margin-top: 180px !important;
-    }
+            .profissionais-section ul li {
+                justify-content: left;
+            }
+            #faq{ 
+                margin-top: 180px !important;
+            }
 
-    /* Evita rolagem horizontal */
-    body {
-        overflow-x: hidden;
-    }
-}
+            /* Evita rolagem horizontal */
+            body {
+                overflow-x: hidden;
+            }
+        }
 
     </style>
 
@@ -869,6 +898,7 @@
             <h4>Inscreva-se na nossa Newsletter</h4>
             <p>Fique por dentro das nossas novidades, disponibilidade e atualizações das salas.</p>
             <form action="/newsletter" method="post">
+                @csrf
                 <input type="email" name="email"><input type="submit" value="Inscrever-se">
             </form>
             </div>
@@ -899,77 +929,69 @@
   <!-- Template Main JS File -->
   <script src="/assets/js/main.js"></script>
   <script>
-        //banner
-        let currentIndex = 0;
-        const slides = document.querySelectorAll('.slide');
-        const dots = document.querySelectorAll('.dot');
-        const totalSlides = slides.length -1;
+    //banner
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    const totalSlides = slides.length -1;
 
-        // Verifica se há slides suficientes para evitar erros
-        if (totalSlides > 0) {
-            function goToSlide(index) {
-                // Remove a classe 'active' de todos os slides e dots
-                slides.forEach(slide => slide.classList.remove('active'));
-                dots.forEach(dot => dot.classList.remove('active'));
+    // Verifica se há slides suficientes para evitar erros
+    if (totalSlides > 0) {
+        function goToSlide(index) {
+            // Remove a classe 'active' de todos os slides e dots
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
 
-                // Atualiza o índice e adiciona a classe 'active' ao slide correto
-                currentIndex = index % totalSlides;
-                slides[currentIndex].classList.add('active');
-                dots[currentIndex].classList.add('active');
-            }
-
-            function nextSlide() {
-                currentIndex = (currentIndex + 1) % totalSlides; // Garante o loop correto
-                goToSlide(currentIndex);
-            }
-
-            // Inicia o loop do banner
-            setInterval(nextSlide, 5000);
-
-            // Ativa o primeiro slide ao carregar a página
-            goToSlide(0);
-        } else {
-            console.error("Erro: Nenhum slide encontrado!");
+            // Atualiza o índice e adiciona a classe 'active' ao slide correto
+            currentIndex = index % totalSlides;
+            slides[currentIndex].classList.add('active');
+            dots[currentIndex].classList.add('active');
         }
 
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides; // Garante o loop correto
+            goToSlide(currentIndex);
+        }
 
+        // Inicia o loop do banner
+        setInterval(nextSlide, 5000);
 
+        // Ativa o primeiro slide ao carregar a página
+        goToSlide(0);
+    } else {
+        console.error("Erro: Nenhum slide encontrado!");
+    }
 
+    $(document).ready(function () {
+        $('form[action="/newsletter"]').on('submit', function (e) {
+            e.preventDefault();
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.querySelector('form[action="/newsletter"]');
+            let form = $(this);
+            let email = form.find('input[name="email"]').val();
+            let token = $('meta[name="csrf-token"]').attr('content');
 
-        form.addEventListener('submit', function (event) {
-            event.preventDefault(); // Impede o envio padrão do formulário
-
-            const email = form.querySelector('input[name="email"]').value;
-            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-            fetch('/newsletter', {
+            $.ajax({
+                url: '/newsletter',
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': token // Adiciona o token CSRF
+                data: {
+                    _token: token,
+                    email: email
                 },
-                body: JSON.stringify({ email })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    toastr.success(data.message || 'E-mail cadastrado com sucesso!');
-                    form.reset(); // Limpa o campo do formulário
-                } else {
-                    toastr.error(data.message || 'Ocorreu um erro ao cadastrar o e-mail.');
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success(data.message || 'E-mail cadastrado com sucesso!');
+                        form[0].reset();
+                    } else {
+                        toastr.error(data.message || 'Erro ao cadastrar e-mail.');
+                    }
+                },
+                error: function (xhr) {
+                    let erro = xhr.responseJSON?.message || 'Erro no servidor.';
+                    toastr.error(erro);
                 }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                toastr.error('Erro no servidor. Tente novamente mais tarde.');
             });
         });
     });
-
-
 
     document.querySelectorAll('.faq-question').forEach(button => {
         button.addEventListener('click', () => {
@@ -989,6 +1011,31 @@
                 answer.style.padding = "15px";
                 button.querySelector('.arrow').textContent = "−";
             }
+        });
+    });
+
+    //carrocel das salas
+    $(document).ready(function(){
+        let $carousel = $('.carousel-sala').owlCarousel({
+            loop: true,
+            margin: 15,
+            nav: false, // desativa as setas nativas
+            dots: false,
+            responsive: {
+                0: { items: 1 },
+                768: { items: 2 },
+                992: { items: 3 },
+                1200: { items: 4 }
+            }
+        });
+
+        // seta personalizada
+        $('.owl-prev-custom').click(function() {
+            $carousel.trigger('prev.owl.carousel');
+        });
+
+        $('.owl-next-custom').click(function() {
+            $carousel.trigger('next.owl.carousel');
         });
     });
 
