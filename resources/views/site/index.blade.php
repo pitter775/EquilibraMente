@@ -349,7 +349,8 @@
         <div class="container d-flex align-items-center hero-content">
 
         <div class="logo mr-auto">
-            <a href="/"><img src="/assets/img/logotextopp.png" style="opacity: 0; padding: 13px"> </a>
+            <a href="/"><img src="/assets/img/logotextopp.png" style="opacity: 0; padding: 13px 13px 13px 13px ; width: 250px"> </a>
+    
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="index.html"><img src="/assets/img/logo.png" alt="" class="img-fluid"></a>-->
         </div>
