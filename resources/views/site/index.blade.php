@@ -382,7 +382,10 @@
             <img src="/assets/img/logoescuro.png" alt="" class="logbanner" data-aos="fade" >
             <p style="font-size: 25px" >Espaço Coworking para Profissionais da Saúde</p>
 
-            <a href="#" class=" about-btn" style="margin-top: 30px">  <img src="/assets/img/icons/whats.png" alt="" class="icon-waht" style="" > Chamar no Whats </a>
+            <a href="https://wa.me/5511979691269?text=Olá%2C%20gostaria%20de%20saber%20mais%20sobre%20as%20salas." target="_blank" class="about-btn" style="margin-top: 30px">
+                <img src="/assets/img/icons/whats.png" alt="" class="icon-waht">
+                Chamar no Whats
+            </a>
            
             
         </div>

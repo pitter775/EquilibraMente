@@ -380,6 +380,17 @@ $(document).ready(function () {
                 });
         }
     });
+
+    if (listViewBtn.length) {
+        listViewBtn.on('click', function () {
+          ecommerceProducts.removeClass('grid-view').addClass('list-view');
+          gridViewBtn.removeClass('active');
+          listViewBtn.addClass('active');
+        });
+      
+        // 👇 Força a visualização lista ao carregar a página
+        listViewBtn.trigger('click');
+      }
 });
 
 // Função para adicionar ou atualizar uma sala dinamicamente
@@ -554,3 +565,5 @@ document.addEventListener('DOMContentLoaded', function () {
         inputValor.value = value;
     });
 });
+
+
