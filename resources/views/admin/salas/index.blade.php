@@ -244,11 +244,11 @@
                                         </div>
                                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                             <label class="btn btn-icon btn-outline-primary view-btn grid-view-btn">
-                                                <input type="radio" name="radio_options" id="radio_option1" checked />
+                                                <input type="radio" name="radio_options" id="radio_option1"  />
                                                 <i data-feather="grid" class="font-medium-3"></i>
                                             </label>
                                             <label class="btn btn-icon btn-outline-primary view-btn list-view-btn">
-                                                <input type="radio" name="radio_options" id="radio_option2" />
+                                                <input type="radio" name="radio_options" id="radio_option2" checked />
                                                 <i data-feather="list" class="font-medium-3"></i>
                                             </label>
                                         </div>

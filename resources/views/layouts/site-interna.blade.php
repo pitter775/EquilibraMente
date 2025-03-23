@@ -93,7 +93,7 @@
     <div class="container d-flex align-items-center hero-content">
 
       <div class="logo mr-auto">
-        <a href="/"><img src="/assets/img/logotextopp.png" style="opacity: 0; padding: 13px"> </a>
+        <a href="/"><img src="/assets/img/logotextopp.png" style="padding: 13px"> </a>
       </div>
 
       <nav class="nav-menu d-none d-lg-block">
