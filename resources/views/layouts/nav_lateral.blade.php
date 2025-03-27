@@ -39,6 +39,12 @@
                     </a>
                 </li>
                 
+                <li class="{{ $elementActive == 'fechadura' ? 'active' : '' }} nav-item">
+                    <a class="d-flex align-items-center" href="/admin/fechadura">
+                        <i data-feather='lock'></i><span class="menu-title text-truncate" data-i18n="Chave Eletrônica">Chave Eletrônica</span>
+                    </a>
+                </li>
+                
                 <li class="{{ $elementActive == 'reservas' ? 'active' : '' }} nav-item">
                     <a class="d-flex align-items-center" href="/admin/reservas">
                         <i data-feather='calendar'></i><span class="menu-title text-truncate" data-i18n="Reservas">Reservas</span>
@@ -51,8 +57,8 @@
                     </a>
                 </li>
 
-                 <li class="{{ $elementActive == 'site' ? 'active' : '' }} nav-item">
-                    <a class="d-flex align-items-center" href="{{ url('/admin/analitico') }}" target="_blank">
+                 <li class="{{ $elementActive == 'analitico' ? 'active' : '' }} nav-item">
+                    <a class="d-flex align-items-center" href="{{ url('/admin/analitico') }}">
                         <i data-feather='bar-chart-2'></i><span class="menu-title text-truncate" data-i18n="Site">Analitico de Acessos</span>
                     </a>
                 </li>

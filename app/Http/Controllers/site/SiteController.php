@@ -130,18 +130,29 @@ class SiteController extends Controller
             Log::info('Iniciando confirmação de reserva.', ['reservaData' => $reservaData]);
             DebugLog::create(['mensagem' => 'Iniciando confirmação de reserva: ' . json_encode($reservaData)]);
     
-            $metodoPagamento = $request->input('metodo_pagamento', 'CREDIT_CARD');
+
     
             $reservasCriadas = [];
             foreach ($reservaData['horarios'] as $horario) {
+                $chaves = collect($sala->fechadura?->chaves ?? []);
+
+                if ($chaves->isEmpty()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'A sala não possui chaves cadastradas.',
+                    ], 409);
+                }
+                
+                $chaveParaUsar = $chaves->random();
+                
                 $reserva = Reserva::create([
                     'usuario_id' => auth()->id(),
-                    'sala_id' => $reservaData['sala_id'],
+                    'sala_id' => $sala->id,
                     'data_reserva' => $horario['data_reserva'],
                     'hora_inicio' => $horario['hora_inicio'],
                     'hora_fim' => $horario['hora_fim'],
                     'status' => 'PENDENTE',
-                    'forma_pagamento' => $metodoPagamento,
+                    'chave_usada' => $chaveParaUsar,
                 ]);
                 $reservasCriadas[] = $reserva;
             }

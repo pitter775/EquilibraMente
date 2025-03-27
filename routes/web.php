@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\NewsletterController;
 use App\Models\DebugLog;
+use App\Http\Controllers\admin\FechaduraController;
 
 
 Route::get('/reserva/dados/{id}', [SiteController::class, 'buscarDadosReserva']);
@@ -121,6 +122,7 @@ Route::get('/api/cep/{cep}', [CepController::class, 'buscarCep']);
 Route::middleware(['auth'])->group(function () {
     Route::get('/cliente', [ReservaClienteController::class, 'minhasReservas'])->name('cliente.index');
     Route::get('/cliente/reservas', [ReservaClienteController::class, 'minhasReservas'])->name('cliente.reservas');
+    Route::get('/cliente/reserva/{reserva}/chave', [ReservaClienteController::class, 'verChave'])->name('cliente.reserva.chave');
 });
 
 // Rotas para administradores
@@ -153,6 +155,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/reservas', [ReservaController::class, 'index']);
     Route::get('/admin/reservas/listar', [ReservaController::class, 'listar'])->name('admin.reservas.listar');
     Route::get('/admin/relatorios', [RelatorioController::class, 'index']);
+
+
+    Route::get('/admin/fechadura', [FechaduraController::class, 'index'])->name('admin.fechadura.index');
+    Route::put('/fechaduras/{sala}', [FechaduraController::class, 'atualizar'])->name('fechaduras.update');
+
 
 
 

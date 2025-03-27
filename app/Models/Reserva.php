@@ -17,6 +17,7 @@ class Reserva extends Model
         'hora_inicio',
         'hora_fim',
         'status',
+        'chave_usada', // garantir que pode ser preenchido
     ];
 
     public function usuario()

@@ -3,89 +3,123 @@
 ])
 
 @section('content')
-    @if(session('success'))
-        <p style="color: green;">{{ session('success') }}</p>
-    @endif
+<div class="content-wrapper">
+  <div class="content-header row">
+    <div class="col-12">
+      <h3 class="mb-2">Minhas Reservas</h3>
+    </div>
+  </div>
 
-    <div class="">
-            <div class="content-overlay"></div>
-            <div class="header-navbar-shadow"></div>
-            <div class="content-wrapper">
-    
-                <div class="content-header row">
-                    <div class="content-header-left col-md-9 col-12 mb-2">
-                        <div class="row breadcrumbs-top">
-                            <div class="col-12">
-                                <h3 class="float-left mb-0">Minhas Reservas</h3>
-                    
-                            </div>
-                        </div>
-                    </div>
-                    <div class="content-header-right text-md-right col-md-3 col-12 ">
-                        <div class="form-group breadcrumb-right">
-                                    
+  <div class="content-body">
+    <div class="card" style="padding: 20px">
+      <div class="table-responsive">
+        <table class="table user-list-table">
+          <thead>
+            <tr>
+              <th>Sala</th>
+              <th>Data</th>
+              <th>Horários</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($reservas as $key => $grupo)
+              @php
+                $reserva = $grupo->first();
+                $dataReserva = \Carbon\Carbon::parse($reserva->data_reserva)->format('d/m/Y');
+                $modalId = 'reservaModal_' . $reserva->id;
+              @endphp
 
-                        </div>
+              <tr style="cursor: pointer;" data-toggle="modal" data-target="#{{ $modalId }}">
+                <td>{{ $reserva->sala->nome }}</td>
+                <td>{{ $dataReserva }}</td>
+                <td>
+                  @foreach($grupo as $r)
+                    {{ $r->hora_inicio }} - {{ $r->hora_fim }}<br>
+                  @endforeach
+                </td>
+                <td>
+                  @php
+                    $agora = now();
+                    $inicio = \Carbon\Carbon::parse($reserva->data_reserva . ' ' . $grupo->min('hora_inicio'));
+                    $fim = \Carbon\Carbon::parse($reserva->data_reserva . ' ' . $grupo->max('hora_fim'));
+                  @endphp
+
+                  @if($agora->lt($inicio))
+                    <span class="badge badge-warning">Reservado</span>
+                  @elseif($agora->between($inicio, $fim))
+                    <span class="badge badge-success">Em andamento</span>
+                  @else
+                    <span class="badge badge-secondary">Concluído</span>
+                  @endif
+                </td>
+              </tr>
+
+              {{-- Modal --}}
+              <div class="modal fade" id="{{ $modalId }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel{{ $modalId }}" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalLabel{{ $modalId }}">Detalhes da Reserva</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                     </div>
+                    <div class="modal-body row">
+                      <div class="col-md-5">
+                        <img src="{{ $reserva->sala->imagens->first()?->imagem_base64 ?? 'default.jpg' }}" class="img-fluid rounded" style="height: 220px; object-fit: cover;">
+                      </div>
+                      <div class="col-md-7">
+                        <h5>{{ $reserva->sala->nome }}</h5>
+                        <p>
+                          <strong>Endereço:</strong><br>
+                          {{ $reserva->sala->endereco->rua ?? '' }},
+                          {{ $reserva->sala->endereco->numero ?? '' }} -
+                          {{ $reserva->sala->endereco->bairro ?? '' }}<br>
+                          {{ $reserva->sala->endereco->cidade ?? '' }}/{{ $reserva->sala->endereco->estado ?? '' }}
+                        </p>
+                        <p><strong>Horários reservados:</strong></p>
+                        <ul class="pl-3">
+                          @foreach($grupo as $r)
+                            <li>{{ $r->hora_inicio }} às {{ $r->hora_fim }}</li>
+                          @endforeach
+                        </ul>
+                        @php
+                            $mostrarBotao = now()->between(
+                                \Carbon\Carbon::parse($reserva->data_reserva . ' ' . $grupo->min('hora_inicio'))->subMinutes(30),
+                                \Carbon\Carbon::parse($reserva->data_reserva . ' ' . $grupo->max('hora_fim'))
+                            );
+                        @endphp
+
+                        <div class="mt-2">
+                            @if($mostrarBotao)
+                                <button class="btn btn-outline-primary btn-sm ver-chave-btn"
+                                        data-id="{{ $grupo->first()->id }}">
+                                Ver chave da sala
+                                </button>
+                                <div class="chave-info mt-1 text-success font-weight-bold"></div>
+                            @else
+                                <p class="text-danger">A chave da sala estará visível 30 minutos antes do horário reservado.</p>
+                            @endif
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                  </div>
                 </div>
-                <div class="content-body">
-                    <!-- Basic Tables start -->
-                    <div class="row" id="basic-table">
-                        <div class="col-12">
-                            <div class="card" style="padding: 20px">                           
-                                <!-- Conteúdo da página e tabela de usuários -->
-                                <div class="table-responsive"> 
-                                    <table class="table user-list-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Sala</th>
-                                                <th>Período</th>
-                                                <th>Valor por Hora</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($reservas as $reserva)
-                                                <tr>
-                                                    <td>{{ $reserva->sala->nome }}</td>
-                                                    <td>
-                                                        <i data-feather='calendar'></i> {{ \Carbon\Carbon::parse($reserva->data_reserva)->format('d/m/Y') }}<br>
-                                                        <i data-feather='clock'></i> {{ $reserva->hora_inicio }} - {{ $reserva->hora_fim }}
-                                                    </td>
-                                                    <td>R$ {{ number_format($reserva->sala->valor, 2, ',', '.') }}</td>
-                                                    <td>
-                                                        @php
-                                                            $agora = now(); // Hora atual
-                                                            $inicio = \Carbon\Carbon::parse($reserva->data_reserva . ' ' . $reserva->hora_inicio); // Início da reserva
-                                                            $fim = \Carbon\Carbon::parse($reserva->data_reserva . ' ' . $reserva->hora_fim); // Fim da reserva
+              </div>
+              {{-- Fim Modal --}}
 
-                                                        @endphp
-
-                                                        @if($agora->lt($inicio))
-                                                            <span class="badge badge-warning">Reservado</span>
-                                                        @elseif($agora->between($inicio, $fim))
-                                                            <span class="badge badge-success">Em andamento</span>
-                                                        @else
-                                                            <span class="badge badge-secondary">Concluído</span>
-                                                        @endif
-
-
-
-
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Basic Tables end -->
-                </div>
-            </div>
-        </div>
-
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @push('css_vendor')
@@ -100,15 +134,34 @@
 @endpush
 
 @push('js_page')
-<script>
-    $(document).ready(function () {
-        $('.user-list-table').DataTable({
+    <script>
+        $(document).ready(function () {
+            $('.user-list-table').DataTable({
             responsive: true,
             autoWidth: false,
-                language: {
-                    url: datatablesLangUrl
-                }
+            language: {
+                url: datatablesLangUrl
+            }
+            });
         });
-    });
-</script>
+
+        $(document).on('click', '.ver-chave-btn', function () {
+            let reservaId = $(this).data('id');
+            let $btn = $(this);
+            let $info = $btn.closest('.mt-2').find('.chave-info');
+
+            $.ajax({
+                url: `/cliente/reserva/${reservaId}/chave`,
+                method: 'GET',
+                success: function (res) {
+                    $btn.hide();
+                    $info.text(`Sua chave de acesso: ${res.chave}`);
+                },
+                error: function (xhr) {
+                    $info.text(xhr.responseJSON.error || 'Erro ao buscar chave.')
+                        .addClass('text-danger');
+                }
+            });
+        });
+    </script>
 @endpush

@@ -41,6 +41,11 @@ class Sala extends Model
         return $this->belongsToMany(Conveniencia::class, 'sala_conveniencias', 'sala_id', 'conveniencia_id');
     }
 
+    public function fechadura()
+    {
+        return $this->hasOne(Fechadura::class);
+    }
+
 
     
 }
