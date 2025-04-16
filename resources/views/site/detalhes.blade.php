@@ -378,24 +378,29 @@
               {{-- <h3 class="mb-4 mt-3"><span id="modalSalaNome">{{ $sala->nome }}</span></h3> --}}
               <p style='font-size: 16px'>Escolha uma data</p>
 
-              <p>
-                  <span class="mr-0">
-                      <div class="input-group" style="width: 160px;">
-                          <div class="input-group-prepend">
-                              <span class="input-group-text">
-                                  <i class="fas fa-calendar-alt"></i> <!-- Ícone de calendário -->
-                              </span>
-                          </div>
-                          <input type="text" id="datepicker" class="form-control" placeholder="Data">
-                      </div>
-                  </span>
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-1">
 
-                  <span style="float: right; margin-top: -30px">
-                      <span style="font-size: 18px; color: #000;">
-                          R$ <span id="valorHora">{{ number_format($sala->valor, 2, ',', '.') }}</span>
-                      </span>/h
-                  </span>
-              </p>
+                    {{-- Data --}}
+                    <div class="mb-1 mb-md-0" style="width: 100%; max-width: 300px;">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                            <input type="text" id="datepicker" class="form-control" placeholder="Data">
+                        </div>
+                    </div>
+
+                    {{-- Valor por hora --}}
+                    <div class="mt-1 mt-md-0 text-md-right w-100" style="max-width: 150px;">
+                        <span style="font-size: 18px; color: #000;">
+                            R$ <span id="valorHora">{{ number_format($sala->valor, 2, ',', '.') }}</span>
+                        </span>/h
+                    </div>
+
+                </div>
+
 
             
 
@@ -404,7 +409,7 @@
 
               <div style="min-height: 170px;">
                   <hr>
-                   <p id="divhorarios" style="display: none"><i class="fas fa-clock"></i> <span style='font-size: 13px'> Horários disponíveis para -> <b><span id='datasele'></span></b></span></p>
+                   <p id="divhorarios" style="display: none"><i class="fas fa-clock"></i> <span style='font-size: 13px'> Horários disponíveis <i class="fas fa-calendar-alt"></i> <b><span id='datasele'></span></b></span></p>
                    <div id="horarios-disponiveis">
                 
                     <div class="text-center mt-4">

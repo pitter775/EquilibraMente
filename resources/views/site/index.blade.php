@@ -869,6 +869,62 @@
         </div>
     </section>
 
+
+        <!-- ======= Team Section ======= -->
+    <section id="team" class="team">
+      <div class="container">
+
+        <div class="row">
+            <div class="content col-xl-12 d-flex align-items-stretch">
+                <div class="contentg">
+                    <h3>Um pouco <span>Sobre nós</span></h3>
+                    <p class="mt-2">Em um mundo cada vez mais complexo, a busca por saúde emocional e autoconhecimento se torna fundamental. Ao procurarmos ajuda de profissionais como psicólogos, terapeutas, nutricionistas, psiquiatras, neuropsicólogos, psicopedagogos e outros especialistas, é essencial encontrar um ambiente acolhedor, seguro, de qualidade e confortável para atendimento.</p>
+                    <p>Pensando nisso, surgiu o ESPAÇO EQUILIBRAMENTE, que oferece salas por hora, proporcionando toda a estrutura e opções diferenciadas para oferecer aos profissionais atendimentos inesquecíveis de forma excelente aos seus pacientes/clientes.</p>
+                </div>
+            </div>
+        </div>
+
+       
+
+        <div class="row mt-3">
+
+          <div class="col-lg-6 col-md-6">
+            <div class="member" data-aos="fade-up">
+              <div class="pic"><img src="assets/img/team/rose.jpeg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Rosiane Camelo</h4>
+                <span>Psicóloga clínica, especialista em relacionamentos</span>
+                <div class="social">
+                  <a href=""><i class="icofont-twitter"></i></a>
+                  <a href=""><i class="icofont-facebook"></i></a>
+                  <a href=""><i class="icofont-instagram"></i></a>
+                  <a href=""><i class="icofont-linkedin"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-6">
+            <div class="member" data-aos="fade-up" data-aos-delay="150">
+               <div class="pic"><img src="assets/img/team/ji.jpg" class="img-fluid" alt=""></div>
+              <div class="member-info">
+                <h4>Jicileia Oliveira</h4>
+                <span>Psicóloga clínica/ Psicanalista</span>
+                <div class="social">
+                  <a href=""><i class="icofont-twitter"></i></a>
+                  <a href=""><i class="icofont-facebook"></i></a>
+                  <a href=""><i class="icofont-instagram"></i></a>
+                  <a href=""><i class="icofont-linkedin"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Team Section -->
+
     <footer id="footer">
     <div class="footer-top">
         <div class="container">

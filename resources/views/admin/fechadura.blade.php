@@ -8,6 +8,13 @@
   h4 { margin-left: 18px; }
   .card-header { margin-left: 2px; }
   .cardsalas { border: solid 1px #cccc; margin-bottom: 40px; padding: 30px }
+  .imagemsala{ width: 40%; position: relative; }
+  .inputssala{ width: 50%;}
+
+  @media (max-width: 968px) {
+  .imagemsala{ display:none}
+  .inputssala{ width: 100%;}
+  }
 </style>
 
 <div class="content-wrapper">
@@ -37,12 +44,12 @@
                 <div class="card-body d-flex" style="padding: 0">
                   
                   {{-- Imagem --}}
-                  <div class="me-2 mr-3" style="width: 40%;">
+                  <div class="me-2 mr-3 imagemsala" style="">
                     <img src="{{ $imagem->imagem_base64 ?? '' }}" class="img-fluid rounded" style="height: 180px; object-fit: cover;">
                   </div>
 
                   {{-- Dados da fechadura --}}
-                  <div style="width: 50%;" class="d-flex flex-column justify-content-center ps-2">
+                  <div style="" class="d-flex flex-column justify-content-center ps-2 inputssala">
                     @for ($i = 0; $i < 4; $i++)
                         @php
                             $chaveAtual = $chaves[$i] ?? '';

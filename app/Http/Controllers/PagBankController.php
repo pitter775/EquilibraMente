@@ -14,7 +14,7 @@ class PagBankController extends Controller
 
     public function __construct()
     {
-        $this->apiUrl = env('PAGBANK_URL', 'https://sandbox.api.pagseguro.com');
+        $this->apiUrl = env('PAGBANK_URL', 'https://api.pagseguro.com');
         $this->token = env('PAGBANK_TOKEN');
     }
     public function verificarStatus($referenceId)

@@ -335,7 +335,7 @@ class SiteController extends Controller
                 'Authorization' => 'Bearer ' . env('PAGBANK_TOKEN'),
                 'accept' => 'application/json',
                 'content-type' => 'application/json',
-            ])->post('https://sandbox.api.pagseguro.com/checkouts', $payload);
+            ])->post('https://api.pagseguro.com/checkouts', $payload);
     
             if ($response->successful()) {
                 $data = $response->json();
