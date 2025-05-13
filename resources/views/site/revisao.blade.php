@@ -61,6 +61,8 @@ html .content {
                                     </button>
                                 </div>
                             </div>
+
+                            
                             <!-- Wizard ends -->
 
                             <div class="bs-stepper-content">
@@ -156,84 +158,141 @@ html .content {
                                 </div>
 
 
-                                    <!-- Pagamento do Checkout -->
-                                    <div id="step-payment" class="content">
-                                        <form id="checkout-payment" class="list-view product-checkout" onsubmit="return false;">
-                                            @csrf
-                                            <div class="payment-type">
-                                                <div class="card">
-                                                    <div class="card-header flex-column align-items-start">
-                                                        <h4 class="card-title">Opções de Pagamento</h4>
-                                                        <p class="card-text text-muted mt-25">Ao confirmar a reserva, você será redirecionado para o <strong>PagBank</strong>, onde poderá escolher a forma de pagamento que preferir.</p>
-                                                    </div>
-                                                    <hr class="my-2" />
-                                                    <div class="card-body">
-                                                        <!-- Opções de Pagamento -->
-                                  
-                                                        <div class="mt-3">
-                                                            <div class="card ecommerce-card" style="grid-template-columns: 1fr 3fr !important;">
-                                                                <div class="item-img">
-                                                                    <a href="{{ route('site.sala.detalhes', session('reserva.sala_id')) }}">
-                                                                        <img src="{{ $imagem_principal }}" class="d-block w-100 rounded m-2" alt="{{ session('reserva.sala_nome') }}">
+                                <!-- Pagamento do Checkout -->
+                                <div id="step-payment" class="content">
+                                    <form id="checkout-payment" class="list-view product-checkout" onsubmit="return false;">
+                                        @csrf
+                                        <div class="payment-type">
+                                            <div class="card">
+                                                <div class="card-header flex-column align-items-start">
+                                                    <h4 class="card-title">Opções de Pagamento</h4>
+                                                    <p class="card-text text-muted mt-25">Ao confirmar a reserva, você será redirecionado para o <strong>PagBank</strong>, onde poderá escolher a forma de pagamento que preferir.</p>
+                                                </div>
+                                                <hr class="my-2" />
+                                                <div class="card-body">
+                                                    <!-- Opções de Pagamento -->
+                                
+                                                    <div class="mt-3">
+                                                        <div class="card ecommerce-card" style="grid-template-columns: 1fr 3fr !important;">
+                                                            <div class="item-img">
+                                                                <a href="{{ route('site.sala.detalhes', session('reserva.sala_id')) }}">
+                                                                    <img src="{{ $imagem_principal }}" class="d-block w-100 rounded m-2" alt="{{ session('reserva.sala_nome') }}">
+                                                                </a>
+                                                            </div>
+                                                            <div class="card-body ml-5">
+                                                                <h5 class="mb-0">
+                                                                    <a href="{{ route('site.sala.detalhes', session('reserva.sala_id')) }}" class="text-body">
+                                                                        {{ session('reserva.sala_nome') }}
                                                                     </a>
-                                                                </div>
-                                                                <div class="card-body ml-5">
-                                                                    <h5 class="mb-0">
-                                                                        <a href="{{ route('site.sala.detalhes', session('reserva.sala_id')) }}" class="text-body">
-                                                                            {{ session('reserva.sala_nome') }}
-                                                                        </a>
-                                                                    </h5>                                                                                  
-                                                                    <span class="delivery-date text-muted">
-                                                                        <i data-feather="calendar"></i> Data da Reserva: {{ date('d/m/Y', strtotime($horario['data_reserva'])) }}
-                                                                    </span>
-                                                                </div>
+                                                                </h5>                                                                                  
+                                                                <span class="delivery-date text-muted">
+                                                                    <i data-feather="calendar"></i> Data da Reserva: {{ date('d/m/Y', strtotime($horario['data_reserva'])) }}
+                                                                </span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <!-- Resumo do Pedido -->
-                                            <div class="amount-payable checkout-options">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h4 class="card-title">Resumo do Pedido</h4>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="card-body pt-0">
-                                                        <div class="price-details pt-0">
-                                                            <h6 class="price-title">{{ session('reserva.sala_nome') }}</h6>                                      
+                                        <!-- Resumo do Pedido -->
+                                        <div class="amount-payable checkout-options">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">Resumo do Pedido</h4>
+                                                </div>
+                                                <hr>
+                                                <div class="card-body pt-0">
+                                                    <div class="price-details pt-0">
+                                                        <h6 class="price-title">{{ session('reserva.sala_nome') }}</h6>                                      
 
-                                                            <ul class="list-unstyled price-details">
-                                                                <li class="price-detail">
-                                                                    <div class="detail-title">Valor por hora</div>
-                                                                    <div class="detail-amt">R$ {{ number_format(session('reserva.valor_total') / count(session('reserva.horarios')), 2, ',', '.') }}</div>
-                                                                </li>
-                                                                <li class="price-detail">
-                                                                    <div class="detail-title">Quantidade de horas</div>
-                                                                    <div class="detail-amt discount-amt text-success quantidade-horas">0hs</div>
-                                                                </li>  
-                                                                <hr />
-                                                                <li class="price-detail">
-                                                                    <div class="details-title" style="font-weight: 700">Total</div>
-                                                                    <div class="detail-amt valor-total" style="font-weight: 700">
-                                                                        <strong>R$00,00</strong>
-                                                                    </div>
-                                                                </li>
-                                                            </ul>
-                                                            <button id="confirmar-reserva" data-reserva-id="{{ session('reserva.id') ?? '' }}" type="button" class="btn btn-primary btn-block">Confirmar Reserva</button>
-                                                            
-                                                        </div>
+                                                        <ul class="list-unstyled price-details">
+                                                            <li class="price-detail">
+                                                                <div class="detail-title">Valor por hora</div>
+                                                                <div class="detail-amt">R$ {{ number_format(session('reserva.valor_total') / count(session('reserva.horarios')), 2, ',', '.') }}</div>
+                                                            </li>
+                                                            <li class="price-detail">
+                                                                <div class="detail-title">Quantidade de horas</div>
+                                                                <div class="detail-amt discount-amt text-success quantidade-horas">0hs</div>
+                                                            </li>  
+                                                            <hr />
+                                                            <li class="price-detail">
+                                                                <div class="details-title" style="font-weight: 700">Total</div>
+                                                                <div class="detail-amt valor-total" style="font-weight: 700">
+                                                                    <strong>R$00,00</strong>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                        <button id="confirmar-reserva" data-reserva-id="{{ session('reserva.id') ?? '' }}" type="button" class="btn btn-primary btn-block">Confirmar Reserva</button>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
-                                    <!-- Fim do Pagamento do Checkout -->
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- Fim do Pagamento do Checkout -->
 
                                 <!-- </div> -->
+
+                                <div class="card mt-4 ">
+                                    <div class="card-body p-5" style="max-height: 350px; overflow-y: auto; font-size: 0.95rem; line-height: 1.6;">
+                                        <h5 class="mb-3"><strong>Regulamento de Uso das Salas – Espaço Equilibra Mente</strong></h5>
+
+                                        <p><strong> Reservas e Pagamentos</strong><br>
+                                        As reservas devem ser realizadas via agenda online ou através dos contatos de WhatsApp disponíveis na plataforma.<br>
+                                        O pagamento é efetuado no momento da reserva.</p>
+
+                                        <p><strong> Cancelamento e Reagendamento</strong><br>
+                                        Cancelamentos ou alterações de data podem ser feitos com até 24 horas de antecedência ao horário agendado.</p>
+
+                                        <p><strong> Duração do Atendimento</strong><br>
+                                        Cada sessão tem duração de 50 minutos, com tolerância de 5 minutos para organização da sala.<br>
+                                        Exemplo: Se a reserva for às 17h, o uso vai até 17h50, com tolerância até 17h55.<br>
+                                        Após esse tempo, será cobrada a próxima hora.</p>
+
+                                        <p><strong> Recepção dos Pacientes</strong><br>
+                                        Os pacientes devem ser recepcionados pelo profissional responsável, diretamente no andar onde ocorrerá o atendimento.</p>
+
+                                        <p><strong> Atendimento Online</strong><br>
+                                        O uso das salas para atendimentos online também é cobrado normalmente.</p>
+
+                                        <p><strong> Uso Responsável do Espaço</strong><br>
+                                        Ao final do atendimento, a sala deve ser entregue em ordem: sem lixos, copos ou materiais esquecidos.<br>
+                                        Não é permitido consumir alimentos dentro das salas.<br>
+                                        Pertences guardados nos armários devem ser retirados logo após o término do horário reservado.</p>
+
+                                        <p><strong> Segurança e Acesso</strong><br>
+                                        A senha de acesso da porta é pessoal e intransferível do terapeuta. Não deve ser compartilhada com pacientes.</p>
+
+                                        <p><strong> Serviços Extras</strong><br>
+                                        Café: Cada cápsula da cafeteira Dolce Gusto custa R$ 4,00.<br>
+                                        O profissional pode trazer suas próprias cápsulas, devidamente etiquetadas com nome, e armazená-las no armário da recepção.<br>
+                                        Impressões: R$ 1,00 por página impressa.</p>
+
+                                        <p><strong> Atualização de Preços</strong><br>
+                                        Os valores são reajustados todo mês de janeiro, anualmente.</p>
+
+                                        <p><strong> Redes Sociais e Promoções</strong><br>
+                                        Siga a gente no Instagram, TikTok, Facebook e Google Business: <strong>@espaco_equilibramente</strong><br>
+                                        Faça um story marcando o Espaço e ganhe 10% de desconto na próxima hora reservada 🎉</p>
+                                    </div>
+
+                                    <div class="card-footer bg-white border-top-0">
+                                        <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="aceitoRegras">
+                                        <label class="form-check-label" for="aceitoRegras">
+                                            Li e aceito os termos do regulamento de uso das salas.
+                                        </label>
+                                        </div>
+                                    </div>
+                                    </div>
                             </div>
                         </div>
+
+
+
+
 
                     </div>
                 </div>

@@ -144,7 +144,8 @@
   $(window).on('load', function() {
     var portfolioIsotope = $('.portfolio-container').isotope({
       itemSelector: '.portfolio-item',
-      layoutMode: 'fitRows'
+      layoutMode: 'fitRows',
+      filter: '.filter-app' // 👈 começa com App!
     });
     $('#portfolio-flters li').on('click', function() {
       $("#portfolio-flters li").removeClass('filter-active');
