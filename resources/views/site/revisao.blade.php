@@ -235,58 +235,66 @@ html .content {
 
                                 <!-- </div> -->
 
-                                <div class="card mt-4 ">
+                                <div class="card mt-4">
                                     <div class="card-body p-5" style="max-height: 350px; overflow-y: auto; font-size: 0.95rem; line-height: 1.6;">
-                                        <h5 class="mb-3"><strong>Regulamento de Uso das Salas – Espaço Equilibra Mente</strong></h5>
+                                        <h5 class="mb-3"><strong><span style="color: #000 !important">Regulamento de Uso das Salas </span> Espaço Equilibra Mente</strong></h5>
 
-                                        <p><strong> Reservas e Pagamentos</strong><br>
-                                        As reservas devem ser realizadas via agenda online ou através dos contatos de WhatsApp disponíveis na plataforma.<br>
-                                        O pagamento é efetuado no momento da reserva.</p>
+                                        <p><strong>Reservas e Pagamentos</strong><br>
+                                        Reservas via plataforma ou WhatsApp. Pagamento realizado no momento da reserva.
+                                        </p>
 
-                                        <p><strong> Cancelamento e Reagendamento</strong><br>
-                                        Cancelamentos ou alterações de data podem ser feitos com até 24 horas de antecedência ao horário agendado.</p>
+                                        <p><strong>Cancelamento</strong><br>
+                                        Cancelamentos com até 24h de antecedência têm reembolso integral. Após esse prazo, não há reembolso.
+                                        </p>
 
-                                        <p><strong> Duração do Atendimento</strong><br>
-                                        Cada sessão tem duração de 50 minutos, com tolerância de 5 minutos para organização da sala.<br>
-                                        Exemplo: Se a reserva for às 17h, o uso vai até 17h50, com tolerância até 17h55.<br>
-                                        Após esse tempo, será cobrada a próxima hora.</p>
+                                        <p><strong>Duração e Tolerância</strong><br>
+                                        Cada hora contratada equivale a 50 minutos de uso, com 5 minutos de tolerância. Ultrapassar o tempo gera cobrança de nova hora.
+                                        </p>
 
-                                        <p><strong> Recepção dos Pacientes</strong><br>
-                                        Os pacientes devem ser recepcionados pelo profissional responsável, diretamente no andar onde ocorrerá o atendimento.</p>
+                                        <p><strong>Uso do Espaço</strong><br>
+                                        Apenas profissionais da saúde mental podem utilizar. Proibido uso para outros fins, fumar, consumir bebidas alcoólicas ou trazer animais.
+                                        </p>
 
-                                        <p><strong> Atendimento Online</strong><br>
-                                        O uso das salas para atendimentos online também é cobrado normalmente.</p>
+                                        <p><strong>Responsabilidade</strong><br>
+                                        O profissional é responsável pelos danos causados por ele ou seus clientes. Deve manter a sala organizada após o uso.
+                                        </p>
 
-                                        <p><strong> Uso Responsável do Espaço</strong><br>
-                                        Ao final do atendimento, a sala deve ser entregue em ordem: sem lixos, copos ou materiais esquecidos.<br>
-                                        Não é permitido consumir alimentos dentro das salas.<br>
-                                        Pertences guardados nos armários devem ser retirados logo após o término do horário reservado.</p>
+                                        <p><strong>Serviços e Itens Disponíveis</strong><br>
+                                        Wi-Fi, ar-condicionado, café, água, balas, pranchetas, relógio digital e suporte de celular em todas as salas.
+                                        </p>
 
-                                        <p><strong> Segurança e Acesso</strong><br>
-                                        A senha de acesso da porta é pessoal e intransferível do terapeuta. Não deve ser compartilhada com pacientes.</p>
+                                        <p><strong>Regras de Segurança</strong><br>
+                                        A senha da sala é pessoal e intransferível. O profissional deve recepcionar seus clientes no andar do atendimento.
+                                        </p>
 
-                                        <p><strong> Serviços Extras</strong><br>
-                                        Café: Cada cápsula da cafeteira Dolce Gusto custa R$ 4,00.<br>
-                                        O profissional pode trazer suas próprias cápsulas, devidamente etiquetadas com nome, e armazená-las no armário da recepção.<br>
-                                        Impressões: R$ 1,00 por página impressa.</p>
+                                        <p><strong>Proteção de Dados</strong><br>
+                                        Os dados são tratados conforme a LGPD. O cliente pode solicitar acesso, correção ou exclusão dos dados a qualquer momento.
+                                        </p>
 
-                                        <p><strong> Atualização de Preços</strong><br>
-                                        Os valores são reajustados todo mês de janeiro, anualmente.</p>
+                                        <p><strong>Horário de Funcionamento</strong><br>
+                                        Segunda a sexta, das 08h às 22h. Sábado, das 08h às 18h.
+                                        </p>
 
-                                        <p><strong> Redes Sociais e Promoções</strong><br>
-                                        Siga a gente no Instagram, TikTok, Facebook e Google Business: <strong>@espaco_equilibramente</strong><br>
-                                        Faça um story marcando o Espaço e ganhe 10% de desconto na próxima hora reservada 🎉</p>
+                                        <p><strong>Redes Sociais e Promoções</strong><br>
+                                        Siga @espaco_equilibramente. Marcando o espaço em um story, ganha 10% de desconto na próxima hora reservada 🎉
+                                        </p>
+
+                                        <p style="font-size: 0.85rem;"><em>Este é um resumo dos principais pontos. O regulamento completo está disponível no site ou pode ser solicitado por e-mail/WhatsApp.</em></p>
                                     </div>
 
                                     <div class="card-footer bg-white border-top-0">
-                                        <div class="form-check">
+                                        <div class="form-check mt-3">
                                         <input class="form-check-input" type="checkbox" id="aceitoRegras">
                                         <label class="form-check-label" for="aceitoRegras">
                                             Li e aceito os termos do regulamento de uso das salas.
+                                            <a href="/storage/Regulamento_Espaco_EquilibraMente.pdf" target="_blank" class=" btn-primary" style="margin-left: 10px; padding: 4px 8px !important">
+                                            ver regulamento completo
+                                            </a>
                                         </label>
                                         </div>
                                     </div>
-                                    </div>
+                                </div>
+
                             </div>
                         </div>
 

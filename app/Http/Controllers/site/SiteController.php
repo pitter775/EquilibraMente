@@ -24,11 +24,16 @@ class SiteController extends Controller
 
     public function detalhes($id)
     {
+        // Se o usuário não estiver logado, salva a URL atual
+        if (!auth()->check()) {
+            session()->put('voltar_para_sala', request()->fullUrl());
+
+        }
+
+
         // Busca a sala pelo ID, ou retorna 404 se não encontrada
-        $sala = Sala::with('conveniencias')->findOrFail($id);
-
+        $sala = Sala::with('conveniencias')->findOrFail($id);        
         
-
         // Renderiza uma view para exibir os detalhes da sala
         return view('site.detalhes', compact('sala'));
     }

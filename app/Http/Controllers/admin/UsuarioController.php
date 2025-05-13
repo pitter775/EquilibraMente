@@ -217,9 +217,7 @@ class UsuarioController extends Controller
         ]);
     
         // Determina a URL de redirecionamento
-        $redirectUrl = session()->has('url_detalhe')
-            ? session('url_detalhe')
-            : route('site.index'); // Redireciona para a home após o login
+        $redirectUrl = session()->pull('voltar_para_sala', route('usuario.minhas.reservas'));
     
         \Log::info('Redirecionando para URL:', ['redirectUrl' => $redirectUrl]);
     

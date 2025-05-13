@@ -15,7 +15,8 @@ class AuthController extends Controller
     {
         // Se o usuário está na página de detalhes de uma sala
         if ($request->has('sala_id')) {
-            session(['redirect_url' => route('site.sala.detalhes', ['id' => $request->input('sala_id')])]);
+            session(['voltar_para_sala' => route('site.sala.detalhes', ['id' => $request->input('sala_id')])]);
+
         } else {
             // Se o usuário está na home ou outra página
             session(['redirect_url' => url()->previous()]); // Salva a URL anterior
@@ -63,7 +64,8 @@ class AuthController extends Controller
                 ]);
             }
     
-            $redirectUrl = session()->pull('redirect_url', route('site.index'));
+            $redirectUrl = session()->pull('voltar_para_sala', route('usuario.minhas.reservas'));
+
     
             return redirect($redirectUrl);
     
