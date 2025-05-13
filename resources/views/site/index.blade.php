@@ -803,13 +803,13 @@
                   <div class="contentg" >
                      <h3>Um pouco <span>Sobre nós</span></h3>
                      <p class="mt-5" style=" text-align: left !important;">
-                        Em um mundo cada vez mais acelerado e exigente, <strong>cuidar da saúde emocional</strong> tornou-se uma prioridade. Foi com esse propósito que as psicólogas clínicas <strong>Rosiane Camelo</strong> e <strong>Jiciléia Oliveira</strong> fundaram o <strong>Espaço EquilibraMente</strong> — um ambiente pensado com carinho para acolher profissionais da saúde mental e seus pacientes.
+                        Em um mundo cada vez mais acelerado e exigente, cuidar da saúde emocional tornou-se uma prioridade. Foi com esse propósito que as psicólogas clínicas <strong>Rosiane Camelo</strong> e <strong>Jiciléia Oliveira</strong> fundaram o <strong>Espaço EquilibraMente</strong> — um ambiente pensado com carinho para acolher profissionais da saúde mental e seus pacientes.
                      </p>
                      <p style=" text-align: left !important;">
-                        O Espaço oferece <strong>salas aconchegantes, silenciosas e bem equipadas</strong>, disponíveis para locação por hora, proporcionando uma estrutura de qualidade para atendimentos presenciais ou online. Nosso objetivo é garantir um ambiente onde o <strong>bem-estar, a privacidade e a qualidade no atendimento</strong> caminham lado a lado.
+                        O Espaço oferece salas aconchegantes, silenciosas e bem equipadas, disponíveis para locação por hora, proporcionando uma estrutura de qualidade para atendimentos presenciais ou online. Nosso objetivo é garantir um ambiente onde o bem-estar, a privacidade e a qualidade no atendimento caminham lado a lado.
                      </p>
                      <p style=" text-align: left !important;">
-                        Aqui, cada detalhe foi pensado para que <strong>você possa cuidar de quem cuida</strong>.
+                        Aqui, cada detalhe foi pensado para que você possa cuidar de quem cuida.
                      </p>                    
                   </div>
 
