@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Contract;
 
 class UsuarioController extends Controller
 {
@@ -117,8 +118,6 @@ class UsuarioController extends Controller
     }
     public function completarCadastro(Request $request)
     {
-        \Log::info('Dados recebidos no completarCadastro:', $request->all());
-    
         // Validação dos dados
         $request->validate([
             'fullname' => 'required|string|max:255',
@@ -138,15 +137,12 @@ class UsuarioController extends Controller
             'endereco_cidade' => 'required|string|max:255',
             'endereco_estado' => 'required|string|max:2',
             'endereco_cep' => 'required|string|max:9',
+            'aceita_contrato' => 'accepted', // valida o checkbox
         ]);
-
-        \Log::info('Validouuu');
-    
     
         if (Auth::check()) {
-            \Log::info('Tá logado');
+            // Atualiza o usuário autenticado
             $user = Auth::user();
-            // Atualiza o usuário existente
             $user->update([
                 'name' => $request->input('fullname'),
                 'photo' => $request->input('photo'),
@@ -157,29 +153,18 @@ class UsuarioController extends Controller
                 'idade' => $request->input('idade'),
                 'registro_profissional' => $request->input('registro_profissional'),
                 'tipo_registro_profissional' => $request->input('tipo_registro_profissional'),
-                'password' => Hash::make($request->input('senha')), // Adiciona o hash da senha
-                'cadastro_completo' => true, // Marca o cadastro como completo
+                'password' => Hash::make($request->input('senha')),
+                'cadastro_completo' => true,
             ]);
-
         } else {
-
-            \Log::info('Não esta logado ');
-            
-             // Verifica se o e-mail já existe
-                $existingUser = User::where('email', $request->input('email'))->first();
-
-                if ($existingUser) {
-                    // Retorna uma mensagem de erro se o e-mail já está cadastrado
-                    \Log::info('ja existe um usuario com memsmo emil');
-                    if ($request->ajax()) {
-                        return response()->json([
-                            'error' => 'E-mail já cadastrado. Faça login ou use outro e-mail.'
-                        ], 422);
-                    }
-                    return redirect()->back()->with('error', 'E-mail já cadastrado. Faça login ou use outro e-mail.');
-                
-                }
-            // Cria um novo usuário e realiza o login
+            // Verifica duplicidade de e-mail
+            if (User::where('email', $request->input('email'))->exists()) {
+                return $request->ajax()
+                    ? response()->json(['error' => 'E-mail já cadastrado. Faça login ou use outro e-mail.'], 422)
+                    : redirect()->back()->with('error', 'E-mail já cadastrado. Faça login ou use outro e-mail.');
+            }
+    
+            // Cria novo usuário e faz login
             $user = User::create([
                 'name' => $request->input('fullname'),
                 'email' => $request->input('email'),
@@ -189,23 +174,14 @@ class UsuarioController extends Controller
                 'idade' => $request->input('idade'),
                 'registro_profissional' => $request->input('registro_profissional'),
                 'tipo_registro_profissional' => $request->input('tipo_registro_profissional'),
-                'password' => Hash::make($request->input('senha')), // Hash da senha
-                'cadastro_completo' => true, // Marca o cadastro como completo
+                'password' => Hash::make($request->input('senha')),
+                'cadastro_completo' => true,
             ]);
-
-            if ($user) {
-
-                \Log::info('novo usuario criado');
-            }else{
-                \Log::info('criou um novo');
-            }
-
-           
     
-            Auth::login($user); // Realiza o login automaticamente
+            Auth::login($user);
         }
     
-        // Atualiza ou cria o endereço relacionado
+        // Salva ou atualiza o endereço
         $user->endereco()->updateOrCreate([], [
             'rua' => $request->input('endereco_rua'),
             'numero' => $request->input('endereco_numero'),
@@ -216,31 +192,29 @@ class UsuarioController extends Controller
             'cep' => $request->input('endereco_cep'),
         ]);
     
-        // Determina a URL de redirecionamento
-        $redirectUrl = session()->pull('voltar_para_sala', route('usuario.minhas.reservas'));
+        // Salva o histórico do contrato
+        $user->contratos()->create([
+            'versao_contrato' => 'v1.0 - 2025-05-16',
+            'aceito_em' => now(),
+        ]);
     
-        \Log::info('Redirecionando para URL:', ['redirectUrl' => $redirectUrl]);
+        // Redireciona
+        // $redirectUrl = session()->pull('voltar_para_sala', route('usuario.minhas.reservas'));
+        $redirectUrl = session()->pull('voltar_para_sala', url('/'));
     
-        // Verifica se a requisição é AJAX
-        if ($request->ajax()) {
-            return response()->json([
-                'redirect' => $redirectUrl,
-                'message' => 'Cadastro completado com sucesso!',
-            ]);
-        }
-    
-        // Redireciona normalmente, se não for uma requisição AJAX
-        return redirect($redirectUrl)->with('success', 'Cadastro completado com sucesso!');
+        return $request->ajax()
+            ? response()->json(['redirect' => $redirectUrl, 'message' => 'Cadastro completado com sucesso!'])
+            : redirect($redirectUrl)->with('success', 'Cadastro completado com sucesso!');
     }
     
     
 
     public function mostrarFormularioCompletarCadastro()
     {
-        // Envia os dados do Google pela sessão, se estiverem disponíveis
         $googleData = session('google_data', []);
-
-        return view('site.completar-cadastro', compact('googleData'));
+        $contrato = Contract::latest()->first(); // pega o contrato mais recente
+    
+        return view('site.completar-cadastro', compact('googleData', 'contrato'));
     }
 
 

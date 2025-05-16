@@ -61,6 +61,11 @@ class User extends Authenticatable
         return $this->hasMany(Reserva::class, 'usuario_id');
     }
 
+    public function contratos()
+    {
+        return $this->hasMany(\App\Models\ContratoUsuario::class);
+    }
+
     /**
      * Relacionamento polimórfico com endereço
      */

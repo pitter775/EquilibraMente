@@ -11,6 +11,86 @@
 @endif
 
 
+
+<!-- Modal com o conteúdo do contrato -->
+<div class="modal fade" id="modalContrato">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalContratoLabel">Contrato - {{ $contrato->versao ?? 'N/A' }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span>&times;</span>
+                    </button>
+            </div>
+<div class="modal-body" style="white-space: pre-line;">
+                <p>
+                    INSTRUMENTO PARTICULAR DE CONTRATO DE PRESTAÇÃO DE SERVIÇOS
+
+                    Pelo presente instrumento particular, as Partes:
+
+                    CONTRATANTE: Nome: <span id="contrato_nome"></span>, Profissão: <span id="contrato_profissao"></span>, CPF: <span id="contrato_cpf"></span>, com endereço em <span id="contrato_endereco"></span>, com endereço eletrônico: <span id="contrato_email"></span>, telefone: <span id="contrato_telefone"></span>;
+
+                    CONTRATADA: ESPAÇO EQUILIBRAMENTE LTDA, com sede na Cidade de São Paulo, Estado de São Paulo, na RUA DONA ANTÔNIA DE QUEIROS nº 504, cj 43 Edifício E C Higienópolis, Consolação, CEP: 01307-013, inscrita no CNPJ sob o nº 55.559.476/0001-59, com endereço eletrônico: equilibramente12@gmail.com;
+
+                    As partes, de comum acordo e na melhor forma de direito, celebram o presente CONTRATO DE PRESTAÇÃO DE SERVIÇOS, o qual se regerá pelas cláusulas e condições a seguir estabelecidas.
+
+                    I. OBJETO
+
+                    O presente contrato tem por objeto a prestação de serviços de gestão e disponibilidade de salas para atendimento da área da saúde mental, localizado em Rua Dona Antônia de Queirós, nº 504 cj 43- 4 andar. do Edifício Higienópolis, Bairro Consolação, São Paulo/SP.
+
+                    O Espaço poderá ser utilizado pelo contratante apenas para o desempenho de suas atividades como profissional da área da saúde mental, respeitados todos os termos do Regulamento Interno para uso do Espaço Equilibramente, o qual se encontra à disposição do Contratante na plataforma de agendamento de salas da Contratada www.espacoequilibramente.com.br (o “Regulamento de Uso do Espaço”) e faz parte integrante ao presente Contrato.
+
+                    O Contratante declara ter pleno conhecimento e estar integralmente de acordo com os termos do Regulamento de Uso do Espaço, o qual se encontra disponível em https://www.espacoequilibramente.com.br/regulamento, obrigando-se a cumprir todas as suas disposições e regras.
+
+                    II. ESPÉCIES DE CONTRATAÇÕES, PREÇOS E FORMAS DE PAGAMENTO
+
+                    2.1. Pela prestação dos seus serviços, a Contratada fará jus aos valores estipulados conforme tabela de preço apresentada na Plataforma de Agendamento e de acordo com horários e espécies de contratação lá especificada.
+
+                    2.2. Com o fim de refletir a variação dos custos dos serviços e insumos utilizados para a prestação dos serviços pela contratada, os valores indicados na plataforma, serão reajustados de acordo com as necessidades dos serviços e atualizações legais.
+
+                    2.3. O pagamento poderá ser realizado através da plataforma no momento do agendamento e na forma disponibilizada no momento da contratação.
+
+                    III. PRAZO E RESCISÃO
+
+                    3.1. O presente Instrumento é celebrado em caráter irrevogável e irretratável e vigorará até a utilização da sala e hora contratada.
+
+                    3.2. O presente Contrato poderá ser rescindido por qualquer Parte, a qualquer tempo e por qualquer motivo, mediante notificação por escrito à outra parte com antecedência mínima de 24 horas da hora agendada.
+
+                    3.3. A Contratada poderá rescindir de pleno direito o presente Instrumento, na hipótese de a Contratante descumprir as normas dispostas no Regulamento de Uso do Espaço, independentemente da quantidade de horas contratada, sem prejuízo da aplicação de outras penalidades previstas neste instrumento.
+
+                    IV. PENALIDADES
+
+                    4.1. No caso de descumprimento de quaisquer obrigações deste instrumento ou do Regulamento de Uso de Espaço, o Contratante estará sujeito ao pagamento de multa não compensatória no valor de 02 (duas) vezes o valor estabelecido para Hora Avulsa por infração praticada, sem prejuízo de eventuais perdas e danos.
+
+                    V. DISPOSIÇÕES FINAIS
+
+                    5.1. A relação entre as Partes é a de contratantes independentes, de modo que as Partes de forma expressa, irretratável e livre, declaram que este contrato não constitui uma sociedade, associação ou parceria entre elas, tampouco estabelece qualquer vínculo empregatício de uma com a outra, ou com relação ao seu quadro pessoal.
+
+                    5.2. Qualquer alteração nas disposições do presente contrato somente será realizada mediante aditamento celebrado por escrito entre as Partes.
+
+                    5.3. Fica eleito o Foro Central da Comarca da Capital do Estado de São Paulo, com renúncia a qualquer outra, por mais privilegiada que seja, para dirimir qualquer questão relacionada ao presente Contrato.
+
+                    E por estarem assim justas e contratadas, as partes firmam este instrumento em 02 (duas) vias de igual forma e teor, na presença de testemunhas.
+
+                    São Paulo, <span id="contrato_data"></span>
+
+                    CONTRATANTE: <span id="contrato_nome_final"></span>, <span id="contrato_endereco_final"></span>
+
+                    CONTRATADA: ESPAÇO EQUILIBRAMENTE LTDA
+
+                
+                </p>
+
+                <div class="d-flex justify-content-end mt-4 gap-3">
+                    <button id="btnAceitoContrato" class="btn btn-success">Aceito os termos</button>
+                    <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="container" style="margin-top: 120px; margin-bottom: 100px">
     <h4>
         {{ isset($googleData) && $googleData ? 'Completar Cadastro' : 'Cadastro Principal' }}
@@ -143,6 +223,41 @@
             </div>
         </div>
 
+        @php
+            $contrato = \App\Models\Contract::latest()->first();
+        @endphp
+
+        <style>
+            .labelcontrato{ color: #777}
+            .btn-termos {
+                background-color: #d4edda; /* verde bem claro */
+                color: #155724; /* verde escuro pro texto */
+                border: 1px solid #c3e6cb;
+                padding: 0.4rem 1rem;
+                font-weight: 500;
+                font-size: 0.95rem;
+                border-radius: 6px;
+                transition: 0.2s ease-in-out;
+            }
+
+            .btn-termos:hover {
+                background-color: #c3e6cb;
+                color: #0c3c2d;
+                text-decoration: none;
+            }
+        </style>
+
+       
+
+
+        <div class="form-check mt-4 mb-4">
+             <input class="form-check-input" type="checkbox" id="aceitaContrato" name="aceita_contrato" disabled required>
+            <label class="form-check-label labelcontrato" for="aceitaContrato">
+                Eu li e aceito os <a href="#" class="btn-termos" id="abrirModalContrato">termos do contrato</a>
+.
+            </label>
+        </div>
+
         <button type="submit" class="btn btn-primary">Salvar</button>
     </form>
 </div>
@@ -189,6 +304,106 @@
                 }
             });
         });
+
+        function preencherContrato() {
+            const nome = document.getElementById('fullname')?.value || '';
+            const cpf = document.getElementById('cpf')?.value || '';
+            const profissao = document.getElementById('tipo_registro_profissional')?.value || '';
+            const telefone = document.getElementById('telefone')?.value || '';
+            const email = document.getElementById('email')?.value || '';
+
+            const rua = document.getElementById('endereco_rua')?.value || '';
+            const numero = document.getElementById('endereco_numero')?.value || '';
+            const bairro = document.getElementById('endereco_bairro')?.value || '';
+            const cidade = document.getElementById('endereco_cidade')?.value || '';
+            const estado = document.getElementById('endereco_estado')?.value || '';
+            const cep = document.getElementById('endereco_cep')?.value || '';
+
+            const endereco = `${rua}, ${numero}, ${bairro}, ${cidade} - ${estado}, CEP: ${cep}`;
+
+            document.getElementById('contrato_nome').innerText = nome;
+            document.getElementById('contrato_nome_final').innerText = nome;
+            document.getElementById('contrato_cpf').innerText = cpf;
+            document.getElementById('contrato_profissao').innerText = profissao;
+            document.getElementById('contrato_telefone').innerText = telefone;
+            document.getElementById('contrato_email').innerText = email;
+            document.getElementById('contrato_endereco').innerText = endereco;
+            document.getElementById('contrato_endereco_final').innerText = endereco;
+
+            const dataHoje = new Date();
+            const dia = ('0' + dataHoje.getDate()).slice(-2);
+            const mes = ('0' + (dataHoje.getMonth() + 1)).slice(-2);
+            const ano = dataHoje.getFullYear();
+            document.getElementById('contrato_data').innerText = `${dia}/${mes}/${ano}`;
+        }
+
+        function verificarCamposPreenchidos() {
+            const campos = [
+                'fullname', 'cpf', 'telefone', 'email',
+                'endereco_rua', 'endereco_numero', 'endereco_bairro',
+                'endereco_cidade', 'endereco_estado', 'endereco_cep',
+                'senha', 'senha_confirmation'
+            ];
+
+            const todosPreenchidos = campos.every(id => document.getElementById(id)?.value.trim() !== '');
+
+            const checkbox = document.getElementById('aceitaContrato');
+
+            if (todosPreenchidos && checkbox) {
+                checkbox.disabled = false;
+                preencherContrato();
+            } else if (checkbox) {
+                checkbox.disabled = true;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('input, select').forEach(element => {
+                element.addEventListener('input', verificarCamposPreenchidos);
+                element.addEventListener('change', verificarCamposPreenchidos);
+            });
+
+            verificarCamposPreenchidos();
+        });
+
+
+
+        document.getElementById('abrirModalContrato')?.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const campos = [
+                'fullname', 'cpf', 'telefone', 'email',
+                'endereco_rua', 'endereco_numero', 'endereco_bairro',
+                'endereco_cidade', 'endereco_estado', 'endereco_cep',
+                'senha', 'senha_confirmation'
+            ];
+
+            const todosPreenchidos = campos.every(id => document.getElementById(id)?.value.trim() !== '');
+
+            if (!todosPreenchidos) {
+                toastr.warning('Preencha todos os campos do formulário para visualizar o contrato.');
+                return;
+            }
+
+            preencherContrato();
+            $('#modalContrato').modal('show');
+        });
+
+        
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.id === 'btnAceitoContrato') {
+                const aceiteGeral = document.getElementById('aceitaContrato');
+                const btnSalvar = document.querySelector('button[type="submit"]');
+
+                aceiteGeral.checked = true;
+                aceiteGeral.disabled = false;
+                btnSalvar.disabled = false;
+
+                $('#modalContrato').modal('hide');
+            }
+        });
+
+
     });
 </script>
 

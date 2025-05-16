@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\SalaController;
 use App\Http\Controllers\admin\ReservaController;
 use App\Http\Controllers\admin\RelatorioController;
 use App\Http\Controllers\admin\UsuarioController;
+use App\Http\Controllers\admin\ContratoController;
 use App\Http\Controllers\ImagemSalaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CepController;
@@ -127,6 +128,10 @@ Route::middleware(['auth'])->group(function () {
 
 // Rotas para administradores
 Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/contrato', [ContratoController::class, 'index'])->name('admin.contrato.index');
+    Route::post('/contrato', [ContratoController::class, 'salvar'])->name('admin.contrato.salvar');
+
+
     Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/analitico', [AdminDashboardController::class, 'analitico'])->name('admin.analitico');
 

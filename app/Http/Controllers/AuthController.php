@@ -64,7 +64,8 @@ class AuthController extends Controller
                 ]);
             }
     
-            $redirectUrl = session()->pull('voltar_para_sala', route('usuario.minhas.reservas'));
+            // $redirectUrl = session()->pull('voltar_para_sala', route('usuario.minhas.reservas'));
+            $redirectUrl = session()->pull('voltar_para_sala', url('/'));
 
     
             return redirect($redirectUrl);
