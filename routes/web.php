@@ -23,6 +23,14 @@ use App\Models\DebugLog;
 use App\Http\Controllers\admin\FechaduraController;
 
 
+
+
+// envio para pasta log
+Route::get('/teste-upload', [App\Http\Controllers\TesteUploadController::class, 'formulario']);
+Route::post('/teste-upload', [App\Http\Controllers\TesteUploadController::class, 'upload']);
+
+
+
 Route::get('/reserva/dados/{id}', [SiteController::class, 'buscarDadosReserva']);
 Route::get('/pagbank/status/{referenceId}', [PagBankController::class, 'verificarStatus'])->name('pagbank.status');
 
