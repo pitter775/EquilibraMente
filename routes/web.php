@@ -21,13 +21,43 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\NewsletterController;
 use App\Models\DebugLog;
 use App\Http\Controllers\admin\FechaduraController;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CadastroAprovadoMail;
 
 
 
-
-// envio para pasta log
+// envio para pasta log - tested
 Route::get('/teste-upload', [App\Http\Controllers\TesteUploadController::class, 'formulario']);
 Route::post('/teste-upload', [App\Http\Controllers\TesteUploadController::class, 'upload']);
+
+
+
+
+Route::get('/teste-email-aprovado', function () {
+    // Pega o primeiro usuário com status aprovado (ou você coloca um ID fixo)
+    $user = User::where('email', 'pitter775@gmail.com')->firstOrFail();
+
+    Mail::to($user->email)->send(new CadastroAprovadoMail($user));
+
+    return 'E-mail de teste enviado para ' . $user->email . ' ✔️';
+});
+
+
+Route::get('/cadastro-aprovado/{user}', [UsuarioController::class, 'verCadastroAprovado'])
+    ->name('usuario.aprovado.ver')
+    ->middleware('signed');
+
+
+// email aprovacao 
+Route::get('/admin/aprovar-cadastro/{user}', [UsuarioController::class, 'verCadastroParaAprovacao'])
+    ->name('admin.usuario.aprovacao.ver')
+    ->middleware('signed');
+
+
+Route::post('/admin/aprovar/{user}', [UsuarioController::class, 'aprovarUsuario'])->name('admin.usuario.aprovar.forcar');
+Route::post('/admin/reprovar/{user}', [UsuarioController::class, 'reprovarUsuario'])->name('admin.usuario.reprovar.forcar');
+
 
 
 

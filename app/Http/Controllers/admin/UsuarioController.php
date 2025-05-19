@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Contract;
+use App\Mail\CadastroParaAprovacaoMail;
+use Illuminate\Support\Facades\Mail;
 
 class UsuarioController extends Controller
 {
@@ -138,6 +140,9 @@ class UsuarioController extends Controller
             'endereco_estado' => 'required|string|max:2',
             'endereco_cep' => 'required|string|max:9',
             'aceita_contrato' => 'accepted', // valida o checkbox
+            // Documento
+            'documento_tipo' => 'required|string',
+            'documento' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
     
         if (Auth::check()) {
@@ -197,6 +202,17 @@ class UsuarioController extends Controller
             'versao_contrato' => 'v1.0 - 2025-05-16',
             'aceito_em' => now(),
         ]);
+
+
+        $emailsAprovadores = [
+            'pitter775@gmail.com',
+            'adryana775@gmail.com'
+        ];
+        
+        foreach ($emailsAprovadores as $email) {
+            Mail::to($email)->send(new CadastroParaAprovacaoMail($user));
+        }
+        
     
         // Redireciona
         // $redirectUrl = session()->pull('voltar_para_sala', route('usuario.minhas.reservas'));
@@ -205,9 +221,7 @@ class UsuarioController extends Controller
         return $request->ajax()
             ? response()->json(['redirect' => $redirectUrl, 'message' => 'Cadastro completado com sucesso!'])
             : redirect($redirectUrl)->with('success', 'Cadastro completado com sucesso!');
-    }
-    
-    
+    }   
 
     public function mostrarFormularioCompletarCadastro()
     {
@@ -215,6 +229,44 @@ class UsuarioController extends Controller
         $contrato = Contract::latest()->first(); // pega o contrato mais recente
     
         return view('site.completar-cadastro', compact('googleData', 'contrato'));
+    }
+
+    public function verCadastroParaAprovacao(User $user)
+    {
+        if ($user->status_aprovacao !== 'pendente') {
+            abort(403, 'Este usuário já foi avaliado.');
+        }
+    
+        return view('admin.usuarios.ver-aprovacao', compact('user'));
+    }
+    
+
+    public function verCadastroAprovado(User $user)
+    {
+        if ($user->status_aprovacao !== 'aprovado') {
+            abort(403, 'Usuário ainda não foi aprovado.');
+        }
+    
+        return view('site.usuario-aprovado', compact('user'));
+    }
+
+
+    public function aprovarUsuario($id)
+    {
+        $user = User::findOrFail($id);
+        $user->status_aprovacao = 'aprovado';
+        $user->save();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function reprovarUsuario($id)
+    {
+        $user = User::findOrFail($id);
+        $user->status_aprovacao = 'reprovado';
+        $user->save();
+
+        return response()->json(['success' => true]);
     }
 
 

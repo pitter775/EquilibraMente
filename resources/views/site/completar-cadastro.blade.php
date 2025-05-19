@@ -22,63 +22,63 @@
                         <span>&times;</span>
                     </button>
             </div>
-<div class="modal-body" style="white-space: pre-line;">
+            <div class="modal-body" style="white-space: pre-line;">
                 <p>
-                    INSTRUMENTO PARTICULAR DE CONTRATO DE PRESTAÇÃO DE SERVIÇOS
+                                INSTRUMENTO PARTICULAR DE CONTRATO DE PRESTAÇÃO DE SERVIÇOS
 
-                    Pelo presente instrumento particular, as Partes:
+                                Pelo presente instrumento particular, as Partes:
 
-                    CONTRATANTE: Nome: <span id="contrato_nome"></span>, Profissão: <span id="contrato_profissao"></span>, CPF: <span id="contrato_cpf"></span>, com endereço em <span id="contrato_endereco"></span>, com endereço eletrônico: <span id="contrato_email"></span>, telefone: <span id="contrato_telefone"></span>;
+                                CONTRATANTE: Nome: <span id="contrato_nome"></span>, Profissão: <span id="contrato_profissao"></span>, CPF: <span id="contrato_cpf"></span>, com endereço em <span id="contrato_endereco"></span>, com endereço eletrônico: <span id="contrato_email"></span>, telefone: <span id="contrato_telefone"></span>;
 
-                    CONTRATADA: ESPAÇO EQUILIBRAMENTE LTDA, com sede na Cidade de São Paulo, Estado de São Paulo, na RUA DONA ANTÔNIA DE QUEIROS nº 504, cj 43 Edifício E C Higienópolis, Consolação, CEP: 01307-013, inscrita no CNPJ sob o nº 55.559.476/0001-59, com endereço eletrônico: equilibramente12@gmail.com;
+                                CONTRATADA: ESPAÇO EQUILIBRAMENTE LTDA, com sede na Cidade de São Paulo, Estado de São Paulo, na RUA DONA ANTÔNIA DE QUEIROS nº 504, cj 43 Edifício E C Higienópolis, Consolação, CEP: 01307-013, inscrita no CNPJ sob o nº 55.559.476/0001-59, com endereço eletrônico: equilibramente12@gmail.com;
 
-                    As partes, de comum acordo e na melhor forma de direito, celebram o presente CONTRATO DE PRESTAÇÃO DE SERVIÇOS, o qual se regerá pelas cláusulas e condições a seguir estabelecidas.
+                                As partes, de comum acordo e na melhor forma de direito, celebram o presente CONTRATO DE PRESTAÇÃO DE SERVIÇOS, o qual se regerá pelas cláusulas e condições a seguir estabelecidas.
 
-                    I. OBJETO
+                                I. OBJETO
 
-                    O presente contrato tem por objeto a prestação de serviços de gestão e disponibilidade de salas para atendimento da área da saúde mental, localizado em Rua Dona Antônia de Queirós, nº 504 cj 43- 4 andar. do Edifício Higienópolis, Bairro Consolação, São Paulo/SP.
+                                O presente contrato tem por objeto a prestação de serviços de gestão e disponibilidade de salas para atendimento da área da saúde mental, localizado em Rua Dona Antônia de Queirós, nº 504 cj 43- 4 andar. do Edifício Higienópolis, Bairro Consolação, São Paulo/SP.
 
-                    O Espaço poderá ser utilizado pelo contratante apenas para o desempenho de suas atividades como profissional da área da saúde mental, respeitados todos os termos do Regulamento Interno para uso do Espaço Equilibramente, o qual se encontra à disposição do Contratante na plataforma de agendamento de salas da Contratada www.espacoequilibramente.com.br (o “Regulamento de Uso do Espaço”) e faz parte integrante ao presente Contrato.
+                                O Espaço poderá ser utilizado pelo contratante apenas para o desempenho de suas atividades como profissional da área da saúde mental, respeitados todos os termos do Regulamento Interno para uso do Espaço Equilibramente, o qual se encontra à disposição do Contratante na plataforma de agendamento de salas da Contratada www.espacoequilibramente.com.br (o “Regulamento de Uso do Espaço”) e faz parte integrante ao presente Contrato.
 
-                    O Contratante declara ter pleno conhecimento e estar integralmente de acordo com os termos do Regulamento de Uso do Espaço, o qual se encontra disponível em https://www.espacoequilibramente.com.br/regulamento, obrigando-se a cumprir todas as suas disposições e regras.
+                                O Contratante declara ter pleno conhecimento e estar integralmente de acordo com os termos do Regulamento de Uso do Espaço, o qual se encontra disponível em https://www.espacoequilibramente.com.br/regulamento, obrigando-se a cumprir todas as suas disposições e regras.
 
-                    II. ESPÉCIES DE CONTRATAÇÕES, PREÇOS E FORMAS DE PAGAMENTO
+                                II. ESPÉCIES DE CONTRATAÇÕES, PREÇOS E FORMAS DE PAGAMENTO
 
-                    2.1. Pela prestação dos seus serviços, a Contratada fará jus aos valores estipulados conforme tabela de preço apresentada na Plataforma de Agendamento e de acordo com horários e espécies de contratação lá especificada.
+                                2.1. Pela prestação dos seus serviços, a Contratada fará jus aos valores estipulados conforme tabela de preço apresentada na Plataforma de Agendamento e de acordo com horários e espécies de contratação lá especificada.
 
-                    2.2. Com o fim de refletir a variação dos custos dos serviços e insumos utilizados para a prestação dos serviços pela contratada, os valores indicados na plataforma, serão reajustados de acordo com as necessidades dos serviços e atualizações legais.
+                                2.2. Com o fim de refletir a variação dos custos dos serviços e insumos utilizados para a prestação dos serviços pela contratada, os valores indicados na plataforma, serão reajustados de acordo com as necessidades dos serviços e atualizações legais.
 
-                    2.3. O pagamento poderá ser realizado através da plataforma no momento do agendamento e na forma disponibilizada no momento da contratação.
+                                2.3. O pagamento poderá ser realizado através da plataforma no momento do agendamento e na forma disponibilizada no momento da contratação.
 
-                    III. PRAZO E RESCISÃO
+                                III. PRAZO E RESCISÃO
 
-                    3.1. O presente Instrumento é celebrado em caráter irrevogável e irretratável e vigorará até a utilização da sala e hora contratada.
+                                3.1. O presente Instrumento é celebrado em caráter irrevogável e irretratável e vigorará até a utilização da sala e hora contratada.
 
-                    3.2. O presente Contrato poderá ser rescindido por qualquer Parte, a qualquer tempo e por qualquer motivo, mediante notificação por escrito à outra parte com antecedência mínima de 24 horas da hora agendada.
+                                3.2. O presente Contrato poderá ser rescindido por qualquer Parte, a qualquer tempo e por qualquer motivo, mediante notificação por escrito à outra parte com antecedência mínima de 24 horas da hora agendada.
 
-                    3.3. A Contratada poderá rescindir de pleno direito o presente Instrumento, na hipótese de a Contratante descumprir as normas dispostas no Regulamento de Uso do Espaço, independentemente da quantidade de horas contratada, sem prejuízo da aplicação de outras penalidades previstas neste instrumento.
+                                3.3. A Contratada poderá rescindir de pleno direito o presente Instrumento, na hipótese de a Contratante descumprir as normas dispostas no Regulamento de Uso do Espaço, independentemente da quantidade de horas contratada, sem prejuízo da aplicação de outras penalidades previstas neste instrumento.
 
-                    IV. PENALIDADES
+                                IV. PENALIDADES
 
-                    4.1. No caso de descumprimento de quaisquer obrigações deste instrumento ou do Regulamento de Uso de Espaço, o Contratante estará sujeito ao pagamento de multa não compensatória no valor de 02 (duas) vezes o valor estabelecido para Hora Avulsa por infração praticada, sem prejuízo de eventuais perdas e danos.
+                                4.1. No caso de descumprimento de quaisquer obrigações deste instrumento ou do Regulamento de Uso de Espaço, o Contratante estará sujeito ao pagamento de multa não compensatória no valor de 02 (duas) vezes o valor estabelecido para Hora Avulsa por infração praticada, sem prejuízo de eventuais perdas e danos.
 
-                    V. DISPOSIÇÕES FINAIS
+                                V. DISPOSIÇÕES FINAIS
 
-                    5.1. A relação entre as Partes é a de contratantes independentes, de modo que as Partes de forma expressa, irretratável e livre, declaram que este contrato não constitui uma sociedade, associação ou parceria entre elas, tampouco estabelece qualquer vínculo empregatício de uma com a outra, ou com relação ao seu quadro pessoal.
+                                5.1. A relação entre as Partes é a de contratantes independentes, de modo que as Partes de forma expressa, irretratável e livre, declaram que este contrato não constitui uma sociedade, associação ou parceria entre elas, tampouco estabelece qualquer vínculo empregatício de uma com a outra, ou com relação ao seu quadro pessoal.
 
-                    5.2. Qualquer alteração nas disposições do presente contrato somente será realizada mediante aditamento celebrado por escrito entre as Partes.
+                                5.2. Qualquer alteração nas disposições do presente contrato somente será realizada mediante aditamento celebrado por escrito entre as Partes.
 
-                    5.3. Fica eleito o Foro Central da Comarca da Capital do Estado de São Paulo, com renúncia a qualquer outra, por mais privilegiada que seja, para dirimir qualquer questão relacionada ao presente Contrato.
+                                5.3. Fica eleito o Foro Central da Comarca da Capital do Estado de São Paulo, com renúncia a qualquer outra, por mais privilegiada que seja, para dirimir qualquer questão relacionada ao presente Contrato.
 
-                    E por estarem assim justas e contratadas, as partes firmam este instrumento em 02 (duas) vias de igual forma e teor, na presença de testemunhas.
+                                E por estarem assim justas e contratadas, as partes firmam este instrumento em 02 (duas) vias de igual forma e teor, na presença de testemunhas.
 
-                    São Paulo, <span id="contrato_data"></span>
+                                São Paulo, <span id="contrato_data"></span>
 
-                    CONTRATANTE: <span id="contrato_nome_final"></span>, <span id="contrato_endereco_final"></span>
+                                CONTRATANTE: <span id="contrato_nome_final"></span>, <span id="contrato_endereco_final"></span>
 
-                    CONTRATADA: ESPAÇO EQUILIBRAMENTE LTDA
+                                CONTRATADA: ESPAÇO EQUILIBRAMENTE LTDA
 
-                
+                            
                 </p>
 
                 <div class="d-flex justify-content-end mt-4 gap-3">
@@ -86,6 +86,39 @@
                     <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Modal Documento -->
+<div class="modal fade" id="modalDocumento" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <h4>Falta só mais um passo!</h4>
+            <p>Envie uma foto de um documento com foto. Seus dados serão analisados pela nossa equipe.</p>
+
+            <form id="formDocumento" enctype="multipart/form-data">
+                @csrf
+
+                <label for="documento_tipo" class="form-label">Tipo de Documento</label>
+                <select name="documento_tipo" class="form-select" required>
+                <option value="">Selecione...</option>
+                <option value="RG">RG</option>
+                <option value="CPF">CPF</option>
+                <option value="CNH">CNH</option>
+                <option value="Certidão de Nascimento">Certidão de Nascimento</option>
+                </select>
+
+                <label for="documento" class="form-label mt-2">Selecionar Arquivo</label>
+                <input type="file" name="documento" class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
+
+                <p class="text-muted mt-2" style="font-size: 0.9em;">
+                Seus dados estão protegidos conforme a <strong>LGPD</strong>.
+                </p>
+
+                <button type="submit" class="btn btn-success mt-2">Enviar Documento</button>
+            </form>
         </div>
     </div>
 </div>
@@ -267,40 +300,37 @@
 <script>
 
     $(document).ready(function() {
+        // 1. Intercepta o submit original e só mostra a modal
         $('#completarCadastroForm').on('submit', function(e) {
-            e.preventDefault(); // Evita o envio padrão do formulário
+            e.preventDefault();
+            $('#modalDocumento').modal('show');
+        });
 
+        // 2. Quando o usuário enviar o documento na modal
+        $('#formDocumento').on('submit', function(e) {
+            e.preventDefault();
+
+            // Junta os dados do formulário principal + modal
+            let formData = new FormData(document.getElementById('completarCadastroForm'));
+            let docForm = new FormData(this);
+
+            docForm.forEach((value, key) => {
+                formData.append(key, value);
+            });
+
+            // Agora sim executa o AJAX com tudo junto
             $.ajax({
                 url: "{{ route('completar.cadastro') }}",
                 method: "POST",
-                data: $(this).serialize(),
+                data: formData,
+                contentType: false,
+                processData: false,
                 success: function(response) {
-                    toastr.success('Cadastro completado com sucesso!');
-                    setTimeout(function() {
-                        window.location.href = response.redirect || '/'; // URL correta para redirecionamento
-                    }, 2000);
+                    toastr.success('Cadastro enviado para análise!');
+                    setTimeout(() => window.location.href = response.redirect || '/', 2000);
                 },
-                error: function(xhr) {
-                    console.log('Erro recebido:', xhr);
-                    if (xhr.status === 422) { // Código de status para erros de validação
-                        var response = xhr.responseJSON; // Garante que está acessando a resposta JSON
-
-                        // Verifica se existe a propriedade "error" na resposta
-                        if (response && response.error) {
-                            toastr.error(response.error); // Exibe a mensagem do backend
-                        } else if (response.errors) {
-                            // Caso seja uma validação padrão com múltiplos erros
-                            $.each(response.errors, function(key, messages) {
-                                $.each(messages, function(index, message) {
-                                    toastr.error(message); // Exibe cada mensagem de erro
-                                });
-                            });
-                        } else {
-                            toastr.error('Erro ao completar o cadastro. Tente novamente.');
-                        }
-                    } else {
-                        toastr.error('Erro ao completar o cadastro.');
-                    }
+                error: function() {
+                    toastr.error('Erro ao enviar o cadastro.');
                 }
             });
         });
