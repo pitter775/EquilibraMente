@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Contract;
 use App\Mail\CadastroParaAprovacaoMail;
+use App\Mail\CadastroAprovadoMail;
 use Illuminate\Support\Facades\Mail;
 
 class UsuarioController extends Controller
@@ -256,6 +257,7 @@ class UsuarioController extends Controller
         $user = User::findOrFail($id);
         $user->status_aprovacao = 'aprovado';
         $user->save();
+        Mail::to($user->email)->send(new CadastroAprovadoMail($user));
 
         return response()->json(['success' => true]);
     }

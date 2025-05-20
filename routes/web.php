@@ -43,6 +43,10 @@ Route::get('/teste-email-aprovado', function () {
     return 'E-mail de teste enviado para ' . $user->email . ' ✔️';
 });
 
+Route::post('/admin/usuarios/{id}/aprovar', [UsuarioController::class, 'aprovarUsuario'])->name('admin.usuario.aprovar');
+Route::post('/admin/usuarios/{id}/reprovar', [UsuarioController::class, 'reprovarUsuario'])->name('admin.usuario.reprovar');
+
+
 
 Route::get('/cadastro-aprovado/{user}', [UsuarioController::class, 'verCadastroAprovado'])
     ->name('usuario.aprovado.ver')

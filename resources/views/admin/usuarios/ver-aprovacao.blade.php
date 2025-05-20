@@ -12,12 +12,12 @@
     @endif
 @endif
 
-<form method="POST" action="{{ route('admin.usuario.aprovar.forcar', $user->id) }}" style="display:inline;">
+<form method="POST" action="{{ route('admin.usuario.aprovar', $user->id) }}">
   @csrf
-  <button class="btn btn-success">Aprovar</button>
+  <button type="submit" class="btn btn-success">Aprovar</button>
 </form>
 
-<form method="POST" action="{{ route('admin.usuario.reprovar.forcar', $user->id) }}" style="display:inline;">
+<form method="POST" action="{{ route('admin.usuario.reprovar', $user->id) }}">
   @csrf
-  <button class="btn btn-danger">Reprovar</button>
+  <button type="submit" class="btn btn-danger">Reprovar</button>
 </form>

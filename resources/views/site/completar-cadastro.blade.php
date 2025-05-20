@@ -94,26 +94,34 @@
     <!-- Modal Documento -->
 <div class="modal fade" id="modalDocumento" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content p-3">
+        <div class="modal-content p-5">
             <h4>Falta só mais um passo!</h4>
             <p>Envie uma foto de um documento com foto. Seus dados serão analisados pela nossa equipe.</p>
+
+            <hr/>
 
             <form id="formDocumento" enctype="multipart/form-data">
                 @csrf
 
-                <label for="documento_tipo" class="form-label">Tipo de Documento</label>
-                <select name="documento_tipo" class="form-select" required>
-                <option value="">Selecione...</option>
-                <option value="RG">RG</option>
-                <option value="CPF">CPF</option>
-                <option value="CNH">CNH</option>
-                <option value="Certidão de Nascimento">Certidão de Nascimento</option>
-                </select>
 
-                <label for="documento" class="form-label mt-2">Selecionar Arquivo</label>
-                <input type="file" name="documento" class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
+                <div class="row">
+                    <div class="col-md-12 mb-2">
+                        <label for="documento_tipo" class="form-label">Tipo de Documento</label>
+                        <select id="documento_tipo" name="documento_tipo" class="form-control">
+                            <option value="">Selecione...</option>
+                            <option value="RG">RG</option>
+                            <option value="CPF">CPF</option>
+                            <option value="CNH">CNH</option>
+                            <option value="Certidão de Nascimento">Certidão de Nascimento</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 mt-3">
+                        <label for="documento" class="form-label">Selecionar Arquivo</label>
+                        <input type="file" name="documento" class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
+                    </div>
+                </div>
 
-                <p class="text-muted mt-2" style="font-size: 0.9em;">
+                <p class="text-muted mt-4" style="font-size: 0.9em;">
                 Seus dados estão protegidos conforme a <strong>LGPD</strong>.
                 </p>
 
