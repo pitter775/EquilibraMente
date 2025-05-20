@@ -342,6 +342,15 @@
 
    </head>
 
+@if(session('success'))
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        toastr.success("{{ session('success') }}");
+    });
+  </script>
+@endif
+
+
    <body>
 
       <header id="header" class="fixed-top header-transparent">

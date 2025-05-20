@@ -43,6 +43,23 @@ Route::get('/teste-email-aprovado', function () {
     return 'E-mail de teste enviado para ' . $user->email . ' ✔️';
 });
 
+
+//Isso garante que só quem tem o link assinado pode acessar a imagem.
+Route::get('/admin/documento/{user}', function (\App\Models\User $user) {
+    if (!$user->documento_caminho || !\Storage::exists($user->documento_caminho)) {
+        abort(404);
+    }
+
+    $mime = \Storage::mimeType($user->documento_caminho);
+    $conteudo = \Storage::get($user->documento_caminho);
+
+    return response($conteudo)->header('Content-Type', $mime);
+})->middleware(['signed'])->name('documento.ver');
+
+
+
+
+
 Route::post('/admin/usuarios/{id}/aprovar', [UsuarioController::class, 'aprovarUsuario'])->name('admin.usuario.aprovar');
 Route::post('/admin/usuarios/{id}/reprovar', [UsuarioController::class, 'reprovarUsuario'])->name('admin.usuario.reprovar');
 

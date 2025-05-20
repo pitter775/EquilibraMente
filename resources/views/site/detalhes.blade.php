@@ -511,6 +511,16 @@
         }
 
         function confirmarReserva() {
+
+             @if(auth()->check())
+                const status = "{{ auth()->user()->status_aprovacao }}";
+
+                if (status !== 'aprovado') {
+                    toastr.warning('Seu cadastro ainda está em análise. Aguarde a aprovação para concluir uma reserva.');
+                    return;
+                }
+            @endif
+
             if (horariosSelecionados.length === 0) {
                 toastr.warning('Por favor, selecione pelo menos um horário.');
                 return;

@@ -10,7 +10,11 @@
     </div>
 @endif
 
-
+<style>
+.is-invalid {
+  border: 1px solid red !important;
+}
+</style>
 
 <!-- Modal com o conteúdo do contrato -->
 <div class="modal fade" id="modalContrato">
@@ -115,15 +119,26 @@
                             <option value="Certidão de Nascimento">Certidão de Nascimento</option>
                         </select>
                     </div>
-                    <div class="col-md-12 mt-3">
-                        <label for="documento" class="form-label">Selecionar Arquivo</label>
-                        <input type="file" name="documento" class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
+                    <div class="col-md-12 mt-3">                        
+                        <label for="documento" class="btn btn-outline-primary">
+                            <i class="bx bx-upload"></i> Escolher arquivo
+                        </label>
+                        <input type="file" id="documento" name="documento" accept=".jpg,.jpeg,.png,.pdf" style="display: none;" required>
+                        <span id="nomeArquivo" class="text-muted d-block mt-1" style="font-size: 0.85rem;">Nenhum arquivo selecionado</span>
+                        <img id="previewDocumento" src="#" alt="Pré-visualização" class="img-thumbnail mt-3" style="display: none; max-height: 200px;">
                     </div>
                 </div>
 
                 <p class="text-muted mt-4" style="font-size: 0.9em;">
-                Seus dados estão protegidos conforme a <strong>LGPD</strong>.
+                Seus dados estão protegidos conforme a <strong>LGPD</strong><div class="">  </div>
                 </p>
+
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="aceita_contrato" name="aceita_contrato" required>
+                    <label class="form-check-label" for="aceita_contrato">
+                        Li e aceito os termos do contrato.
+                    </label>
+                </div>    
 
                 <button type="submit" class="btn btn-success mt-2">Enviar Documento</button>
             </form>
@@ -310,8 +325,19 @@
     $(document).ready(function() {
         // 1. Intercepta o submit original e só mostra a modal
         $('#completarCadastroForm').on('submit', function(e) {
-            e.preventDefault();
-            $('#modalDocumento').modal('show');
+        e.preventDefault();
+
+        if (!validarFormularioPrincipal()) {
+            toastr.warning('Preencha todos os campos obrigatórios antes de continuar.');
+            return;
+        }
+
+        if (!$('#aceitaContrato').is(':checked')) {
+            toastr.warning('Você precisa aceitar os termos do contrato.');
+            return;
+        }
+
+        $('#modalDocumento').modal('show');
         });
 
         // 2. Quando o usuário enviar o documento na modal
@@ -326,6 +352,8 @@
                 formData.append(key, value);
             });
 
+            if (!validarDocumentoModal()) return;
+
             // Agora sim executa o AJAX com tudo junto
             $.ajax({
                 url: "{{ route('completar.cadastro') }}",
@@ -337,9 +365,18 @@
                     toastr.success('Cadastro enviado para análise!');
                     setTimeout(() => window.location.href = response.redirect || '/', 2000);
                 },
-                error: function() {
-                    toastr.error('Erro ao enviar o cadastro.');
+                error: function(xhr) {
+                    if (xhr.responseJSON?.errors) {
+                        Object.values(xhr.responseJSON.errors).forEach(function(msgArray) {
+                        toastr.error(msgArray[0]);
+                        });
+                    } else if (xhr.responseJSON?.error) {
+                        toastr.error(xhr.responseJSON.error); // <- pega string direta
+                    } else {
+                        toastr.error('Erro ao enviar o cadastro.');
+                    }
                 }
+
             });
         });
 
@@ -440,6 +477,84 @@
                 $('#modalContrato').modal('hide');
             }
         });
+
+        function validarFormularioPrincipal() {
+            let camposObrigatorios = [
+                'fullname', 'cpf', 'telefone', 'email',
+                'endereco_rua', 'endereco_numero', 'endereco_bairro',
+                'endereco_cidade', 'endereco_estado', 'endereco_cep',
+                'senha', 'senha_confirmation',
+                'tipo_registro_profissional', 'registro_profissional',
+                'sexo', 'idade'
+            ];
+
+            let todosPreenchidos = true;
+
+            camposObrigatorios.forEach(id => {
+                let el = $('#' + id);
+                if (!el.val() || el.val().trim() === '') {
+                el.addClass('is-invalid');
+                todosPreenchidos = false;
+                } else {
+                el.removeClass('is-invalid');
+                }
+            });
+
+            // Valida se senha == confirmação
+            let senha = $('#senha').val();
+            let confirmacao = $('#senha_confirmation').val();
+
+            if (senha !== confirmacao) {
+                toastr.error('As senhas não conferem.');
+                $('#senha, #senha_confirmation').addClass('is-invalid');
+                todosPreenchidos = false;
+            }
+
+            return todosPreenchidos;
+        }
+
+        function validarDocumentoModal() {
+            const tipo = $('#documento_tipo').val();
+            const arquivo = $('input[name="documento"]').val();
+            const aceite = $('#aceita_contrato').is(':checked');
+
+            let valido = true;
+
+            if (!tipo) {
+                toastr.warning('Selecione o tipo de documento.');
+                valido = false;
+            }
+
+            if (!arquivo) {
+                toastr.warning('Selecione um arquivo para envio.');
+                valido = false;
+            }
+
+            if (!aceite) {
+                toastr.warning('Você precisa aceitar os termos do contrato.');
+                valido = false;
+            }
+
+            return valido;
+        }
+
+        $('#documento').on('change', function(e) {
+            const file = e.target.files[0];
+            $('#nomeArquivo').text(file.name || 'Nenhum arquivo selecionado');
+
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#previewDocumento').attr('src', e.target.result).show();
+                };
+                reader.readAsDataURL(file);
+            } else {
+                $('#previewDocumento').hide();
+            }
+        });
+
+
+
 
 
     });

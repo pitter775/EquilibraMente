@@ -1,9 +1,23 @@
-<h3>Novo cadastro aguardando aprovação</h3>
+<div style="max-width: 600px; margin: 20px auto; font-family: Arial, sans-serif; background-color: #fdfdfd; padding: 30px; border: 1px solid #eee; border-radius: 10px;">
 
-<p><strong>Nome:</strong> {{ $user->name }}</p>
-<p><strong>E-mail:</strong> {{ $user->email }}</p>
-<p><strong>Telefone:</strong> {{ $user->telefone }}</p>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <img src="{{ asset('assets/img/logoescuro.png') }}" alt="Logo Equilibra Mente" style="width: 180px; margin-bottom: 10px;">
+        <h2 style="color: #4CAF50; font-size: 20px;">Novo cadastro aguardando aprovação</h2>
+    </div>
 
-<a href="{{ $link }}" style="display:inline-block; padding:10px 20px; background:#007bff; color:white; text-decoration:none; border-radius:5px;">
-  Abrir para aprovar
-</a>
+    <p><strong>Nome:</strong> {{ $user->name }}</p>
+    <p><strong>E-mail:</strong> {{ $user->email }}</p>
+    <p><strong>Telefone:</strong> {{ $user->telefone }}</p>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <a href="{{ $link }}"
+           style="display: inline-block; padding: 12px 24px; background-color: #28a745; color: #fff;
+           text-decoration: none; border-radius: 5px; font-weight: bold;">
+           ✅ Abrir para aprovar
+        </a>
+    </div>
+
+    <p style="margin-top: 40px; font-size: 12px; color: #999; text-align: center;">
+        Equilibra Mente · Sistema de gestão de salas
+    </p>
+</div>

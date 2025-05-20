@@ -197,12 +197,37 @@ class UsuarioController extends Controller
             'estado' => $request->input('endereco_estado'),
             'cep' => $request->input('endereco_cep'),
         ]);
+
+
+        
     
         // Salva o histórico do contrato
         $user->contratos()->create([
             'versao_contrato' => 'v1.0 - 2025-05-16',
             'aceito_em' => now(),
         ]);
+
+        // Salva documento do usuário
+        if ($request->hasFile('documento')) {
+            $arquivo = $request->file('documento');
+            $extensao = $arquivo->getClientOriginalExtension();
+            $nomeArquivo = 'documento_' . time() . '.' . $extensao;
+            $pasta = 'logs/cadastro';
+
+            if (!\Storage::exists($pasta)) {
+                \Storage::makeDirectory($pasta);
+            }
+
+            // $caminho = $arquivo->storeAs($pasta, $nomeArquivo);
+            $caminho = \Storage::putFileAs($pasta, $arquivo, $nomeArquivo);
+
+            \Log::info('Caminho do arquivo salvo:', ['path' => $caminho]);
+
+            $user->documento_tipo = $request->input('documento_tipo');
+            $user->documento_caminho = $caminho;
+            $user->save();
+        }
+
 
 
         $emailsAprovadores = [
@@ -259,7 +284,7 @@ class UsuarioController extends Controller
         $user->save();
         Mail::to($user->email)->send(new CadastroAprovadoMail($user));
 
-        return response()->json(['success' => true]);
+        return redirect()->route('site.index')->with('success', 'Cadastro aprovado com sucesso!');
     }
 
     public function reprovarUsuario($id)
@@ -268,7 +293,7 @@ class UsuarioController extends Controller
         $user->status_aprovacao = 'reprovado';
         $user->save();
 
-        return response()->json(['success' => true]);
+        return redirect()->route('site.index')->with('success', 'Cadastro reprovado com sucesso!');
     }
 
 
