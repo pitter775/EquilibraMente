@@ -5,9 +5,9 @@
         <h2 style="color: #4CAF50; font-size: 20px;">Novo cadastro aguardando aprovação</h2>
     </div>
 
-    <p><strong>Nome:</strong> {{ $user->name }}</p>
-    <p><strong>E-mail:</strong> {{ $user->email }}</p>
-    <p><strong>Telefone:</strong> {{ $user->telefone }}</p>
+    <p style="text-align: center;"> {{ $user->name }}</p>
+    <p style="text-align: center;">{{ $user->email }}</p>
+    <p style="text-align: center;">{{ $user->telefone }}</p>
 
     <div style="margin-top: 30px; text-align: center;">
         <a href="{{ $link }}"
