@@ -34,10 +34,19 @@ Route::get('/teste-upload', [App\Http\Controllers\TesteUploadController::class, 
 Route::post('/teste-upload', [App\Http\Controllers\TesteUploadController::class, 'upload']);
 
 
+Route::get('/debug-request', function () {
+    return response()->json([
+        'host' => request()->getHost(),
+        'url' => request()->fullUrl(),
+        'isSecure' => request()->secure(),
+        'scheme' => request()->getScheme(),
+        'app_url' => config('app.url'),
+    ]);
+});
 
 
 Route::get('/teste-aprovar/{id}', function ($id) {
-    dd(request()->secure(), request()->getScheme());
+    // dd(request()->secure(), request()->getScheme());
     $link = URL::signedRoute('admin.usuario.aprovacao.ver', ['user' => $id]);
     $appUrl = config('app.url');
 
