@@ -24,6 +24,8 @@ use App\Http\Controllers\admin\FechaduraController;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CadastroAprovadoMail;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Config;
 
 
 
@@ -32,7 +34,26 @@ Route::get('/teste-upload', [App\Http\Controllers\TesteUploadController::class, 
 Route::post('/teste-upload', [App\Http\Controllers\TesteUploadController::class, 'upload']);
 
 
+Route::get('/teste-aprovar/{id}', function ($id) {
+    $link = URL::signedRoute('admin.aprovar.cadastro', ['id' => $id]);
+    $appUrl = config('app.url');
 
+    return "
+        <h1>Teste de Link de Aprovação</h1>
+
+        <p><strong>APP_URL:</strong> $appUrl</p>
+
+        <p><strong>Link Gerado:</strong></p>
+        <a href='$link' 
+           style='display:inline-block; padding:10px 20px; background:#28a745; color:#fff; border-radius:5px; text-decoration:none;'
+           target='_blank'>
+            👉 Acessar Link de Aprovação
+        </a>
+
+        <p>Ou copia esse link:</p>
+        <p>$link</p>
+    ";
+});
 
 Route::get('/teste-email-aprovado', function () {
     // Pega o primeiro usuário com status aprovado (ou você coloca um ID fixo)
