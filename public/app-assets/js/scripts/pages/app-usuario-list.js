@@ -61,50 +61,60 @@ $(function () {
       newUserModal.modal('show'); // Abre o modal
   });
 
-  // Evento para abrir o modal ao clicar no nome ou na foto do usuário para edição
-  $(document).on('click', '.user-avatar, .user-name', function () {
-    let id = $(this).data('id');
-    $.get(`/admin/usuarios/detalhes/${id}`, function (data) {
-        // Informações do usuário
-        $('#id_geral').val(data.id);
-        $('#fullname').val(data.name);
-        $('#email').val(data.email);
-        $('#cpf').val(data.cpf);
-        $('#sexo').val(data.sexo);
-        $('#idade').val(data.idade);
-        $('#telefone').val(data.telefone);
-        $('#photo').val(data.photo);
-        $('#status').val(data.status);
-        $('#perfil').val(data.tipo_usuario);
-        $('#senha').prop('required', false); // Senha não obrigatória na edição
+    // Evento para abrir o modal ao clicar no nome ou na foto do usuário para visualização
+    $(document).on('click', '.user-avatar, .user-name', function () {
+        let id = $(this).data('id');
+        $.get(`/admin/usuarios/detalhes/${id}`, function (data) {
+            // Informações do usuário
+            $('#fullname').text(data.name);
+            $('#email').text(data.email);
+            $('#cpf').text(data.cpf);
+            $('#sexo').text(data.sexo);
+            $('#idade').text(data.idade);
+            $('#telefone').text(data.telefone);
+            $('#registro_profissional').text(data.registro_profissional);
+            $('#tipo_registro_profissional').text(data.tipo_registro_profissional);
 
-        // Informações profissionais
-        $('#registro_profissional').val(data.registro_profissional);
-        $('#tipo_registro_profissional').val(data.tipo_registro_profissional);
+            $('#documento_tipo').text(data.documento_tipo);
 
-        // Informações de endereço - Verifica se o endereço existe antes de tentar preencher
-        if (data.endereco) {
-            $('#endereco_rua').val(data.endereco.rua);
-            $('#endereco_numero').val(data.endereco.numero);
-            $('#endereco_complemento').val(data.endereco.complemento);
-            $('#endereco_bairro').val(data.endereco.bairro);
-            $('#endereco_cidade').val(data.endereco.cidade);
-            $('#endereco_estado').val(data.endereco.estado);
-            $('#endereco_cep').val(data.endereco.cep);
-        } else {
-            // Limpar campos de endereço caso não exista um endereço associado
-            $('#endereco_rua').val('');
-            $('#endereco_numero').val('');
-            $('#endereco_complemento').val('');
-            $('#endereco_bairro').val('');
-            $('#endereco_cidade').val('');
-            $('#endereco_estado').val('');
-            $('#endereco_cep').val('');
-        }
+            if (data.documento_url) {
+                $('#link_documento').attr('href', data.documento_url);
+                $('#imagem_documento').attr('src', data.documento_url);
+            } else {
+                $('#link_documento').attr('href', '#');
+                $('#imagem_documento').attr('src', '#');
+            }
 
-        newUserModal.modal('show'); // Abre o modal para edição
+            // Informações de endereço
+            if (data.endereco) {
+                $('#endereco').text(
+                    `${data.endereco.rua}, ${data.endereco.numero} ${data.endereco.complemento ?? ''} - ${data.endereco.bairro}, ${data.endereco.cidade} - ${data.endereco.estado}, CEP: ${data.endereco.cep}`
+                );
+            } else {
+                $('#endereco').text('Endereço não cadastrado');
+            }
+
+            // Atualiza status de aprovação
+            $('#status_aprovacao').removeClass('badge-secondary badge-success badge-danger');
+
+            if (data.status_aprovacao === 'pendente') {
+                $('#status_aprovacao').addClass('badge-secondary').text('Pendente');
+            } else if (data.status_aprovacao === 'aprovado') {
+                $('#status_aprovacao').addClass('badge-success').text('Aprovado');
+            } else if (data.status_aprovacao === 'reprovado') {
+                $('#status_aprovacao').addClass('badge-danger').text('Reprovado');
+            } else {
+                $('#status_aprovacao').addClass('badge-secondary').text('Indefinido');
+            }
+
+
+            $('#usuario_id_aprovacao').val(data.id);
+
+            // Abre o modal
+            newUserModal.modal('show');
+        });
     });
-});
+
 
 
   // Evento de submissão do formulário para criar ou editar
@@ -128,6 +138,37 @@ $(function () {
           }
       });
   });
+
+    //Função para Aprovar Usuário 
+    $('#formAprovacaoUsuario').on('submit', function (e) {
+        e.preventDefault();
+        let id = $('#usuario_id_aprovacao').val();
+
+        $.post(`/admin/usuarios/${id}/aprovar`, function () {
+            toastr.success('Usuário aprovado com sucesso!');
+            datauser();
+            newUserModal.modal('hide');
+        }).fail(function (e) {
+            let mensagemAmigavel = interpretarErro(e);
+            toastr.error(mensagemAmigavel);
+        });
+    });
+
+
+    //Função para Reprovar Usuário
+    $('#btnReprovarUsuario').on('click', function () {
+        let id = $('#usuario_id_aprovacao').val();
+
+        $.post(`/admin/usuarios/${id}/reprovar`, function () {
+            toastr.success('Usuário reprovado com sucesso!');
+            datauser();
+            newUserModal.modal('hide');
+        }).fail(function (e) {
+            let mensagemAmigavel = interpretarErro(e);
+            toastr.error(mensagemAmigavel);
+        });
+    });
+
 
   datauser();
 });

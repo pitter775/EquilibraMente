@@ -11,6 +11,7 @@ use App\Models\Contract;
 use App\Mail\CadastroParaAprovacaoMail;
 use App\Mail\CadastroAprovadoMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 class UsuarioController extends Controller
 {
@@ -109,8 +110,29 @@ class UsuarioController extends Controller
     public function detalhes($id)
     {
         $usuario = User::with('endereco')->findOrFail($id);
-        return response()->json($usuario);
-    }   
+    
+        return response()->json([
+            'id' => $usuario->id,
+            'name' => $usuario->name,
+            'email' => $usuario->email,
+            'telefone' => $usuario->telefone,
+            'cpf' => $usuario->cpf,
+            'sexo' => $usuario->sexo,
+            'idade' => $usuario->idade,
+            'registro_profissional' => $usuario->registro_profissional,
+            'tipo_registro_profissional' => $usuario->tipo_registro_profissional,
+    
+            'documento_tipo' => $usuario->documento_tipo,
+            'documento_url' => $usuario->documento_caminho
+                ? URL::signedRoute('documento.ver', ['user' => $usuario->id])
+                : null,
+    
+            'status_aprovacao' => $usuario->status_aprovacao, // 👈 Inclui isso aqui
+    
+            'endereco' => $usuario->endereco,
+        ]);
+    }
+    
     public function toggleStatus(User $user)
     {
         // Alterna o status do usuário entre 'ativo' e 'inativo'
