@@ -37,9 +37,13 @@ $(function () {
             },
             {
                 data: function (dados) {
-                    return dados.status === 'ativo'
-                        ? '<span class="badge bg-success">Ativo</span>'
-                        : '<span class="badge bg-danger">Inativo</span>';
+                    if (dados.status_aprovacao === 'aprovado') {
+                        return '<span class="badge bg-success">Aprovado</span>';
+                    } else if (dados.status_aprovacao === 'reprovado') {
+                        return '<span class="badge bg-danger">Reprovado</span>';
+                    } else {
+                        return '<span class="badge bg-secondary">Pendente</span>';
+                    }
                 }
             }
         ],
