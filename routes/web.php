@@ -35,7 +35,7 @@ Route::post('/teste-upload', [App\Http\Controllers\TesteUploadController::class,
 
 
 Route::get('/teste-aprovar/{id}', function ($id) {
-    $link = URL::signedRoute('admin.aprovar.cadastro', ['id' => $id]);
+    $link = URL::signedRoute('admin.usuario.aprovacao.ver', ['user' => $id]);
     $appUrl = config('app.url');
 
     return "
@@ -54,6 +54,7 @@ Route::get('/teste-aprovar/{id}', function ($id) {
         <p>$link</p>
     ";
 });
+
 
 Route::get('/teste-email-aprovado', function () {
     // Pega o primeiro usuário com status aprovado (ou você coloca um ID fixo)
