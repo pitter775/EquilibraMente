@@ -34,6 +34,8 @@ Route::get('/teste-upload', [App\Http\Controllers\TesteUploadController::class, 
 Route::post('/teste-upload', [App\Http\Controllers\TesteUploadController::class, 'upload']);
 
 
+
+
 Route::get('/teste-aprovar/{id}', function ($id) {
     $link = URL::signedRoute('admin.usuario.aprovacao.ver', ['user' => $id]);
     $appUrl = config('app.url');
@@ -54,6 +56,7 @@ Route::get('/teste-aprovar/{id}', function ($id) {
         <p>$link</p>
     ";
 });
+
 
 
 Route::get('/teste-email-aprovado', function () {
