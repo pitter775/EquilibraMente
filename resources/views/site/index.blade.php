@@ -272,6 +272,12 @@
                   height: 20px; padding-right: 10px
          }
 
+.icon-insta {
+  filter: brightness(0) invert(1);
+  height: 20px;
+  padding-right: 10px;
+}
+
          @media (max-width: 768px) {
             .comofunciona{
 
@@ -369,7 +375,7 @@
                   <li><a href="#about">Salas</a></li>          
                   <li><a href="#quemsomos">Sobre Nós</a></li>          
                   <li><a href="#team">Especialistas</a></li>          
-                  <li><a href="#atendimento">Contato</a></li>          
+                  <li><a href="#contato">Contato</a></li>     
                   <li>
                      @if(auth()->check())
                         @if(auth()->user()->tipo_usuario === 'admin')
@@ -903,7 +909,7 @@
          </div>
       </section>
 
-      <section id="sobre" class="testimonials" style="padding:10px; margin:0; background: #fff !important" data-aos="fade">
+      <section id="sobre" class="testimonials" style="padding:10px; margin:0; background: #fafafa !important" data-aos="fade">
          <div class="container mt-5">
 
          <div class=" mb-5" data-aos="fade-in" data-aos-delay="100">
@@ -1076,7 +1082,43 @@
       </div>
       </section><!-- End Especialistas -->
 
-      <footer id="footer">
+<section id="contato" style="background: #fafafa; padding: 50px 0">
+  <div class="container" data-aos="fade-up">
+    <div class="contentg mb-4">
+      <h3>Fale <span>Conosco</span></h3>
+      <p>Entre em contato com nosso time através do WhatsApp ou siga nosso Instagram para acompanhar as novidades.</p>
+    </div>
+
+    <div class="row justify-content-center text-center">
+
+      <div class="col-lg-4 col-md-6 mb-4">
+        <a href="https://wa.me/5511986428238" target="_blank" class="about-btn">
+          <img src="/assets/img/icons/whats.png" alt="" class="icon-waht">
+          Rosiane - (11) 98642-8238
+        </a>
+      </div>
+
+      <div class="col-lg-4 col-md-6 mb-4">
+        <a href="https://wa.me/5511944751511" target="_blank" class="about-btn">
+          <img src="/assets/img/icons/whats.png" alt="" class="icon-waht">
+          Jicileia - (11) 94475-1511
+        </a>
+      </div>
+
+      <div class="col-lg-4 col-md-6 mb-4">
+        <a href="https://www.instagram.com/espaco_equilibramente" target="_blank" class="about-btn">
+          <img src="/assets/img/icons/instagram.png" alt="" class="icon-insta">
+          @espaco_equilibramente
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+      <footer id="footer" class="mt-5">
          <div class="footer-top">
          <div class="container">
          <div class="row">
