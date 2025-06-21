@@ -26,6 +26,8 @@
       <meta name="keywords" content="aluguel de salas para psicólogos, salas para terapeutas, consultório compartilhado, espaço terapêutico, Equilibra Mente" />
       <meta name="author" content="Espaço Equilibra Mente" />
 
+      <script type="module" src="https://www.hiia.com.br/js/chat-widget.js?token=5db76f46-177f-467e-a587-5540ca119c28"></script>
+
    <meta name="csrf-token" content="{{ csrf_token() }}">
 
    <!-- Favicons -->
@@ -355,17 +357,10 @@
     });
   </script>
 @endif
-<script>
-// Atendente inteligente fornecido por Hiia
-(function () {
-  const script = document.createElement('script');
-  script.src = "https://www.hiia.com.br/js/chat-widget.js?token=5db76f46-177f-467e-a587-5540ca119c28";
-  script.async = true;
-  document.head.appendChild(script);
-})();
-</script>
+
 
    <body>
+   <chat-hiia></chat-hiia>
 
       <header id="header" class="fixed-top header-transparent">
          <div class="container d-flex align-items-center hero-content">
