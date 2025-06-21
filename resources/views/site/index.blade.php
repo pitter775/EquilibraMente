@@ -355,7 +355,15 @@
     });
   </script>
 @endif
-
+<script>
+// Atendente inteligente fornecido por Hiia
+(function () {
+  const script = document.createElement('script');
+  script.src = "https://www.hiia.com.br/js/chat-widget.js?token=5db76f46-177f-467e-a587-5540ca119c28";
+  script.async = true;
+  document.head.appendChild(script);
+})();
+</script>
 
    <body>
 
