@@ -26,7 +26,7 @@
       <meta name="keywords" content="aluguel de salas para psicólogos, salas para terapeutas, consultório compartilhado, espaço terapêutico, Equilibra Mente" />
       <meta name="author" content="Espaço Equilibra Mente" />
 
-      <script type="module" src="https://www.hiia.com.br/js/chat-widget.js?token=5db76f46-177f-467e-a587-5540ca119c28"></script>
+      <script type="module" src="https://www.hiia.com.br/js/chat-widget.js?token=5db76f46-177f-467e-a587-5540ca119c28" data-api="https://api.hiia.com.br"></script>
 
    <meta name="csrf-token" content="{{ csrf_token() }}">
 
