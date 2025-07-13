@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\api\AtividadeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::prefix('atividades')->group(function () {
+    Route::get('/', [AtividadeController::class, 'index']);
+    Route::post('/', [AtividadeController::class, 'store']);
+    Route::get('/{id}', [AtividadeController::class, 'show']);
+    Route::put('/{id}', [AtividadeController::class, 'update']);
+    Route::delete('/{id}', [AtividadeController::class, 'destroy']);
 });
