@@ -21,8 +21,20 @@ class AtividadeController extends Controller
             'hora_fim' => 'required|date_format:H:i|after:hora_inicio',
         ]);
 
-        return Atividade::create($request->only(['descricao', 'hora_inicio', 'hora_fim', 'id_usuario']));
+        $atividade = Atividade::create($request->only([
+            'descricao',
+            'hora_inicio',
+            'hora_fim',
+            'id_usuario'
+        ]));
+
+        return response()->json([
+            'success' => true,
+            'mensagem' => 'Atividade cadastrada com sucesso!',
+            'data' => [$atividade] // retorna em array pra evitar erro no foreach
+        ]);
     }
+
 
     public function show($id)
     {
