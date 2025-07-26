@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\site\SiteController;
 use App\Http\Controllers\PagBankController;
@@ -26,6 +27,26 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\CadastroAprovadoMail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Config;
+
+
+
+
+
+
+use App\Http\Controllers\MercadoPagoController;
+
+Route::get('/pagar', [MercadoPagoController::class, 'pagar'])->name('pagar.mercadopago');
+
+Route::get('/pagamento/sucesso', [MercadoPagoController::class, 'sucesso'])->name('pagamento.sucesso');
+Route::get('/pagamento/erro', [MercadoPagoController::class, 'erro'])->name('pagamento.erro');
+Route::get('/pagamento/pendente', [MercadoPagoController::class, 'pendente'])->name('pagamento.pendente');
+
+
+
+
+
+
+
 
 
 
@@ -105,7 +126,7 @@ Route::get('/cadastro-aprovado/{user}', [UsuarioController::class, 'verCadastroA
     ->middleware('signed');
 
 
-// email aprovacao 
+// email aprovacao
 Route::get('/admin/aprovar-cadastro/{user}', [UsuarioController::class, 'verCadastroParaAprovacao'])
     ->name('admin.usuario.aprovacao.ver')
     ->middleware('signed');

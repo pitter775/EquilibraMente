@@ -1,0 +1,1 @@
+<h1>⏳ Pagamento pendente. Aguarde a confirmação.</h1>

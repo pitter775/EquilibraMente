@@ -491,7 +491,6 @@
                      <div class="contentg">
                         <h3>Escolha <span>a melhor opção</span></h3>
                         <p>Espaços planejados para inspirar e proporcionar bem-estar, ambientes modernos, aconchegantes com conforto e praticidade.</p>
-                        
                      </div>
                   </div>
             </div>
@@ -1149,6 +1148,8 @@
                      <li><i class="bx bx-chevron-right"></i> Espaços para Eventos</li>
                      <li><i class="bx bx-chevron-right"></i> Salas de Reunião</li>                  
                      <li><i class="bx bx-chevron-right"></i> Ambientes Equipados</li>
+                     <a href="{{ route('pagar.mercadopago') }}" class="btn btn-primary">Pagar com Mercado Pago</a>
+
                   </ul>
             </div>
 
