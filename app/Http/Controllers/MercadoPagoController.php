@@ -29,6 +29,7 @@ class MercadoPagoController extends Controller
             $preference = new Preference();
             $preference->items = [$item];
 
+            // Enviar dados do comprador (payer)
             $usuario = $reserva->usuario;
             $preference->payer = [
                 "name" => $usuario->name ?? "Teste",
@@ -58,31 +59,25 @@ class MercadoPagoController extends Controller
                 "pending" => route('pagamento.pendente'),
             ];
             $preference->auto_return = "approved";
+
             $preference->external_reference = $reserva->id;
 
             $preference->save();
 
-            return redirect($preference->init_point);
+            return response()->json([
+                'success' => true,
+                'redirect' => $preference->init_point,
+                'reference_id' => 'reserva_' . $reserva->id,
+            ]);
+
         } catch (\Exception $e) {
-            Log::error('❌ Erro ao gerar link de pagamento:', [
+            return response()->json([
+                'success' => false,
+                'error' => 'Erro ao gerar link de pagamento.',
                 'mensagem' => $e->getMessage(),
                 'arquivo' => $e->getFile(),
                 'linha' => $e->getLine(),
-                'reserva_id' => $reservaId,
-                'reserva' => $reserva ?? null
             ]);
-
-            // Se for chamada via fetch/ajax, pode retornar JSON
-            if (request()->expectsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'Erro ao gerar link de pagamento.',
-                    'mensagem' => $e->getMessage()
-                ], 500);
-            }
-
-            // Caso contrário, redireciona com erro
-            return redirect()->back()->with('erro', 'Erro ao gerar link de pagamento: ' . $e->getMessage());
         }
     }
 
