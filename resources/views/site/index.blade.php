@@ -491,6 +491,7 @@
                      <div class="contentg">
                         <h3>Escolha <span>a melhor opção</span></h3>
                         <p>Espaços planejados para inspirar e proporcionar bem-estar, ambientes modernos, aconchegantes com conforto e praticidade.</p>
+                        
                      </div>
                   </div>
             </div>
@@ -1133,10 +1134,9 @@
             <div class="footer-info" data-aos="fade-up" data-aos-delay="50">
                   <img src="/assets/img/logoescuro.png" alt="" class="img-fluid mb-4" style=" width: 70%;"> 
                   <div class="social-links mt-3">
-                  <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-                  <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-                  <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-                  <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                  <a href="https://www.facebook.com/share/16PuqyqkeM/?mibextid=wwXIfr" target="_blank" class="facebook"><i class="bx bxl-facebook"></i></a>
+                  <a href="https://www.instagram.com/espaco_equilibramente?igsh=dG03Z3pid2hpYmFk" target="_blank" class="instagram"><i class="bx bxl-instagram"></i></a>
+                  <a href="https://www.linkedin.com/in/espa%C3%A7o-equilibra-mente-99a439368?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" class="linkedin"><i class="bx bxl-linkedin"></i></a>
                   </div>
             </div>
             </div>
