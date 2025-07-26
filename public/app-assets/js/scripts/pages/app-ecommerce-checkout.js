@@ -20,8 +20,12 @@ $(function () {
 
   function iniciarVerificacaoPagamento(referenceId, metodo) {
     let tentativas = 0;
+    console.log("🕵️‍♂️ Iniciando verificação de pagamento para:", referenceId, metodo);
+  
     let intervalo = setInterval(() => {
+      console.log(`🔁 Tentativa ${tentativas + 1}...`);
       if (pagamentoVerificado || tentativas >= 60) {
+        console.log("🔚 Finalizando verificação. Sucesso:", pagamentoVerificado);
         clearInterval(intervalo);
         $('#modal-aguardando-pagamento').modal('hide');
         if (!pagamentoVerificado) {
@@ -31,9 +35,10 @@ $(function () {
       }
   
       $.ajax({
-        url: `/${metodo}/status/${referenceId}`, // <-- pagbank ou mercadopago
+        url: `/${metodo}/status/${referenceId}`,
         method: 'GET',
         success: function (response) {
+          console.log("📩 Status do pagamento:", response);
           if (response.status === 'PAGA') {
             pagamentoVerificado = true;
             clearInterval(intervalo);
@@ -45,13 +50,14 @@ $(function () {
           }
         },
         error: function (xhr) {
-          console.error("Erro ao verificar pagamento:", xhr.responseText);
+          console.error("❌ Erro ao verificar pagamento:", xhr.responseText);
         }
       });
   
       tentativas++;
     }, 5000);
   }
+  
   
 
 
@@ -67,73 +73,57 @@ $(function () {
       });
     }
     $('#confirmar-reserva').on('click', function () {
-      // if (pagbankLink) {
-      //     console.log("Reutilizando link de pagamento:", pagbankLink);
-      //     window.open(pagbankLink, '_blank'); // Abre o link já salvo
-      //     $('#modal-aguardando-pagamento').modal('show');
-      //     return false;
-      // }
-
-      if (metodoPagamento === 'mercadopago') {
-        mercadopagoLink = redirectUrl.trim();
-        window.open(mercadopagoLink, '_blank');
-        iniciarVerificacaoPagamento(referenceId, 'mercadopago');
-      }
-
-      var metodoPagamento = $('#metodo_pagamento_input').val();
-
+      console.log("🟡 Clique no botão de confirmar reserva");
+      console.log("Método de pagamento selecionado:", metodoPagamento);
+    
       $.ajax({
-          url: '/reserva/confirmar',
-          method: 'POST',
-          data: {
-              _token: $('meta[name="csrf-token"]').attr('content'),
-              metodo_pagamento: metodoPagamento
-          },
-          success: function (response) {
-              console.log("Resposta do servidor (bruta):", response);
-
-              let redirectUrl = response.redirect;
-
-              if (typeof response.original === "object" && response.original.redirect) {
-                  redirectUrl = response.original.redirect;
-              }
-
-              if (typeof redirectUrl === "string" && redirectUrl.startsWith("http")) {
-                  console.log("Abrindo link correto:", redirectUrl.trim());
-
-                  if (metodoPagamento === 'pagbank') {
-                    pagbankLink = redirectUrl.trim();
-                    window.open(pagbankLink, '_blank');
-                  } else if (metodoPagamento === 'mercadopago') {
-                      mercadopagoLink = redirectUrl.trim();
-                      window.open(mercadopagoLink, '_blank');
-                  }
-
-                  // Exibe a modal de "Aguardando Pagamento"
-                  $('#modal-aguardando-pagamento').modal('show');
-
-                  // Agora, pega o reference_id que já está cadastrado na transação
-                  referenceId = response.reference_id; 
-
-                  if (referenceId) {
-                      console.log("Reference ID extraído:", referenceId); // Debug
-
-                      // Inicia a verificação do pagamento
-                      iniciarVerificacaoPagamento(referenceId, metodoPagamento);
-                  }
-              } else {
-                  console.error("Erro: Link de pagamento inválido.", redirectUrl);
-                  alert('Erro inesperado. Tente novamente.');
-              }
-          },
-          error: function (xhr) {
-              console.error("Erro na requisição AJAX:", xhr.responseText);
-              alert('Erro ao processar a reserva: ' + xhr.responseText);
+        url: '/reserva/confirmar',
+        method: 'POST',
+        data: {
+          _token: $('meta[name="csrf-token"]').attr('content'),
+          metodo_pagamento: metodoPagamento
+        },
+        success: function (response) {
+          console.log("✅ Resposta do servidor:", response);
+    
+          let redirectUrl = response.redirect;
+    
+          if (typeof response.original === "object" && response.original.redirect) {
+            redirectUrl = response.original.redirect;
           }
+    
+          console.log("➡️ Link de pagamento final:", redirectUrl);
+          console.log("📦 Reference ID:", response.reference_id);
+    
+          if (typeof redirectUrl === "string" && redirectUrl.startsWith("http")) {
+            if (metodoPagamento === 'pagbank') {
+              pagbankLink = redirectUrl.trim();
+              window.open(pagbankLink, '_blank');
+            } else if (metodoPagamento === 'mercadopago') {
+              mercadopagoLink = redirectUrl.trim();
+              window.open(mercadopagoLink, '_blank');
+            }
+    
+            $('#modal-aguardando-pagamento').modal('show');
+            referenceId = response.reference_id;
+    
+            if (referenceId) {
+              iniciarVerificacaoPagamento(referenceId, metodoPagamento);
+            }
+          } else {
+            console.error("❌ Link de pagamento inválido:", redirectUrl);
+            alert('Erro inesperado. Tente novamente.');
+          }
+        },
+        error: function (xhr) {
+          console.error("❌ Erro na requisição AJAX:", xhr.responseText);
+          alert('Erro ao processar a reserva: ' + xhr.responseText);
+        }
       });
-
+    
       return false;
-  });
+    });
+    
   
 
   

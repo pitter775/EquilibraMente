@@ -15,57 +15,77 @@ class MercadoPagoController extends Controller
 {
     public function pagar($reservaId)
     {
-        SDK::setAccessToken(config('services.mercadopago.access_token'));
+        try {
+            SDK::setAccessToken(config('services.mercadopago.access_token'));
 
-        $reserva = Reserva::with('usuario', 'horarios', 'sala')->findOrFail($reservaId);
-        $valorTotal = $reserva->valor_total;
+            $reserva = Reserva::with('usuario', 'horarios', 'sala')->findOrFail($reservaId);
+            $valorTotal = $reserva->valor_total;
 
-        $item = new Item();
-        $item->title = 'Reserva de sala - ' . $reserva->sala->nome;
-        $item->quantity = 1;
-        $item->unit_price = $valorTotal;
+            $item = new Item();
+            $item->title = 'Reserva de sala - ' . $reserva->sala->nome;
+            $item->quantity = 1;
+            $item->unit_price = $valorTotal;
 
-        $preference = new Preference();
-        $preference->items = [$item];
+            $preference = new Preference();
+            $preference->items = [$item];
 
-        // Enviar dados do comprador (payer)
-        $usuario = $reserva->usuario;
-        $preference->payer = [
-            "name" => $usuario->name ?? "Teste",
-            "surname" => "",
-            "email" => $usuario->email ?? "comprador_teste@example.com",
-            "phone" => [
-                "area_code" => "11",
-                "number" => preg_replace('/[^0-9]/', '', $usuario->telefone ?? "999999999")
-            ],
-            "identification" => [
-                "type" => "CPF",
-                "number" => preg_replace('/[^0-9]/', '', $usuario->cpf ?? "19119119100")
-            ],
-            "address" => [
-                "zip_code" => preg_replace('/[^0-9]/', '', $usuario->cep ?? "06233200"),
-                "street_name" => $usuario->rua ?? "Av. das Nações Unidas",
-                "street_number" => $usuario->numero ?? "3003",
-                "neighborhood" => $usuario->bairro ?? "Bonfim",
-                "city" => $usuario->cidade ?? "Osasco",
-                "federal_unit" => $usuario->estado ?? "SP"
-            ]
-        ];
+            $usuario = $reserva->usuario;
+            $preference->payer = [
+                "name" => $usuario->name ?? "Teste",
+                "surname" => "",
+                "email" => $usuario->email ?? "comprador_teste@example.com",
+                "phone" => [
+                    "area_code" => "11",
+                    "number" => preg_replace('/[^0-9]/', '', $usuario->telefone ?? "999999999")
+                ],
+                "identification" => [
+                    "type" => "CPF",
+                    "number" => preg_replace('/[^0-9]/', '', $usuario->cpf ?? "19119119100")
+                ],
+                "address" => [
+                    "zip_code" => preg_replace('/[^0-9]/', '', $usuario->cep ?? "06233200"),
+                    "street_name" => $usuario->rua ?? "Av. das Nações Unidas",
+                    "street_number" => $usuario->numero ?? "3003",
+                    "neighborhood" => $usuario->bairro ?? "Bonfim",
+                    "city" => $usuario->cidade ?? "Osasco",
+                    "federal_unit" => $usuario->estado ?? "SP"
+                ]
+            ];
 
-        $preference->back_urls = [
-            "success" => route('pagamento.sucesso'),
-            "failure" => route('pagamento.erro'),
-            "pending" => route('pagamento.pendente'),
-        ];
-        $preference->auto_return = "approved";
+            $preference->back_urls = [
+                "success" => route('pagamento.sucesso'),
+                "failure" => route('pagamento.erro'),
+                "pending" => route('pagamento.pendente'),
+            ];
+            $preference->auto_return = "approved";
+            $preference->external_reference = $reserva->id;
 
-        // Envia ID da reserva para retornar no webhook
-        $preference->external_reference = $reserva->id;
+            $preference->save();
 
-        $preference->save();
+            return redirect($preference->init_point);
+        } catch (\Exception $e) {
+            Log::error('❌ Erro ao gerar link de pagamento:', [
+                'mensagem' => $e->getMessage(),
+                'arquivo' => $e->getFile(),
+                'linha' => $e->getLine(),
+                'reserva_id' => $reservaId,
+                'reserva' => $reserva ?? null
+            ]);
 
-        return redirect($preference->init_point);
+            // Se for chamada via fetch/ajax, pode retornar JSON
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Erro ao gerar link de pagamento.',
+                    'mensagem' => $e->getMessage()
+                ], 500);
+            }
+
+            // Caso contrário, redireciona com erro
+            return redirect()->back()->with('erro', 'Erro ao gerar link de pagamento: ' . $e->getMessage());
+        }
     }
+
 
     public function webhook(Request $request)
     {
