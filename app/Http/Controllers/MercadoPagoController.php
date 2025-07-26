@@ -6,21 +6,26 @@ use Illuminate\Http\Request;
 use MercadoPago\SDK;
 use MercadoPago\Preference;
 use MercadoPago\Item;
+use App\Models\Reserva;
+use App\Models\Sala;
+use App\Models\Transacao;
+use Illuminate\Support\Facades\Log;
 
 class MercadoPagoController extends Controller
 {
-    public function pagar()
+    public function pagar($reservaId)
     {
-        // Configura o SDK com o token
         SDK::setAccessToken(config('services.mercadopago.access_token'));
 
-        // Cria item do pagamento
-        $item = new Item();
-        $item->title = 'Reserva de Sala';
-        $item->quantity = 1;
-        $item->unit_price = 250.00;
+        $reserva = Reserva::with('usuario', 'horarios', 'sala')->findOrFail($reservaId);
+        $valorTotal = 0;
 
-        // Cria preferência
+        $item = new Item();
+        $item->title = 'Reserva de sala - ' . $reserva->sala->nome;
+        $item->quantity = 1;
+        $item->unit_price = $reserva->valor_total;
+        $valorTotal = $reserva->valor_total;
+
         $preference = new Preference();
         $preference->items = [$item];
 
@@ -31,22 +36,75 @@ class MercadoPagoController extends Controller
         ];
         $preference->auto_return = "approved";
 
+        // Envia ID da reserva para retornar no webhook
+        $preference->external_reference = $reserva->id;
+
         $preference->save();
 
-        // Redireciona o usuário para o pagamento
         return redirect($preference->init_point);
     }
+
+    public function webhook(Request $request)
+    {
+        $body = json_decode($request->getContent(), true);
+
+        Log::info('🔔 Webhook Mercado Pago', $body);
+
+        if (isset($body['type']) && $body['type'] === 'payment') {
+            $paymentId = $body['data']['id'];
+
+            // Consulta a API para pegar detalhes do pagamento
+            $url = "https://api.mercadopago.com/v1/payments/{$paymentId}?access_token=" . config('services.mercadopago.access_token');
+            $response = json_decode(file_get_contents($url), true);
+
+            $reservaId = $response['external_reference'] ?? null;
+
+            if ($reservaId) {
+                Transacao::updateOrCreate(
+                    ['external_id' => $response['id']],
+                    [
+                        'user_id' => $response['payer']['id'] ?? null,
+                        'reserva_id' => $reservaId,
+                        'status' => $response['status'],
+                        'metodo' => $response['payment_method_id'],
+                        'valor' => $response['transaction_amount'],
+                        'payload' => json_encode($response),
+                    ]
+                );
+            }
+        }
+
+        return response()->json(['status' => 'ok']);
+    }
+
+    public function status($reservaId)
+    {
+        $transacao = \App\Models\Transacao::where('reserva_id', $reservaId)->latest()->first();
+
+        if (!$transacao) {
+            return response()->json(['status' => 'NAO_ENCONTRADO'], 404);
+        }
+
+        if ($transacao->status === 'approved') {
+            return response()->json(['status' => 'PAGA']);
+        } elseif ($transacao->status === 'pending') {
+            return response()->json(['status' => 'PENDENTE']);
+        } elseif ($transacao->status === 'rejected') {
+            return response()->json(['status' => 'REJEITADA']);
+        } else {
+            return response()->json(['status' => strtoupper($transacao->status)]);
+        }
+    }
+
 
     public function sucesso()
     {
         return view('pagamento.sucesso');
     }
-
     public function erro()
     {
         return view('pagamento.erro');
     }
-
     public function pendente()
     {
         return view('pagamento.pendente');

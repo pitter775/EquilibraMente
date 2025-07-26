@@ -13,44 +13,46 @@ $(function () {
   let pagamentoVerificado = false;
   let pagbankLink = null; // Armazena o link de pagamento
   let referenceId = null; // Armazena o ID da reserva
+  let mercadopagoLink = null;
+  let metodoPagamento = 'mercadopago';
 
 
 
-  function iniciarVerificacaoPagamento(referenceId) {
+  function iniciarVerificacaoPagamento(referenceId, metodo) {
     let tentativas = 0;
     let intervalo = setInterval(() => {
-        if (pagamentoVerificado || tentativas >= 60) { // Para após 5 minutos (60 tentativas)
+      if (pagamentoVerificado || tentativas >= 60) {
+        clearInterval(intervalo);
+        $('#modal-aguardando-pagamento').modal('hide');
+        if (!pagamentoVerificado) {
+          $('#modal-erro-pagamento').modal('show');
+        }
+        return;
+      }
+  
+      $.ajax({
+        url: `/${metodo}/status/${referenceId}`, // <-- pagbank ou mercadopago
+        method: 'GET',
+        success: function (response) {
+          if (response.status === 'PAGA') {
+            pagamentoVerificado = true;
             clearInterval(intervalo);
             $('#modal-aguardando-pagamento').modal('hide');
-            if (!pagamentoVerificado) {
-                $('#modal-erro-pagamento').modal('show');
-            }
-            return;
+            $('#modal-sucesso-pagamento').modal('show');
+            setTimeout(() => {
+              window.location.href = '/cliente/reservas';
+            }, 3000);
+          }
+        },
+        error: function (xhr) {
+          console.error("Erro ao verificar pagamento:", xhr.responseText);
         }
-
-        $.ajax({
-            url: '/pagbank/status/' + referenceId,
-            method: 'GET',
-            success: function (response) {
-                console.log("Status do pagamento:", response);
-                if (response.status === 'PAGA') {
-                    pagamentoVerificado = true;
-                    clearInterval(intervalo);
-                    $('#modal-aguardando-pagamento').modal('hide');
-                    $('#modal-sucesso-pagamento').modal('show');
-                    setTimeout(() => {
-                        window.location.href = '/cliente/reservas';
-                    }, 3000);
-                }
-            },
-            error: function (xhr) {
-                console.error("Erro ao verificar pagamento:", xhr.responseText);
-            }
-        });
-
-        tentativas++;
+      });
+  
+      tentativas++;
     }, 5000);
-}
+  }
+  
 
 
   $(document).ready(function () {
@@ -65,11 +67,17 @@ $(function () {
       });
     }
     $('#confirmar-reserva').on('click', function () {
-      if (pagbankLink) {
-          console.log("Reutilizando link de pagamento:", pagbankLink);
-          window.open(pagbankLink, '_blank'); // Abre o link já salvo
-          $('#modal-aguardando-pagamento').modal('show');
-          return false;
+      // if (pagbankLink) {
+      //     console.log("Reutilizando link de pagamento:", pagbankLink);
+      //     window.open(pagbankLink, '_blank'); // Abre o link já salvo
+      //     $('#modal-aguardando-pagamento').modal('show');
+      //     return false;
+      // }
+
+      if (metodoPagamento === 'mercadopago') {
+        mercadopagoLink = redirectUrl.trim();
+        window.open(mercadopagoLink, '_blank');
+        iniciarVerificacaoPagamento(referenceId, 'mercadopago');
       }
 
       var metodoPagamento = $('#metodo_pagamento_input').val();
@@ -93,11 +101,13 @@ $(function () {
               if (typeof redirectUrl === "string" && redirectUrl.startsWith("http")) {
                   console.log("Abrindo link correto:", redirectUrl.trim());
 
-                  // Salva o link para reutilização
-                  pagbankLink = redirectUrl.trim();
-
-                  // Abre o link na nova aba
-                  window.open(pagbankLink, '_blank');
+                  if (metodoPagamento === 'pagbank') {
+                    pagbankLink = redirectUrl.trim();
+                    window.open(pagbankLink, '_blank');
+                  } else if (metodoPagamento === 'mercadopago') {
+                      mercadopagoLink = redirectUrl.trim();
+                      window.open(mercadopagoLink, '_blank');
+                  }
 
                   // Exibe a modal de "Aguardando Pagamento"
                   $('#modal-aguardando-pagamento').modal('show');
@@ -109,7 +119,7 @@ $(function () {
                       console.log("Reference ID extraído:", referenceId); // Debug
 
                       // Inicia a verificação do pagamento
-                      iniciarVerificacaoPagamento(referenceId);
+                      iniciarVerificacaoPagamento(referenceId, metodoPagamento);
                   }
               } else {
                   console.error("Erro: Link de pagamento inválido.", redirectUrl);

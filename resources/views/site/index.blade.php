@@ -1148,7 +1148,7 @@
                      <li><i class="bx bx-chevron-right"></i> Espaços para Eventos</li>
                      <li><i class="bx bx-chevron-right"></i> Salas de Reunião</li>                  
                      <li><i class="bx bx-chevron-right"></i> Ambientes Equipados</li>
-                     <a href="{{ route('pagar.mercadopago') }}" class="btn btn-primary">Pagar com Mercado Pago</a>
+               
 
                   </ul>
             </div>

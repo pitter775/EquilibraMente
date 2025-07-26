@@ -35,13 +35,18 @@ use Illuminate\Support\Facades\Config;
 
 use App\Http\Controllers\MercadoPagoController;
 
-Route::get('/pagar', [MercadoPagoController::class, 'pagar'])->name('pagar.mercadopago');
+Route::get('/pagar/{reservaId}', [MercadoPagoController::class, 'pagar'])->name('pagar.mercadopago');
 
 Route::get('/pagamento/sucesso', [MercadoPagoController::class, 'sucesso'])->name('pagamento.sucesso');
 Route::get('/pagamento/erro', [MercadoPagoController::class, 'erro'])->name('pagamento.erro');
 Route::get('/pagamento/pendente', [MercadoPagoController::class, 'pendente'])->name('pagamento.pendente');
 
+// Webhook (importante usar HTTPS real!)
+Route::post('/webhook/mercadopago', [MercadoPagoController::class, 'webhook'])->name('mercadopago.webhook');
 
+
+
+Route::get('/mercadopago/status/{reservaId}', [MercadoPagoController::class, 'status'])->name('mercadopago.status');
 
 
 
@@ -139,6 +144,7 @@ Route::post('/admin/reprovar/{user}', [UsuarioController::class, 'reprovarUsuari
 
 
 Route::get('/reserva/dados/{id}', [SiteController::class, 'buscarDadosReserva']);
+
 Route::get('/pagbank/status/{referenceId}', [PagBankController::class, 'verificarStatus'])->name('pagbank.status');
 
 
