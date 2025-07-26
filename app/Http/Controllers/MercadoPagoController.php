@@ -18,16 +18,39 @@ class MercadoPagoController extends Controller
         SDK::setAccessToken(config('services.mercadopago.access_token'));
 
         $reserva = Reserva::with('usuario', 'horarios', 'sala')->findOrFail($reservaId);
-        $valorTotal = 0;
+        $valorTotal = $reserva->valor_total;
 
         $item = new Item();
         $item->title = 'Reserva de sala - ' . $reserva->sala->nome;
         $item->quantity = 1;
-        $item->unit_price = $reserva->valor_total;
-        $valorTotal = $reserva->valor_total;
+        $item->unit_price = $valorTotal;
 
         $preference = new Preference();
         $preference->items = [$item];
+
+        // Enviar dados do comprador (payer)
+        $usuario = $reserva->usuario;
+        $preference->payer = [
+            "name" => $usuario->name ?? "Teste",
+            "surname" => "",
+            "email" => $usuario->email ?? "comprador_teste@example.com",
+            "phone" => [
+                "area_code" => "11",
+                "number" => preg_replace('/[^0-9]/', '', $usuario->telefone ?? "999999999")
+            ],
+            "identification" => [
+                "type" => "CPF",
+                "number" => preg_replace('/[^0-9]/', '', $usuario->cpf ?? "19119119100")
+            ],
+            "address" => [
+                "zip_code" => preg_replace('/[^0-9]/', '', $usuario->cep ?? "06233200"),
+                "street_name" => $usuario->rua ?? "Av. das Nações Unidas",
+                "street_number" => $usuario->numero ?? "3003",
+                "neighborhood" => $usuario->bairro ?? "Bonfim",
+                "city" => $usuario->cidade ?? "Osasco",
+                "federal_unit" => $usuario->estado ?? "SP"
+            ]
+        ];
 
         $preference->back_urls = [
             "success" => route('pagamento.sucesso'),
