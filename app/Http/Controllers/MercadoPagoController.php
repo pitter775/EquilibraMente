@@ -64,11 +64,30 @@ class MercadoPagoController extends Controller
 
             $preference->save();
 
+            // debug: salvar log do retorno
+            Log::info('Preferência Mercado Pago gerada:', [
+                'id' => $preference->id,
+                'init_point' => $preference->init_point,
+                'sandbox_init_point' => $preference->sandbox_init_point,
+            ]);
+
+            $link = $preference->init_point ?: $preference->sandbox_init_point;
+
+            if (!$link) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Nenhum link de pagamento retornado.',
+                    'motivo' => 'init_point e sandbox_init_point vazios',
+                    'preferencia_id' => $preference->id ?? null
+                ]);
+            }
+
             return response()->json([
                 'success' => true,
-                'redirect' => $preference->init_point,
+                'redirect' => $link,
                 'reference_id' => 'reserva_' . $reserva->id,
             ]);
+
 
         } catch (\Exception $e) {
             return response()->json([
