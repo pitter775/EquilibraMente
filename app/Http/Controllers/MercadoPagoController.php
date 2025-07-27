@@ -18,49 +18,52 @@ class MercadoPagoController extends Controller
     public function webhook(Request $request)
     {
         $body = json_decode($request->getContent(), true);
-        DebugLog::create(['mensagem' => '📥 Payload recebido no webhook: ' . json_encode($body)]);
+        DebugLog::create(['mensagem' => '🔔 Webhook recebido: ' . json_encode($body)]);
 
         try {
             if (isset($body['type']) && $body['type'] === 'payment') {
                 $paymentId = $body['data']['id'] ?? null;
-                DebugLog::create(['mensagem' => '🔍 paymentId recebido: ' . $paymentId]);
 
                 if ($paymentId && is_numeric($paymentId)) {
                     $response = Http::withToken(config('services.mercadopago.access_token'))
-                                    ->get("https://api.mercadopago.com/v1/payments/{$paymentId}")
-                                    ->json();
+                        ->get("https://api.mercadopago.com/v1/payments/{$paymentId}")
+                        ->json();
 
-                    DebugLog::create(['mensagem' => '📦 Resposta da API Mercado Pago: ' . json_encode($response)]);
+                    DebugLog::create(['mensagem' => '📥 Resposta do MP: ' . json_encode($response)]);
 
                     $reservaId = $response['external_reference'] ?? null;
-                    DebugLog::create(['mensagem' => '🔗 Reserva ID extraída: ' . $reservaId]);
 
                     if ($reservaId) {
+                        $reserva = Reserva::find($reservaId);
+
+                        if (!$reserva) {
+                            DebugLog::create(['mensagem' => '⚠️ Reserva não encontrada: ' . $reservaId]);
+                            return response()->json(['mensagem' => 'Reserva não encontrada'], 200);
+                        }
+
                         Transacao::updateOrCreate(
-                            ['reference_id' => $reservaId],
+                            ['external_id' => $response['id']],
                             [
-                                'usuario_id' => $response['payer']['id'] ?? null,
-                                'sala_id' => $reserva->sala_id ?? null,
-                                'status' => $response['status'] ?? 'indefinido',
-                                'valor' => $response['transaction_amount'] ?? 0,
-                                'pagbank_order_id' => null,
-                                'detalhes' => $response,
+                                'reference_id' => $reserva->id,
+                                'usuario_id' => $reserva->usuario_id,
+                                'sala_id' => $reserva->sala_id,
+                                'status' => $response['status'],
+                                'valor' => $response['transaction_amount'],
+                                'pagbank_order_id' => $response['order']['id'] ?? null,
+                                'detalhes' => json_encode($response),
                             ]
                         );
 
-                        DebugLog::create(['mensagem' => '✅ Transação atualizada com sucesso para reserva: ' . $reservaId]);
+                        DebugLog::create(['mensagem' => '✅ Transação registrada com sucesso para reserva ' . $reserva->id]);
                     } else {
-                        DebugLog::create(['mensagem' => "⚠️ Webhook sem external_reference para pagamento {$paymentId}"]);
+                        DebugLog::create(['mensagem' => '⚠️ Webhook sem external_reference']);
                     }
                 } else {
-                    DebugLog::create(['mensagem' => "⚠️ paymentId inválido: " . print_r($paymentId, true)]);
+                    DebugLog::create(['mensagem' => '⚠️ Payment ID inválido: ' . json_encode($paymentId)]);
                 }
-            } else {
-                DebugLog::create(['mensagem' => "⚠️ Webhook ignorado - tipo: " . ($body['type'] ?? 'indefinido')]);
             }
         } catch (\Throwable $e) {
             DebugLog::create(['mensagem' => '❌ Erro no webhook: ' . $e->getMessage()]);
-            Log::error("❌ Erro no Webhook Mercado Pago: " . $e->getMessage());
         }
 
         return response()->json(['status' => 'ok'], 200);
