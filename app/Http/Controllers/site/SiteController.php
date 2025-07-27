@@ -407,7 +407,7 @@ class SiteController extends Controller
             $item->title = 'Reserva de sala - ' . ($reserva->sala->nome ?? 'Sem nome');
             $item->quantity = 1;
             // $item->unit_price = round($valor, 2);
-            $item->unit_price = 1.00;
+            $item->unit_price =  5.00;
 
             $preference = new Preference();
             $preference->items = [$item];
