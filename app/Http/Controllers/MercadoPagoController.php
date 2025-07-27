@@ -10,6 +10,7 @@ use App\Models\Reserva;
 use App\Models\Sala;
 use App\Models\Transacao;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class MercadoPagoController extends Controller
 {
@@ -22,24 +23,26 @@ class MercadoPagoController extends Controller
         if (isset($body['type']) && $body['type'] === 'payment') {
             $paymentId = $body['data']['id'];
 
-            // Consulta a API para pegar detalhes do pagamento
-            $url = "https://api.mercadopago.com/v1/payments/{$paymentId}?access_token=" . config('services.mercadopago.access_token');
-            $response = json_decode(file_get_contents($url), true);
+            if ($paymentId && is_numeric($paymentId)) {
+                $response = Http::withToken(config('services.mercadopago.access_token'))
+                                ->get("https://api.mercadopago.com/v1/payments/{$paymentId}")
+                                ->json();
 
-            $reservaId = $response['external_reference'] ?? null;
+                $reservaId = $response['external_reference'] ?? null;
 
-            if ($reservaId) {
-                Transacao::updateOrCreate(
-                    ['external_id' => $response['id']],
-                    [
-                        'user_id' => $response['payer']['id'] ?? null,
-                        'reserva_id' => $reservaId,
-                        'status' => $response['status'],
-                        'metodo' => $response['payment_method_id'],
-                        'valor' => $response['transaction_amount'],
-                        'payload' => json_encode($response),
-                    ]
-                );
+                if ($reservaId) {
+                    Transacao::updateOrCreate(
+                        ['external_id' => $response['id']],
+                        [
+                            'user_id' => $response['payer']['id'] ?? null,
+                            'reserva_id' => $reservaId,
+                            'status' => $response['status'],
+                            'metodo' => $response['payment_method_id'],
+                            'valor' => $response['transaction_amount'],
+                            'payload' => json_encode($response),
+                        ]
+                    );
+                }
             }
         }
 
