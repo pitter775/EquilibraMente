@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Models\DebugLog;
 use Illuminate\Support\Facades\Auth;
+use MercadoPago\SDK;
+use MercadoPago\Preference;
+use MercadoPago\Item;
 
 class SiteController extends Controller
 {
@@ -116,7 +119,6 @@ class SiteController extends Controller
 
     public function confirmar(Request $request)
     {
-        $metodo = $request->input('metodo_pagamento', 'pagbank'); // default pagbank
         $reservaData = session('reserva');
 
         if (!$reservaData) {
@@ -169,24 +171,30 @@ class SiteController extends Controller
 
             DebugLog::create(['mensagem' => 'Chamando geração de link de pagamento. ' . json_encode($primeiraReserva->id)]);
 
+            // $linkPagamento = $this->gerarLinkPagamento($primeiraReserva->id);
             $metodo = $request->input('metodo_pagamento', 'pagbank');
 
-            if ($metodo === 'mercadopago') {
-                $linkPagamento = app(\App\Http\Controllers\MercadoPagoController::class)->pagar($primeiraReserva->id);
-            } else {
-                $linkPagamento = $this->gerarLinkPagamento($primeiraReserva->id);
-            }
+            $linkPagamento = $metodo === 'mercadopago'
+                ? $this->gerarLinkPagamentoMercadoPago($primeiraReserva->id)
+                : $this->gerarLinkPagamento($primeiraReserva->id);
 
+            DebugLog::create(['mensagem' => 'Link de pagamento linkPagamento: ' . json_encode($linkPagamento)]);
+
+            // Se já for um JSONResponse, decodificar corretamente
             $linkPagamento = $linkPagamento instanceof \Illuminate\Http\JsonResponse
-                ? json_decode($linkPagamento->getContent(), true)
-                : $linkPagamento;
+            ? json_decode($linkPagamento->getContent(), true)
+            : $linkPagamento;
 
+            // Extrai corretamente a URL do link de pagamento
             $checkoutUrl = $linkPagamento['redirect'] ?? $linkPagamento;
 
+            DebugLog::create(['mensagem' => 'Link de pagamento checkoutUrl: ' . json_encode($linkPagamento)]);
+
+            // Retorna apenas a URL correta
             return response()->json([
                 'redirect' => $checkoutUrl,
-                'reference_id' => 'reserva_' . $primeiraReserva->id
-            ]);
+                'reference_id' => 'reserva_' . $primeiraReserva->id // Retorna a referência correta para a verificação
+            ], 200, ['Content-Type' => 'application/json']);
 
 
 
@@ -374,6 +382,74 @@ class SiteController extends Controller
             return response()->json(['error' => 'Erro ao gerar link de pagamento.'], 500);
         }
     }
+
+    public function gerarLinkPagamentoMercadoPago($reservaId)
+    {
+        try {
+            SDK::setAccessToken(config('services.mercadopago.access_token'));
+
+            $reserva = Reserva::with('usuario', 'sala')->findOrFail($reservaId);
+            $usuario = $reserva->usuario;
+
+            if (!$reserva->valor_total || $reserva->valor_total <= 0) {
+                throw new \Exception("Valor da reserva inválido.");
+            }
+
+            $item = new Item();
+            $item->title = 'Reserva de sala - ' . ($reserva->sala->nome ?? 'Sem nome');
+            $item->quantity = 1;
+            $item->unit_price = (float) $reserva->valor_total;
+
+            $preference = new Preference();
+            $preference->items = [$item];
+
+            $payer = new \stdClass();
+            $payer->name = $usuario->name ?? "Teste";
+            $payer->surname = "";
+            $payer->email = $usuario->email ?? "comprador_teste@example.com";
+
+            $payer->phone = new \stdClass();
+            $payer->phone->area_code = "11";
+            $payer->phone->number = preg_replace('/[^0-9]/', '', $usuario->telefone ?? "999999999");
+
+            $payer->identification = new \stdClass();
+            $payer->identification->type = "CPF";
+            $payer->identification->number = preg_replace('/[^0-9]/', '', $usuario->cpf ?? "00000000000");
+
+            $payer->address = new \stdClass();
+            $payer->address->zip_code = preg_replace('/[^0-9]/', '', $usuario->cep ?? "00000000");
+            $payer->address->street_name = $usuario->rua ?? "Rua Padrão";
+            $payer->address->street_number = $usuario->numero ?? "123";
+            $payer->address->neighborhood = $usuario->bairro ?? "Centro";
+            $payer->address->city = $usuario->cidade ?? "Cidade";
+            $payer->address->federal_unit = $usuario->estado ?? "SP";
+
+            $preference->payer = $payer;
+
+            $preference->back_urls = [
+                "success" => route('pagamento.sucesso'),
+                "failure" => route('pagamento.erro'),
+                "pending" => route('pagamento.pendente'),
+            ];
+
+            $preference->auto_return = "approved";
+            $preference->external_reference = $reserva->id;
+
+            $preference->save();
+
+            return response()->json([
+                'redirect' => $preference->init_point,
+                'reference_id' => 'reserva_' . $reserva->id,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Erro ao gerar link de pagamento.',
+                'mensagem' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 
 
 

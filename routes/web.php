@@ -34,18 +34,6 @@ Route::get('/teste-link-falso', [MercadoPagoController::class, 'testeFixo']);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 Route::get('/pagar/{reservaId}', [MercadoPagoController::class, 'pagar'])->name('pagar.mercadopago');
 
 Route::get('/pagamento/sucesso', [MercadoPagoController::class, 'sucesso'])->name('pagamento.sucesso');
