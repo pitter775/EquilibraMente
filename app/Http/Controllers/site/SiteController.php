@@ -389,34 +389,29 @@ class SiteController extends Controller
         try {
             SDK::setAccessToken(config('services.mercadopago.access_token'));
 
-
-
             $reserva = Reserva::with('usuario', 'sala')->findOrFail($reservaId);
             $usuario = $reserva->usuario;
+
             Log::info('reserva.', ['reserva' => $reserva]);
             Log::info('usuario.', ['usuario' => $usuario]);
 
             $valor = (float) $reserva->sala->valor;
-
             if ($valor <= 0) {
                 throw new \Exception("Valor da reserva inválido.");
             }
 
-
             $item = new Item();
-            $item->title = 'Reserva de sala - ' . ($reserva->sala->nome ?? 'Sem nome');
+            $item->id = 'reserva_' . $reserva->id;
+            $item->title = 'Reserva de sala - ' . $reserva->sala->nome;
+            $item->description = 'Reserva da sala "' . $reserva->sala->nome . '" no dia ' . $reserva->data_reserva . ' das ' . $reserva->hora_inicio . ' às ' . $reserva->hora_fim;
+            $item->category_id = 'services';
             $item->quantity = 1;
-            // $item->unit_price = round($valor, 2);
-            $item->unit_price =  5.00;
-
-            $preference = new Preference();
-            $preference->items = [$item];
+            $item->unit_price = $valor; // ou use 5.00 se ainda estiver testando fixo
 
             $payer = new \stdClass();
-            $payer->name = $usuario->name ?? "Teste";
-            $payer->surname = "";
-            $payer->email = "comprador_teste@example.com";
-            // $payer->email = $usuario->email ?? "comprador_teste@example.com";
+            $payer->name = $usuario->name ?? "Nome";
+            $payer->surname = $usuario->sobrenome ?? "Sobrenome"; // novo campo
+            $payer->email = $usuario->email ?? "comprador_teste@example.com";
 
             $payer->phone = new \stdClass();
             $payer->phone->area_code = "11";
@@ -434,16 +429,16 @@ class SiteController extends Controller
             $payer->address->city = $usuario->cidade ?? "Cidade";
             $payer->address->federal_unit = $usuario->estado ?? "SP";
 
+            $preference = new Preference();
+            $preference->items = [$item];
             $preference->payer = $payer;
-
+            $preference->external_reference = 'reserva_' . $reserva->id;
             $preference->back_urls = [
                 "success" => route('pagamento.sucesso'),
                 "failure" => route('pagamento.erro'),
                 "pending" => route('pagamento.pendente'),
             ];
-
             $preference->auto_return = "approved";
-            $preference->external_reference = $reserva->id;
 
             Log::info('preference.', ['preference' => $preference]);
 
@@ -460,6 +455,7 @@ class SiteController extends Controller
                 'mensagem' => $e->getMessage(),
             ], 500);
         }
+
     }
 
 
