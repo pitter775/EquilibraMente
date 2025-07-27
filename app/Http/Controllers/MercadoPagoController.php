@@ -18,65 +18,49 @@ class MercadoPagoController extends Controller
     public function webhook(Request $request)
     {
         $body = json_decode($request->getContent(), true);
-
-        DebugLog::create([
-            'mensagem' => '📥 Webhook recebido: ' . json_encode($body)
-        ]);
+        DebugLog::create(['mensagem' => '📥 Payload recebido no webhook: ' . json_encode($body)]);
 
         try {
             if (isset($body['type']) && $body['type'] === 'payment') {
                 $paymentId = $body['data']['id'] ?? null;
-
-                DebugLog::create([
-                    'mensagem' => '🔎 paymentId recebido: ' . $paymentId
-                ]);
+                DebugLog::create(['mensagem' => '🔍 paymentId recebido: ' . $paymentId]);
 
                 if ($paymentId && is_numeric($paymentId)) {
-                    $url = "https://api.mercadopago.com/v1/payments/{$paymentId}";
-                    $response = Http::withToken(config('services.mercadopago.access_token'))->get($url);
+                    $response = Http::withToken(config('services.mercadopago.access_token'))
+                                    ->get("https://api.mercadopago.com/v1/payments/{$paymentId}")
+                                    ->json();
 
-                    DebugLog::create([
-                        'mensagem' => '📡 Resposta da API Mercado Pago: ' . $response->body()
-                    ]);
+                    DebugLog::create(['mensagem' => '📦 Resposta da API Mercado Pago: ' . json_encode($response)]);
 
-                    $data = $response->json();
-                    $reservaId = $data['external_reference'] ?? null;
+                    $reservaId = $response['external_reference'] ?? null;
+                    DebugLog::create(['mensagem' => '🔗 Reserva ID extraída: ' . $reservaId]);
 
                     if ($reservaId) {
                         Transacao::updateOrCreate(
-                            ['external_id' => $data['id']],
+                            ['reference_id' => $reservaId],
                             [
-                                'user_id' => $data['payer']['id'] ?? null,
-                                'reserva_id' => $reservaId,
-                                'status' => $data['status'],
-                                'metodo' => $data['payment_method_id'],
-                                'valor' => $data['transaction_amount'],
-                                'payload' => json_encode($data),
+                                'usuario_id' => $response['payer']['id'] ?? null,
+                                'sala_id' => $reserva->sala_id ?? null,
+                                'status' => $response['status'] ?? 'indefinido',
+                                'valor' => $response['transaction_amount'] ?? 0,
+                                'pagbank_order_id' => null,
+                                'detalhes' => $response,
                             ]
                         );
 
-                        DebugLog::create([
-                            'mensagem' => '✅ Transação atualizada com sucesso - reserva_id: ' . $reservaId
-                        ]);
+                        DebugLog::create(['mensagem' => '✅ Transação atualizada com sucesso para reserva: ' . $reservaId]);
                     } else {
-                        DebugLog::create([
-                            'mensagem' => '⚠️ Falha: reserva_id não encontrado na resposta.'
-                        ]);
+                        DebugLog::create(['mensagem' => "⚠️ Webhook sem external_reference para pagamento {$paymentId}"]);
                     }
                 } else {
-                    DebugLog::create([
-                        'mensagem' => '⚠️ paymentId inválido: ' . json_encode($paymentId)
-                    ]);
+                    DebugLog::create(['mensagem' => "⚠️ paymentId inválido: " . print_r($paymentId, true)]);
                 }
             } else {
-                DebugLog::create([
-                    'mensagem' => '⚠️ Tipo de evento ignorado ou ausente: ' . ($body['type'] ?? 'nenhum')
-                ]);
+                DebugLog::create(['mensagem' => "⚠️ Webhook ignorado - tipo: " . ($body['type'] ?? 'indefinido')]);
             }
         } catch (\Throwable $e) {
-            DebugLog::create([
-                'mensagem' => '❌ Exceção capturada: ' . $e->getMessage()
-            ]);
+            DebugLog::create(['mensagem' => '❌ Erro no webhook: ' . $e->getMessage()]);
+            Log::error("❌ Erro no Webhook Mercado Pago: " . $e->getMessage());
         }
 
         return response()->json(['status' => 'ok'], 200);
