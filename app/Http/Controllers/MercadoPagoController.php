@@ -72,50 +72,58 @@ class MercadoPagoController extends Controller
             $reserva = Reserva::with('usuario', 'horarios', 'sala')->findOrFail($reservaId);
             $valorTotal = $reserva->valor_total;
 
-            $item = new Item();
-            $item->title = 'Reserva de sala - ' . $reserva->sala->nome;
-            $item->quantity = 1;
-            $item->unit_price = $valorTotal;
+            // Validação simples de segurança
+            if (!$valorTotal || $valorTotal <= 0) {
+                throw new \Exception("Valor total inválido: {$valorTotal}");
+            }
 
+            // Item de pagamento
+            $item = new Item();
+            $item->title = 'Reserva de sala - ' . ($reserva->sala->nome ?? 'Sem nome');
+            $item->quantity = 1;
+            $item->unit_price = (float) $valorTotal;
+
+            // Criar a preferência
             $preference = new Preference();
             $preference->items = [$item];
 
-            // Enviar dados do comprador (payer)
+            // Objeto payer como stdClass
             $usuario = $reserva->usuario;
-            $preference->payer = [
-                "name" => $usuario->name ?? "Teste",
-                "surname" => "",
-                "email" => $usuario->email ?? "comprador_teste@example.com",
-                "phone" => [
-                    "area_code" => "11",
-                    "number" => preg_replace('/[^0-9]/', '', $usuario->telefone ?? "999999999")
-                ],
-                "identification" => [
-                    "type" => "CPF",
-                    "number" => preg_replace('/[^0-9]/', '', $usuario->cpf ?? "19119119100")
-                ],
-                "address" => [
-                    "zip_code" => preg_replace('/[^0-9]/', '', $usuario->cep ?? "06233200"),
-                    "street_name" => $usuario->rua ?? "Av. das Nações Unidas",
-                    "street_number" => $usuario->numero ?? "3003",
-                    "neighborhood" => $usuario->bairro ?? "Bonfim",
-                    "city" => $usuario->cidade ?? "Osasco",
-                    "federal_unit" => $usuario->estado ?? "SP"
-                ]
-            ];
+
+            $payer = new \stdClass();
+            $payer->name = $usuario->name ?? "Teste";
+            $payer->surname = "";
+            $payer->email = $usuario->email ?? "comprador_teste@example.com";
+
+            $payer->phone = new \stdClass();
+            $payer->phone->area_code = "11";
+            $payer->phone->number = preg_replace('/[^0-9]/', '', $usuario->telefone ?? "999999999");
+
+            $payer->identification = new \stdClass();
+            $payer->identification->type = "CPF";
+            $payer->identification->number = preg_replace('/[^0-9]/', '', $usuario->cpf ?? "19119119100");
+
+            $payer->address = new \stdClass();
+            $payer->address->zip_code = preg_replace('/[^0-9]/', '', $usuario->cep ?? "06233200");
+            $payer->address->street_name = $usuario->rua ?? "Av. das Nações Unidas";
+            $payer->address->street_number = $usuario->numero ?? "3003";
+            $payer->address->neighborhood = $usuario->bairro ?? "Bonfim";
+            $payer->address->city = $usuario->cidade ?? "Osasco";
+            $payer->address->federal_unit = $usuario->estado ?? "SP";
+
+            $preference->payer = $payer;
 
             $preference->back_urls = [
                 "success" => route('pagamento.sucesso'),
                 "failure" => route('pagamento.erro'),
                 "pending" => route('pagamento.pendente'),
             ];
-            $preference->auto_return = "approved";
 
+            $preference->auto_return = "approved";
             $preference->external_reference = $reserva->id;
 
             $preference->save();
 
-            // debug: salvar log do retorno
             Log::info('Preferência Mercado Pago gerada:', [
                 'id' => $preference->id,
                 'init_point' => $preference->init_point,
@@ -139,7 +147,6 @@ class MercadoPagoController extends Controller
                 'reference_id' => 'reserva_' . $reserva->id,
             ]);
 
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -150,6 +157,7 @@ class MercadoPagoController extends Controller
             ]);
         }
     }
+
 
 
     public function webhook(Request $request)
