@@ -26,15 +26,16 @@ class MercadoPagoController extends Controller
             $preference = new Preference();
             $preference->items = [$item];
 
-            $preference->payer = [
-                "name" => "João",
-                "surname" => "Silva",
-                "email" => "comprador_teste@example.com",
-                "phone" => [
-                    "area_code" => "11",
-                    "number" => "999999999"
-                ]
-            ];
+            // Corrigido: objeto stdClass
+            $payer = new \stdClass();
+            $payer->name = "João";
+            $payer->surname = "Silva";
+            $payer->email = "comprador_teste@example.com";
+            $payer->phone = new \stdClass();
+            $payer->phone->area_code = "11";
+            $payer->phone->number = "999999999";
+
+            $preference->payer = $payer;
 
             $preference->back_urls = [
                 "success" => url('/obrigado'),
@@ -58,6 +59,7 @@ class MercadoPagoController extends Controller
             ], 500);
         }
     }
+
 
 
 
