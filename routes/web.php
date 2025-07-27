@@ -27,13 +27,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\CadastroAprovadoMail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Config;
-
-
-
-
-
-
 use App\Http\Controllers\MercadoPagoController;
+
+Route::get('/teste-mercadopago/{id}', [MercadoPagoController::class, 'teste']);
 
 Route::get('/pagar/{reservaId}', [MercadoPagoController::class, 'pagar'])->name('pagar.mercadopago');
 

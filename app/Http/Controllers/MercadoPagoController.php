@@ -13,6 +13,64 @@ use Illuminate\Support\Facades\Log;
 
 class MercadoPagoController extends Controller
 {
+    public function teste($reservaId)
+    {
+        try {
+            SDK::setAccessToken(config('services.mercadopago.access_token'));
+
+            $reserva = \App\Models\Reserva::with('usuario', 'sala')->findOrFail($reservaId);
+            $valorTotal = $reserva->valor_total;
+
+            if (!$valorTotal || $valorTotal <= 0) {
+                throw new \Exception("Valor total inválido: {$valorTotal}");
+            }
+
+            $item = new Item();
+            $item->title = 'Reserva de sala - ' . ($reserva->sala->nome ?? 'Sem nome');
+            $item->quantity = 1;
+            $item->unit_price = (float) $valorTotal;
+
+            $preference = new Preference();
+            $preference->items = [$item];
+
+            $usuario = $reserva->usuario;
+
+            $preference->payer = [
+                "name" => $usuario->name ?? "Sem nome",
+                "surname" => "",
+                "email" => $usuario->email ?? "teste@example.com",
+                "phone" => [
+                    "area_code" => "11",
+                    "number" => preg_replace('/[^0-9]/', '', $usuario->telefone ?? "999999999")
+                ]
+            ];
+
+            $preference->back_urls = [
+                "success" => url('/cliente/reservas'),
+                "failure" => url('/cliente/reservas'),
+                "pending" => url('/cliente/reservas')
+            ];
+
+            $preference->auto_return = "approved";
+
+            $preference->save();
+
+            return response()->json([
+                'status' => '✅ Preferência criada com sucesso',
+                'init_point' => $preference->init_point,
+                'preference' => $preference
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => '❌ Erro ao criar preferência',
+                'mensagem' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
+
     public function pagar($reservaId)
     {
         try {
