@@ -398,7 +398,7 @@ class SiteController extends Controller
             $item = new Item();
             $item->title = 'Reserva de sala - ' . ($reserva->sala->nome ?? 'Sem nome');
             $item->quantity = 1;
-            $item->unit_price = (float) $reserva->valor_total;
+            $item->unit_price = (float) str_replace(',', '.', $reserva->valor_total);
 
             $preference = new Preference();
             $preference->items = [$item];
