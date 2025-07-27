@@ -13,42 +13,33 @@ use Illuminate\Support\Facades\Log;
 
 class MercadoPagoController extends Controller
 {
-    public function teste($reservaId)
+    public function testeFixo()
     {
         try {
             SDK::setAccessToken(config('services.mercadopago.access_token'));
 
-            $reserva = \App\Models\Reserva::with('usuario', 'sala')->findOrFail($reservaId);
-            $valorTotal = $reserva->valor_total;
-
-            if (!$valorTotal || $valorTotal <= 0) {
-                throw new \Exception("Valor total inválido: {$valorTotal}");
-            }
-
             $item = new Item();
-            $item->title = 'Reserva de sala - ' . ($reserva->sala->nome ?? 'Sem nome');
+            $item->title = 'Teste de Produto Fictício';
             $item->quantity = 1;
-            $item->unit_price = (float) $valorTotal;
+            $item->unit_price = 123.45;
 
             $preference = new Preference();
             $preference->items = [$item];
 
-            $usuario = $reserva->usuario;
-
             $preference->payer = [
-                "name" => $usuario->name ?? "Sem nome",
-                "surname" => "",
-                "email" => $usuario->email ?? "teste@example.com",
+                "name" => "João",
+                "surname" => "Silva",
+                "email" => "comprador_teste@example.com",
                 "phone" => [
                     "area_code" => "11",
-                    "number" => preg_replace('/[^0-9]/', '', $usuario->telefone ?? "999999999")
+                    "number" => "999999999"
                 ]
             ];
 
             $preference->back_urls = [
-                "success" => url('/cliente/reservas'),
-                "failure" => url('/cliente/reservas'),
-                "pending" => url('/cliente/reservas')
+                "success" => url('/obrigado'),
+                "failure" => url('/falhou'),
+                "pending" => url('/aguardando')
             ];
 
             $preference->auto_return = "approved";
@@ -56,14 +47,14 @@ class MercadoPagoController extends Controller
             $preference->save();
 
             return response()->json([
-                'status' => '✅ Preferência criada com sucesso',
+                'status' => '✅ Preferência criada',
                 'init_point' => $preference->init_point,
-                'preference' => $preference
+                'id_preferencia' => $preference->id
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => '❌ Erro ao criar preferência',
-                'mensagem' => $e->getMessage()
+                'status' => '❌ Erro',
+                'erro' => $e->getMessage()
             ], 500);
         }
     }

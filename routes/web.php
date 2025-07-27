@@ -30,6 +30,21 @@ use Illuminate\Support\Facades\Config;
 use App\Http\Controllers\MercadoPagoController;
 
 Route::get('/teste-mercadopago/{id}', [MercadoPagoController::class, 'teste']);
+Route::get('/teste-link-falso', [MercadoPagoController::class, 'testeFixo']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Route::get('/pagar/{reservaId}', [MercadoPagoController::class, 'pagar'])->name('pagar.mercadopago');
 
