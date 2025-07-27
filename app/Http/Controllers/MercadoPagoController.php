@@ -46,7 +46,7 @@ class MercadoPagoController extends Controller
             }
         }
 
-        return response()->json(['status' => 'ok']);
+        return response()->json(['status' => 'ok'], 200);
     }
 
     public function status($reservaId)
