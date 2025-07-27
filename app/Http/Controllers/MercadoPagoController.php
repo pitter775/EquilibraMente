@@ -11,6 +11,7 @@ use App\Models\Sala;
 use App\Models\Transacao;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use App\Models\DebugLog;
 
 class MercadoPagoController extends Controller
 {
@@ -18,36 +19,69 @@ class MercadoPagoController extends Controller
     {
         $body = json_decode($request->getContent(), true);
 
-        Log::info('🔔 Webhook Mercado Pago', $body);
+        DebugLog::create([
+            'mensagem' => '📥 Webhook recebido: ' . json_encode($body)
+        ]);
 
-        if (isset($body['type']) && $body['type'] === 'payment') {
-            $paymentId = $body['data']['id'];
+        try {
+            if (isset($body['type']) && $body['type'] === 'payment') {
+                $paymentId = $body['data']['id'] ?? null;
 
-            if ($paymentId && is_numeric($paymentId)) {
-                $response = Http::withToken(config('services.mercadopago.access_token'))
-                                ->get("https://api.mercadopago.com/v1/payments/{$paymentId}")
-                                ->json();
+                DebugLog::create([
+                    'mensagem' => '🔎 paymentId recebido: ' . $paymentId
+                ]);
 
-                $reservaId = $response['external_reference'] ?? null;
+                if ($paymentId && is_numeric($paymentId)) {
+                    $url = "https://api.mercadopago.com/v1/payments/{$paymentId}";
+                    $response = Http::withToken(config('services.mercadopago.access_token'))->get($url);
 
-                if ($reservaId) {
-                    Transacao::updateOrCreate(
-                        ['external_id' => $response['id']],
-                        [
-                            'user_id' => $response['payer']['id'] ?? null,
-                            'reserva_id' => $reservaId,
-                            'status' => $response['status'],
-                            'metodo' => $response['payment_method_id'],
-                            'valor' => $response['transaction_amount'],
-                            'payload' => json_encode($response),
-                        ]
-                    );
+                    DebugLog::create([
+                        'mensagem' => '📡 Resposta da API Mercado Pago: ' . $response->body()
+                    ]);
+
+                    $data = $response->json();
+                    $reservaId = $data['external_reference'] ?? null;
+
+                    if ($reservaId) {
+                        Transacao::updateOrCreate(
+                            ['external_id' => $data['id']],
+                            [
+                                'user_id' => $data['payer']['id'] ?? null,
+                                'reserva_id' => $reservaId,
+                                'status' => $data['status'],
+                                'metodo' => $data['payment_method_id'],
+                                'valor' => $data['transaction_amount'],
+                                'payload' => json_encode($data),
+                            ]
+                        );
+
+                        DebugLog::create([
+                            'mensagem' => '✅ Transação atualizada com sucesso - reserva_id: ' . $reservaId
+                        ]);
+                    } else {
+                        DebugLog::create([
+                            'mensagem' => '⚠️ Falha: reserva_id não encontrado na resposta.'
+                        ]);
+                    }
+                } else {
+                    DebugLog::create([
+                        'mensagem' => '⚠️ paymentId inválido: ' . json_encode($paymentId)
+                    ]);
                 }
+            } else {
+                DebugLog::create([
+                    'mensagem' => '⚠️ Tipo de evento ignorado ou ausente: ' . ($body['type'] ?? 'nenhum')
+                ]);
             }
+        } catch (\Throwable $e) {
+            DebugLog::create([
+                'mensagem' => '❌ Exceção capturada: ' . $e->getMessage()
+            ]);
         }
 
         return response()->json(['status' => 'ok'], 200);
     }
+
 
     public function status($reservaId)
     {
