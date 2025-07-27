@@ -433,6 +433,7 @@ class SiteController extends Controller
             $preference->items = [$item];
             $preference->payer = $payer;
             $preference->external_reference = 'reserva_' . $reserva->id;
+            $preference->statement_descriptor = 'EQUILIBRA MENTE';
             $preference->back_urls = [
                 "success" => route('pagamento.sucesso'),
                 "failure" => route('pagamento.erro'),

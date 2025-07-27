@@ -34,13 +34,23 @@ class MercadoPagoController extends Controller
                     $reservaId = $response['external_reference'] ?? null;
 
                     if ($reservaId) {
-                        $reserva = Reserva::find($reservaId);
+                        // 🧹 Limpa o prefixo 'reserva_' se existir
+                        $reservaIdLimpo = str_replace('reserva_', '', $reservaId);
+
+                        // 🔒 Garante que o ID resultante seja numérico
+                        if (!is_numeric($reservaIdLimpo)) {
+                            DebugLog::create(['mensagem' => '⚠️ ID de reserva inválido: ' . $reservaId]);
+                            return response()->json(['mensagem' => 'ID de reserva inválido'], 200);
+                        }
+
+                        $reserva = Reserva::find($reservaIdLimpo);
 
                         if (!$reserva) {
                             DebugLog::create(['mensagem' => '⚠️ Reserva não encontrada: ' . $reservaId]);
                             return response()->json(['mensagem' => 'Reserva não encontrada'], 200);
                         }
 
+                        // 💾 Salva ou atualiza a transação
                         Transacao::updateOrCreate(
                             ['external_id' => $response['id']],
                             [
@@ -68,6 +78,7 @@ class MercadoPagoController extends Controller
 
         return response()->json(['status' => 'ok'], 200);
     }
+
 
 
     public function status($reservaId)
