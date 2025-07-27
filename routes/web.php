@@ -218,6 +218,11 @@ Route::get('/reserva/revisao', [SiteController::class, 'exibirRevisao'])->name('
 // Rota para processar os dados da reserva e salvar na sessão (POST)
 Route::post('/reserva/revisao', [SiteController::class, 'revisao'])->name('reserva.revisao.processar');
 // Rota para confirmar a reserva (POST)
+
+
+
+
+
 Route::post('/reserva/confirmar', [SiteController::class, 'confirmar'])->name('reserva.confirmar');
 
 
