@@ -81,7 +81,7 @@ class MercadoPagoController extends Controller
             $item = new Item();
             $item->title = 'Reserva de sala - ' . ($reserva->sala->nome ?? 'Sem nome');
             $item->quantity = 1;
-            $item->unit_price = (float) $valorTotal;
+            $item->unit_price = (float) str_replace(',', '.', $valorTotal);
 
             // Criar a preferência
             $preference = new Preference();

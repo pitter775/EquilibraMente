@@ -20,7 +20,7 @@ class SiteController extends Controller
 
         return view('site.index', compact('salas'));
     }
-    
+
 
     public function detalhes($id)
     {
@@ -32,8 +32,8 @@ class SiteController extends Controller
 
 
         // Busca a sala pelo ID, ou retorna 404 se não encontrada
-        $sala = Sala::with('conveniencias')->findOrFail($id);        
-        
+        $sala = Sala::with('conveniencias')->findOrFail($id);
+
         // Renderiza uma view para exibir os detalhes da sala
         return view('site.detalhes', compact('sala'));
     }
@@ -47,11 +47,11 @@ class SiteController extends Controller
             'horarios.*.hora_inicio' => 'required|date_format:H:i',
             'horarios.*.hora_fim' => 'required|date_format:H:i|after:horarios.*.hora_inicio',
         ]);
-    
+
         try {
             $sala = Sala::with('imagens')->findOrFail($validated['sala_id']);
             $valorTotal = count($validated['horarios']) * $sala->valor;
-    
+
             // Salva os dados da reserva na sessão
             session([
                 'reserva' => [
@@ -61,20 +61,20 @@ class SiteController extends Controller
                     'valor_total' => $valorTotal,
                 ],
             ]);
-    
+
             // Em vez de redirecionar diretamente, retorna um JSON com a URL
             return response()->json(['redirect' => route('reserva.revisao')], 200);
-            
+
         } catch (\Exception $e) {
             return response()->json(['error' => 'Erro ao processar a reserva.'], 500);
         }
     }
-    
-    
+
+
     public function exibirRevisao()
     {
         $reserva = session('reserva');
-        
+
         if (!$reserva) {
             return redirect()->route('site.index')->with('error', 'Nenhuma reserva encontrada.');
         }
@@ -116,27 +116,28 @@ class SiteController extends Controller
 
     public function confirmar(Request $request)
     {
+        $metodo = $request->input('metodo_pagamento', 'pagbank'); // default pagbank
         $reservaData = session('reserva');
-    
+
         if (!$reservaData) {
             return response()->json(['success' => false, 'message' => 'Dados da reserva inválidos.']);
         }
-    
+
         // Atualizar valor total para garantir que está correto
         $valorTotalCorrigido = 0;
         foreach ($reservaData['horarios'] as $horario) {
             $sala = Sala::find($reservaData['sala_id']);
             $valorTotalCorrigido += $sala->valor;
         }
-        
+
         session(['reserva.valor_total' => $valorTotalCorrigido]);
-    
+
         try {
             Log::info('Iniciando confirmação de reserva.', ['reservaData' => $reservaData]);
             DebugLog::create(['mensagem' => 'Iniciando confirmação de reserva: ' . json_encode($reservaData)]);
-    
 
-    
+
+
             $reservasCriadas = [];
             foreach ($reservaData['horarios'] as $horario) {
                 $chaves = collect($sala->fechadura?->chaves ?? []);
@@ -147,9 +148,9 @@ class SiteController extends Controller
                         'message' => 'A sala não possui chaves cadastradas.',
                     ], 409);
                 }
-                
+
                 $chaveParaUsar = $chaves->random();
-                
+
                 $reserva = Reserva::create([
                     'usuario_id' => auth()->id(),
                     'sala_id' => $sala->id,
@@ -161,49 +162,48 @@ class SiteController extends Controller
                 ]);
                 $reservasCriadas[] = $reserva;
             }
-    
+
             $primeiraReserva = $reservasCriadas[0];
             session(['reserva_id' => $primeiraReserva->id]); // Mantém o ID da reserva na sessão
-    
-           
+
+
             DebugLog::create(['mensagem' => 'Chamando geração de link de pagamento. ' . json_encode($primeiraReserva->id)]);
-    
-            $linkPagamento = $this->gerarLinkPagamento($primeiraReserva->id);
 
-            DebugLog::create(['mensagem' => 'Link de pagamento linkPagamento: ' . json_encode($linkPagamento)]);
+            $metodo = $request->input('metodo_pagamento', 'pagbank');
 
-            // Se já for um JSONResponse, decodificar corretamente
-            $linkPagamento = $linkPagamento instanceof \Illuminate\Http\JsonResponse 
-            ? json_decode($linkPagamento->getContent(), true) 
-            : $linkPagamento;
+            if ($metodo === 'mercadopago') {
+                $linkPagamento = app(\App\Http\Controllers\MercadoPagoController::class)->pagar($primeiraReserva->id);
+            } else {
+                $linkPagamento = $this->gerarLinkPagamento($primeiraReserva->id);
+            }
 
-            // Extrai corretamente a URL do link de pagamento
+            $linkPagamento = $linkPagamento instanceof \Illuminate\Http\JsonResponse
+                ? json_decode($linkPagamento->getContent(), true)
+                : $linkPagamento;
+
             $checkoutUrl = $linkPagamento['redirect'] ?? $linkPagamento;
 
-            DebugLog::create(['mensagem' => 'Link de pagamento checkoutUrl: ' . json_encode($linkPagamento)]);
-
-            // Retorna apenas a URL correta
             return response()->json([
                 'redirect' => $checkoutUrl,
-                'reference_id' => 'reserva_' . $primeiraReserva->id // Retorna a referência correta para a verificação
-            ], 200, ['Content-Type' => 'application/json']);
-            
-            
-            
+                'reference_id' => 'reserva_' . $primeiraReserva->id
+            ]);
+
+
+
         } catch (\Exception $e) {
-        
+
             DebugLog::create(['mensagem' => 'Erro ao confirmar reserva:' . json_encode($e->getMessage())]);
             return response()->json(['success' => false, 'message' => 'Erro ao confirmar a reserva.', 'error' => $e->getMessage()]);
         }
     }
-    
-    
+
+
     public function salvarReserva(Request $request)
     {
         // Obtém os dados da requisição ou da sessão
         $salaId = $request->input('sala_id', session('reserva.sala_id'));
         $horarios = $request->input('horarios', session('reserva.horarios'));
-    
+
         // Valida se os dados necessários estão presentes
         if (!$salaId || !$horarios) {
             return response()->json([
@@ -211,11 +211,11 @@ class SiteController extends Controller
                 'message' => 'Dados da reserva estão incompletos ou ausentes.',
             ], 400);
         }
-    
+
         try {
             $sala = Sala::findOrFail($salaId);
             $conflitos = [];
-    
+
             // Verifica conflitos para os horários
             foreach ($horarios as $horario) {
                 $conflict = $sala->reservas()
@@ -224,12 +224,12 @@ class SiteController extends Controller
                         $query->whereBetween('hora_inicio', [$horario['hora_inicio'], $horario['hora_fim']])
                               ->orWhereBetween('hora_fim', [$horario['hora_inicio'], $horario['hora_fim']]);
                     })->exists();
-    
+
                 if ($conflict) {
                     $conflitos[] = "{$horario['data_reserva']} - {$horario['hora_inicio']} às {$horario['hora_fim']}";
                 }
             }
-    
+
             // Retorna erro se houver conflitos
             if (!empty($conflitos)) {
                 return response()->json([
@@ -237,7 +237,7 @@ class SiteController extends Controller
                     'message' => 'Conflito de horário. A sala já está reservada nos seguintes horários: ' . implode(', ', $conflitos),
                 ], 409);
             }
-    
+
             // Cria as reservas
             $reservasCriadas = [];
             foreach ($horarios as $horario) {
@@ -249,10 +249,10 @@ class SiteController extends Controller
                 ]);
                 $reservasCriadas[] = $reserva;
             }
-    
+
             // Limpa a sessão após criar as reservas
             session()->forget('reserva');
-    
+
             return response()->json([
                 'success' => true,
                 'reservas' => $reservasCriadas,
@@ -271,19 +271,19 @@ class SiteController extends Controller
     {
         $reserva = Reserva::findOrFail($reservaId);
         $usuario = auth()->user();
-    
+
         try {
             DebugLog::create(['mensagem' => 'Iniciando geração de link de pagamento para a reserva:' . $reserva->id]);
-    
+
             $telefone = preg_replace('/[^0-9]/', '', $usuario->telefone);
             $cpf = preg_replace('/[^0-9]/', '', $usuario->cpf);
-    
+
             // Buscar endereço do usuário
             $endereco = $usuario->endereco;
             if (!$endereco) {
                 throw new \Exception("O cliente não possui um endereço cadastrado.");
             }
-    
+
             $clienteData = [
                 'name' => $usuario->name,
                 'email' => $usuario->email,
@@ -307,7 +307,7 @@ class SiteController extends Controller
                     'postal_code' => $endereco->cep
                 ]
             ];
-    
+
             $payload = [
                 'reference_id' => 'reserva_' . $reserva->id,
                 'customer' => $clienteData,
@@ -333,19 +333,19 @@ class SiteController extends Controller
                     'https://www.espacoequilibramente.com.br/pagbank/callback',
                 ]
             ];
-    
+
             DebugLog::create(['mensagem' => 'Dados de envio (payload):' . json_encode($payload)]);
-    
+
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . env('PAGBANK_TOKEN'),
                 'accept' => 'application/json',
                 'content-type' => 'application/json',
             ])->post('https://api.pagseguro.com/checkouts', $payload);
-    
+
             if ($response->successful()) {
                 $data = $response->json();
                 DebugLog::create(['mensagem' => 'Link de pagamento gerado com sucesso:' . json_encode($data)]);
-    
+
                 // Buscar o link correto dentro de "links"
                 $checkoutUrl = null;
                 if (isset($data['links'])) {
@@ -356,29 +356,29 @@ class SiteController extends Controller
                         }
                     }
                 }
-    
+
                 if ($checkoutUrl) {
                     return response()->json(['redirect' => $checkoutUrl]); // Retorna o link correto
                 }
-    
+
                 throw new \Exception('Nenhum link de pagamento encontrado na resposta do PagBank.');
             } else {
                 $error = $response->json();
                 DebugLog::create(['mensagem' => 'Erro na resposta da API do PagBank:' . json_encode($error)]);
-    
+
                 throw new \Exception('Erro ao gerar o link de pagamento: ' . json_encode($error));
             }
-    
+
         } catch (\Exception $e) {
             DebugLog::create(['mensagem' => 'Exceção ao gerar link de pagamento:' . json_encode($e->getMessage())]);
             return response()->json(['error' => 'Erro ao gerar link de pagamento.'], 500);
         }
     }
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
 
 }
