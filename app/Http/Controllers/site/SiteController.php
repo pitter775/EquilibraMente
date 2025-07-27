@@ -168,8 +168,7 @@ class SiteController extends Controller
             $primeiraReserva = $reservasCriadas[0];
             session(['reserva_id' => $primeiraReserva->id]); // Mantém o ID da reserva na sessão
 
-
-            DebugLog::create(['mensagem' => 'Chamando geração de link de pagamento. ' . json_encode($primeiraReserva->id)]);
+            Log::info('primeiraReserva', ['primeiraReserva' => $primeiraReserva]);
 
             // $linkPagamento = $this->gerarLinkPagamento($primeiraReserva->id);
             $metodo = $request->input('metodo_pagamento', 'pagbank');
@@ -178,7 +177,7 @@ class SiteController extends Controller
                 ? $this->gerarLinkPagamentoMercadoPago($primeiraReserva->id)
                 : $this->gerarLinkPagamento($primeiraReserva->id);
 
-            DebugLog::create(['mensagem' => 'Link de pagamento linkPagamento: ' . json_encode($linkPagamento)]);
+            Log::info('mensagem', ['Link de pagamento linkPagamento:' => json_encode($linkPagamento)]);
 
             // Se já for um JSONResponse, decodificar corretamente
             $linkPagamento = $linkPagamento instanceof \Illuminate\Http\JsonResponse
@@ -188,7 +187,8 @@ class SiteController extends Controller
             // Extrai corretamente a URL do link de pagamento
             $checkoutUrl = $linkPagamento['redirect'] ?? $linkPagamento;
 
-            DebugLog::create(['mensagem' => 'Link de pagamento checkoutUrl: ' . json_encode($linkPagamento)]);
+
+            Log::info('mensagem', ['Link de pagamento checkoutUrl:' => json_encode($linkPagamento)]);
 
             // Retorna apenas a URL correta
             return response()->json([
@@ -385,20 +385,27 @@ class SiteController extends Controller
 
     public function gerarLinkPagamentoMercadoPago($reservaId)
     {
+        Log::info('gerarLinkPagamentoMercadoPago', ['gerarLinkPagamentoMercadoPago' => $reservaId]);
         try {
             SDK::setAccessToken(config('services.mercadopago.access_token'));
 
+
+
             $reserva = Reserva::with('usuario', 'sala')->findOrFail($reservaId);
             $usuario = $reserva->usuario;
+            Log::info('reserva.', ['reserva' => $reserva]);
 
-            if (!$reserva->valor_total || $reserva->valor_total <= 0) {
+            $valor = (float) $reserva->sala->valor;
+
+            if ($valor <= 0) {
                 throw new \Exception("Valor da reserva inválido.");
             }
+
 
             $item = new Item();
             $item->title = 'Reserva de sala - ' . ($reserva->sala->nome ?? 'Sem nome');
             $item->quantity = 1;
-            $item->unit_price = (float) str_replace(',', '.', $reserva->valor_total);
+            $item->unit_price = round($valor, 2);
 
             $preference = new Preference();
             $preference->items = [$item];
@@ -434,6 +441,8 @@ class SiteController extends Controller
 
             $preference->auto_return = "approved";
             $preference->external_reference = $reserva->id;
+
+            Log::info('preference.', ['preference' => $preference]);
 
             $preference->save();
 
