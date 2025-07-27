@@ -394,6 +394,7 @@ class SiteController extends Controller
             $reserva = Reserva::with('usuario', 'sala')->findOrFail($reservaId);
             $usuario = $reserva->usuario;
             Log::info('reserva.', ['reserva' => $reserva]);
+            Log::info('usuario.', ['usuario' => $usuario]);
 
             $valor = (float) $reserva->sala->valor;
 
@@ -405,7 +406,8 @@ class SiteController extends Controller
             $item = new Item();
             $item->title = 'Reserva de sala - ' . ($reserva->sala->nome ?? 'Sem nome');
             $item->quantity = 1;
-            $item->unit_price = round($valor, 2);
+            // $item->unit_price = round($valor, 2);
+            $item->unit_price = 1.00;
 
             $preference = new Preference();
             $preference->items = [$item];
@@ -413,7 +415,8 @@ class SiteController extends Controller
             $payer = new \stdClass();
             $payer->name = $usuario->name ?? "Teste";
             $payer->surname = "";
-            $payer->email = $usuario->email ?? "comprador_teste@example.com";
+            $payer->email = "comprador_teste@example.com";
+            // $payer->email = $usuario->email ?? "comprador_teste@example.com";
 
             $payer->phone = new \stdClass();
             $payer->phone->area_code = "11";
