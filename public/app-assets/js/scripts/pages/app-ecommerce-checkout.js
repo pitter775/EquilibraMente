@@ -72,6 +72,7 @@ $(function () {
         dataType: 'json'
       });
     }
+    
     $('#confirmar-reserva').on('click', function () {
       console.log("🟡 Clique no botão de confirmar reserva");
       console.log("Método de pagamento selecionado:", metodoPagamento);
