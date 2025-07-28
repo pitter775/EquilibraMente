@@ -134,7 +134,7 @@
                 </p>
 
                 <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="aceita_contrato" name="aceita_contrato" required>
+                    <input class="form-check-input" type="checkbox" id="aceita_contrato_modal" name="aceita_contrato_modal" required>
                     <label class="form-check-label" for="aceita_contrato">
                         Li e aceito os termos do contrato.
                     </label>
@@ -307,7 +307,7 @@
 
 
         <div class="form-check mt-4 mb-4">
-             <input class="form-check-input" type="checkbox" id="aceitaContrato" name="aceita_contrato" disabled required>
+            <input class="form-check-input" type="checkbox" id="aceitaContrato" name="aceita_contrato" disabled required>
             <label class="form-check-label labelcontrato" for="aceitaContrato">
                 Eu li e aceito os <a href="#" class="btn-termos" id="abrirModalContrato">termos do contrato</a>
 .
@@ -343,7 +343,7 @@
         // 2. Quando o usuário enviar o documento na modal
         $('#formDocumento').on('submit', function(e) {
             e.preventDefault();
-
+            $('#aceitaContrato').prop('disabled', false);
             // Junta os dados do formulário principal + modal
             let formData = new FormData(document.getElementById('completarCadastroForm'));
             let docForm = new FormData(this);
@@ -440,9 +440,6 @@
 
             verificarCamposPreenchidos();
         });
-
-
-
         document.getElementById('abrirModalContrato')?.addEventListener('click', function(e) {
             e.preventDefault();
 
@@ -516,7 +513,7 @@
         function validarDocumentoModal() {
             const tipo = $('#documento_tipo').val();
             const arquivo = $('input[name="documento"]').val();
-            const aceite = $('#aceita_contrato').is(':checked');
+            const aceite = $('#aceita_contrato_modal').is(':checked');
 
             let valido = true;
 
