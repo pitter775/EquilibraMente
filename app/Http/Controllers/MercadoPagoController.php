@@ -135,6 +135,8 @@ class MercadoPagoController extends Controller
 
     public function erro(Request $request)
     {
+        DebugLog::create(['erro' => $request]);
+
         $externalReference = $request->input('external_reference');
         $paymentId = $request->input('payment_id');
 
@@ -168,7 +170,9 @@ class MercadoPagoController extends Controller
             }
         }
 
-        return view('pagamento.erro');
+        return response()->view('pagamento.erro', [
+            'mensagem' => 'Erro no pagamento. Tente novamente.'
+        ], 200)->header('Content-Type', 'text/html');
     }
 
     public function pendente(Request $request)
