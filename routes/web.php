@@ -144,22 +144,9 @@ Route::post('/admin/reprovar/{user}', [UsuarioController::class, 'reprovarUsuari
 
 Route::get('/reserva/dados/{id}', [SiteController::class, 'buscarDadosReserva']);
 
-Route::get('/pagbank/status/{referenceId}', [PagBankController::class, 'verificarStatus'])->name('pagbank.status');
-
-
-
-
-
-// Route::post('/pagbank/callback', [PagBankController::class, 'callback'])->name('pagbank.callback');
-Route::match(['get', 'post'], '/pagbank/callback', [PagBankController::class, 'callback'])->name('pagbank.callback');
-
-Route::get('/pagamento/sucesso', function () {
-    return response()->json(['message' => 'Pagamento realizado com sucesso!']);
-})->name('pagamento.sucesso');
-
-Route::get('/pagamento/erro', function () {
-    return response()->json(['message' => 'Erro no pagamento. Tente novamente.']);
-})->name('pagamento.erro');
+// Route::get('/pagbank/status/{referenceId}', [PagBankController::class, 'verificarStatus'])->name('pagbank.status');
+// // Route::post('/pagbank/callback', [PagBankController::class, 'callback'])->name('pagbank.callback');
+// Route::match(['get', 'post'], '/pagbank/callback', [PagBankController::class, 'callback'])->name('pagbank.callback');
 
 
 Route::get('/debug/logs', function () {
