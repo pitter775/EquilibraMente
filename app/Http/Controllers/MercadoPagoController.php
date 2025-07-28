@@ -211,7 +211,12 @@ class MercadoPagoController extends Controller
 
     public function status($reservaId)
     {
-        $transacao = Transacao::where('reference_id', $reservaId)->latest()->first();
+        $reservaIdLimpo = str_replace('reserva_', '', $reservaId);
+
+        $transacao = Transacao::where('reference_id', $reservaId)
+            ->orWhere('reference_id', $reservaIdLimpo)
+            ->latest()
+            ->first();
 
         if (!$transacao) {
             return response()->json(['status' => 'NAO_ENCONTRADO'], 404);
