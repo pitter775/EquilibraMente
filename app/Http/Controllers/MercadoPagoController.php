@@ -135,14 +135,14 @@ class MercadoPagoController extends Controller
 
     public function erro(Request $request)
     {
-        DebugLog::create(['erro' => $request]);
+        DebugLog::create(['mensagem' => '🔁 Retorno erro: ' . json_encode($request->all())]);
 
         $externalReference = $request->input('external_reference');
         $paymentId = $request->input('payment_id');
 
         if ($externalReference && $paymentId) {
             try {
-                $reservaId = str_replace('reserva_', '', $externalReference);
+                $reservaId = (int) str_replace('reserva_', '', $externalReference);
                 $reserva = Reserva::find($reservaId);
 
                 if ($reserva) {
@@ -163,6 +163,7 @@ class MercadoPagoController extends Controller
                         ]
                     );
 
+                    // Atualiza o status como cancelada, independente do motivo
                     $reserva->update(['status' => 'CANCELADA']);
                 }
             } catch (\Throwable $e) {
@@ -174,6 +175,7 @@ class MercadoPagoController extends Controller
             'mensagem' => 'Erro no pagamento. Tente novamente.'
         ], 200)->header('Content-Type', 'text/html');
     }
+
 
     public function pendente(Request $request)
     {

@@ -25,24 +25,28 @@ class ReservaController extends Controller
             'horarios.*.hora_inicio' => 'required|date_format:H:i',
             'horarios.*.hora_fim' => 'required|date_format:H:i|after:horarios.*.hora_inicio',
         ]);
-    
+
         $sala = Sala::findOrFail($validated['sala_id']);
         $conflitos = [];
-    
+
         // Verifica conflitos para todos os horários antes de criar reservas
         foreach ($validated['horarios'] as $horario) {
             $conflict = $sala->reservas()
                 ->where('data_reserva', $horario['data_reserva'])
-                ->where(function($query) use ($horario) {
-                    $query->whereBetween('hora_inicio', [$horario['hora_inicio'], $horario['hora_fim']])
-                          ->orWhereBetween('hora_fim', [$horario['hora_inicio'], $horario['hora_fim']]);
-                })->exists();
-    
+                ->whereIn('status', ['CONFIRMADA', 'PENDENTE']) // aqui considera os dois
+                ->where(function ($query) use ($horario) {
+                    $query->where(function ($q) use ($horario) {
+                        $q->where('hora_inicio', '<', $horario['hora_fim'])
+                        ->where('hora_fim', '>', $horario['hora_inicio']);
+                    });
+                })
+                ->exists();
+
             if ($conflict) {
                 $conflitos[] = "{$horario['data_reserva']} - {$horario['hora_inicio']} às {$horario['hora_fim']}";
             }
         }
-    
+
         // Se houver conflitos, retorna erro e lista os horários conflitantes
         if (!empty($conflitos)) {
             return response()->json([
@@ -50,7 +54,7 @@ class ReservaController extends Controller
                 'message' => 'A sala já está reservada nos seguintes horários: ' . implode(', ', $conflitos)
             ]);
         }
-    
+
         // Se não houver conflitos, cria as reservas
         $reservasCriadas = [];
         foreach ($validated['horarios'] as $horario) {
@@ -62,12 +66,12 @@ class ReservaController extends Controller
             ]);
             $reservasCriadas[] = $reserva;
         }
-    
+
         return response()->json([
             'success' => true,
             'reservas' => $reservasCriadas
         ]);
-    }   
+    }
 
     public function listar()
     {
@@ -76,12 +80,12 @@ class ReservaController extends Controller
 
         return response()->json($reservas);
     }
-    
+
 
     public function listarReservas($sala_id)
     {
         $reservas = Reserva::where('sala_id', $sala_id)->get(['data_reserva', 'hora_inicio', 'hora_fim']);
-        
+
         $eventos = $reservas->map(function ($reserva) {
             return [
                 'title' => 'Reservado',
@@ -99,11 +103,11 @@ class ReservaController extends Controller
     {
         $reservas = Reserva::where('sala_id', $sala_id)
             ->where('data_reserva', $data_reserva)
+            ->whereIn('status', ['CONFIRMADA', 'PENDENTE']) // <-- só considera essas
             ->get(['hora_inicio', 'hora_fim']);
 
         $horariosPossiveis = $this->gerarHorariosPossiveis();
-        
-        // Filtra horários disponíveis removendo os já reservados
+
         $horariosDisponiveis = $horariosPossiveis->filter(function ($horario) use ($reservas) {
             foreach ($reservas as $reserva) {
                 if ($this->horarioConflita($horario, $reserva)) {
@@ -115,6 +119,7 @@ class ReservaController extends Controller
 
         return response()->json(['horarios' => $horariosDisponiveis->values()]);
     }
+
 
     private function gerarHorariosPossiveis()
     {
@@ -142,6 +147,6 @@ class ReservaController extends Controller
 
 
 
-    
+
 
 }
