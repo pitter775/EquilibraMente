@@ -34,10 +34,8 @@ class MercadoPagoController extends Controller
                     $reservaId = $response['external_reference'] ?? null;
 
                     if ($reservaId) {
-                        // 🧹 Limpa o prefixo 'reserva_' se existir
                         $reservaIdLimpo = str_replace('reserva_', '', $reservaId);
 
-                        // 🔒 Garante que o ID resultante seja numérico
                         if (!is_numeric($reservaIdLimpo)) {
                             DebugLog::create(['mensagem' => '⚠️ ID de reserva inválido: ' . $reservaId]);
                             return response()->json(['mensagem' => 'ID de reserva inválido'], 200);
@@ -50,7 +48,6 @@ class MercadoPagoController extends Controller
                             return response()->json(['mensagem' => 'Reserva não encontrada'], 200);
                         }
 
-                        // 💾 Salva ou atualiza a transação
                         Transacao::updateOrCreate(
                             ['external_id' => $response['id']],
                             [
@@ -64,7 +61,17 @@ class MercadoPagoController extends Controller
                             ]
                         );
 
-                        DebugLog::create(['mensagem' => '✅ Transação registrada com sucesso para reserva ' . $reserva->id]);
+                        // Atualiza status da reserva
+                        if ($response['status'] === 'approved') {
+                            $reserva->update(['status' => 'CONFIRMADA']);
+                            DebugLog::create(['mensagem' => '✅ Reserva confirmada: ID ' . $reserva->id]);
+                        } elseif (in_array($response['status'], ['rejected', 'cancelled', 'refunded', 'charged_back'])) {
+                            $reserva->update(['status' => 'CANCELADA']);
+                            DebugLog::create(['mensagem' => '🚫 Reserva cancelada: ID ' . $reserva->id]);
+                        } else {
+                            $reserva->update(['status' => 'PENDENTE']);
+                            DebugLog::create(['mensagem' => '⏳ Reserva pendente: ID ' . $reserva->id]);
+                        }
                     } else {
                         DebugLog::create(['mensagem' => '⚠️ Webhook sem external_reference']);
                     }
@@ -79,38 +86,146 @@ class MercadoPagoController extends Controller
         return response()->json(['status' => 'ok'], 200);
     }
 
+    public function sucesso(Request $request)
+    {
+        $status = $request->input('status');
+        $paymentId = $request->input('payment_id');
+        $externalReference = $request->input('external_reference');
 
+        if ($status && $paymentId && $externalReference) {
+            DebugLog::create(['mensagem' => '✅ Callback via URL de sucesso: ' . $paymentId]);
+
+            try {
+                $reservaId = str_replace('reserva_', '', $externalReference);
+                $reserva = Reserva::find($reservaId);
+
+                if ($reserva) {
+                    $response = Http::withToken(config('services.mercadopago.access_token'))
+                        ->get("https://api.mercadopago.com/v1/payments/{$paymentId}")
+                        ->json();
+
+                    Transacao::updateOrCreate(
+                        ['external_id' => $response['id']],
+                        [
+                            'reference_id' => $reserva->id,
+                            'usuario_id' => $reserva->usuario_id,
+                            'sala_id' => $reserva->sala_id,
+                            'status' => $response['status'],
+                            'valor' => $response['transaction_amount'],
+                            'pagbank_order_id' => $response['order']['id'] ?? null,
+                            'detalhes' => json_encode($response),
+                        ]
+                    );
+
+                    if ($response['status'] === 'approved') {
+                        $reserva->update(['status' => 'CONFIRMADA']);
+                    } elseif (in_array($response['status'], ['rejected', 'cancelled', 'refunded', 'charged_back'])) {
+                        $reserva->update(['status' => 'CANCELADA']);
+                    } else {
+                        $reserva->update(['status' => 'PENDENTE']);
+                    }
+                }
+            } catch (\Throwable $e) {
+                DebugLog::create(['mensagem' => '❌ Erro no sucesso(): ' . $e->getMessage()]);
+            }
+        }
+
+        return view('pagamento.sucesso');
+    }
+
+    public function erro(Request $request)
+    {
+        $externalReference = $request->input('external_reference');
+        $paymentId = $request->input('payment_id');
+
+        if ($externalReference && $paymentId) {
+            try {
+                $reservaId = str_replace('reserva_', '', $externalReference);
+                $reserva = Reserva::find($reservaId);
+
+                if ($reserva) {
+                    $response = Http::withToken(config('services.mercadopago.access_token'))
+                        ->get("https://api.mercadopago.com/v1/payments/{$paymentId}")
+                        ->json();
+
+                    Transacao::updateOrCreate(
+                        ['external_id' => $response['id']],
+                        [
+                            'reference_id' => $reserva->id,
+                            'usuario_id' => $reserva->usuario_id,
+                            'sala_id' => $reserva->sala_id,
+                            'status' => $response['status'],
+                            'valor' => $response['transaction_amount'],
+                            'pagbank_order_id' => $response['order']['id'] ?? null,
+                            'detalhes' => json_encode($response),
+                        ]
+                    );
+
+                    $reserva->update(['status' => 'CANCELADA']);
+                }
+            } catch (\Throwable $e) {
+                DebugLog::create(['mensagem' => '❌ Erro no erro(): ' . $e->getMessage()]);
+            }
+        }
+
+        return view('pagamento.erro');
+    }
+
+    public function pendente(Request $request)
+    {
+        $externalReference = $request->input('external_reference');
+        $paymentId = $request->input('payment_id');
+
+        if ($externalReference && $paymentId) {
+            try {
+                $reservaId = str_replace('reserva_', '', $externalReference);
+                $reserva = Reserva::find($reservaId);
+
+                if ($reserva) {
+                    $response = Http::withToken(config('services.mercadopago.access_token'))
+                        ->get("https://api.mercadopago.com/v1/payments/{$paymentId}")
+                        ->json();
+
+                    Transacao::updateOrCreate(
+                        ['external_id' => $response['id']],
+                        [
+                            'reference_id' => $reserva->id,
+                            'usuario_id' => $reserva->usuario_id,
+                            'sala_id' => $reserva->sala_id,
+                            'status' => $response['status'],
+                            'valor' => $response['transaction_amount'],
+                            'pagbank_order_id' => $response['order']['id'] ?? null,
+                            'detalhes' => json_encode($response),
+                        ]
+                    );
+
+                    $reserva->update(['status' => 'PENDENTE']);
+                }
+            } catch (\Throwable $e) {
+                DebugLog::create(['mensagem' => '❌ Erro no pendente(): ' . $e->getMessage()]);
+            }
+        }
+
+        return view('pagamento.pendente');
+    }
 
     public function status($reservaId)
     {
-        $transacao = \App\Models\Transacao::where('reserva_id', $reservaId)->latest()->first();
+        $transacao = Transacao::where('reference_id', $reservaId)->latest()->first();
 
         if (!$transacao) {
             return response()->json(['status' => 'NAO_ENCONTRADO'], 404);
         }
 
-        if ($transacao->status === 'approved') {
-            return response()->json(['status' => 'PAGA']);
-        } elseif ($transacao->status === 'pending') {
-            return response()->json(['status' => 'PENDENTE']);
-        } elseif ($transacao->status === 'rejected') {
-            return response()->json(['status' => 'REJEITADA']);
-        } else {
-            return response()->json(['status' => strtoupper($transacao->status)]);
-        }
-    }
+        $mapa = [
+            'approved' => 'PAGA',
+            'pending' => 'PENDENTE',
+            'rejected' => 'REJEITADA',
+            'cancelled' => 'CANCELADA',
+        ];
 
-
-    public function sucesso()
-    {
-        return view('pagamento.sucesso');
-    }
-    public function erro()
-    {
-        return view('pagamento.erro');
-    }
-    public function pendente()
-    {
-        return view('pagamento.pendente');
+        return response()->json([
+            'status' => $mapa[$transacao->status] ?? strtoupper($transacao->status),
+        ]);
     }
 }
