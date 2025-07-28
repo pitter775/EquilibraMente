@@ -142,6 +142,24 @@ class SiteController extends Controller
 
             $reservasCriadas = [];
             foreach ($reservaData['horarios'] as $horario) {
+                $sala = Sala::find($reservaData['sala_id']);
+
+                $existeConflito = Reserva::where('sala_id', $sala->id)
+                    ->where('data_reserva', $horario['data_reserva'])
+                    ->where(function ($query) use ($horario) {
+                        $query->whereBetween('hora_inicio', [$horario['hora_inicio'], $horario['hora_fim']])
+                              ->orWhereBetween('hora_fim', [$horario['hora_inicio'], $horario['hora_fim']]);
+                    })
+                    ->whereIn('status', ['PENDENTE', 'CONFIRMADA'])
+                    ->exists();
+
+                if ($existeConflito) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Horário indisponível. Já existe uma reserva nesse horário.'
+                    ], 409);
+                }
+
                 $chaves = collect($sala->fechadura?->chaves ?? []);
 
                 if ($chaves->isEmpty()) {
@@ -154,14 +172,15 @@ class SiteController extends Controller
                 $chaveParaUsar = $chaves->random();
 
                 $reserva = Reserva::create([
-                    'usuario_id' => auth()->id(),
-                    'sala_id' => $sala->id,
+                    'usuario_id'   => auth()->id(),
+                    'sala_id'      => $sala->id,
                     'data_reserva' => $horario['data_reserva'],
-                    'hora_inicio' => $horario['hora_inicio'],
-                    'hora_fim' => $horario['hora_fim'],
-                    'status' => 'PENDENTE',
-                    'chave_usada' => $chaveParaUsar,
+                    'hora_inicio'  => $horario['hora_inicio'],
+                    'hora_fim'     => $horario['hora_fim'],
+                    'status'       => 'PENDENTE',
+                    'chave_usada'  => $chaveParaUsar,
                 ]);
+
                 $reservasCriadas[] = $reserva;
             }
 
@@ -458,12 +477,5 @@ class SiteController extends Controller
         }
 
     }
-
-
-
-
-
-
-
 
 }

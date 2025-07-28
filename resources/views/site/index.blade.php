@@ -1043,44 +1043,90 @@
 
             <!-- Rosiane -->
             <div class="row especialista-bloco align-items-center mt-5">
-            <div class="col-lg-4">
-               <img src="assets/img/team/rose.jpeg" class="img-fluid rounded shadow" alt="Rosiane Camelo">
-            </div>
-            <div class="col-lg-6 especialista-texto">
-               <h4>Rosiane Camelo</h4>
-               <p>
-                  Psicóloga clínica com formação em Psicologia e Pós-Graduação em Terapia de Relacionamentos. Com mais de 10 anos de experiência na abordagem psicanalítica, é fundadora do Espaço EquilibraMente, um ambiente dedicado à saúde mental. Oferece atendimento personalizado e especializado em psicologia clínica, promovendo o bem-estar e o equilíbrio emocional de seus pacientes.
-               </p>
-               <p>
-                  <a href="https://wa.me/5511986428238" target="_blank" style="text-decoration: none; color: inherit;">
-                  <img src="/assets/img/icons/whats.png" alt="WhatsApp" class="icon-waht" style="margin-right: 5px;">
-                  <strong>(11) 98642-8238</strong>
-                  </a><br>
-            
-               </p>
-            </div>
+               <div class="col-lg-4">
+                  <img src="assets/img/team/rose.jpeg" class="img-fluid rounded shadow" alt="Rosiane Camelo">
+               </div>
+               <div class="col-lg-6 especialista-texto">
+                  <h4>Rosiane Camelo</h4>
+                  <p>
+                     Psicóloga clínica com formação em Psicologia e Pós-Graduação em Terapia de Relacionamentos. Com mais de 10 anos de experiência na abordagem psicanalítica, é fundadora do Espaço EquilibraMente, um ambiente dedicado à saúde mental. Oferece atendimento personalizado e especializado em psicologia clínica, promovendo o bem-estar e o equilíbrio emocional de seus pacientes.
+                  </p>
+                  <p>
+                     <a href="https://wa.me/5511986428238" target="_blank" style="text-decoration: none; color: inherit;">
+                     <img src="/assets/img/icons/whats.png" alt="WhatsApp" class="icon-waht" style="margin-right: 5px;">
+                     <strong>(11) 98642-8238</strong>
+                     </a><br>
+               
+                  </p>
+               </div>
             </div>
 
             <hr class="mb-5">
 
             <!-- Jicileia -->
             <div class="row especialista-bloco align-items-center flex-lg-row-reverse">
-            <div class="col-lg-4">
-               <img src="assets/img/team/ji.jpg" class="img-fluid rounded shadow" alt="Jicileia Oliveira">
+               <div class="col-lg-4">
+                  <img src="assets/img/team/ji.jpg" class="img-fluid rounded shadow" alt="Jicileia Oliveira">
+               </div>
+               <div class="col-lg-6 especialista-texto">
+                  <h4>Jicileia Oliveira</h4>
+                  <p>
+                     Psicóloga clínica com mais de 9 anos de experiência, atuando com abordagem psicanalítica. Pós-graduada em Neuropsicanálise, integra conhecimentos da psicanálise e da neurociência para um cuidado mais profundo e individualizado. Especializada em prevenção ao suicídio, ansiedade e depressão. Fundadora do Espaço EquilibraMente, um ambiente voltado ao acolhimento e à saúde emocional com ética, escuta e sensibilidade.
+                  </p>
+                  <p>
+                  <a href="https://wa.me/5511944751511" target="_blank" style="text-decoration: none; color: inherit;">
+                     <img src="/assets/img/icons/whats.png" alt="WhatsApp" class="icon-waht" style=" margin-right: 5px;">
+                     <strong>(11) 94475-1511</strong>
+                  </a><br>
+         
+                  </p>
+               </div>
             </div>
-            <div class="col-lg-6 especialista-texto">
-               <h4>Jicileia Oliveira</h4>
-               <p>
-                  Psicóloga clínica com mais de 9 anos de experiência, atuando com abordagem psicanalítica. Pós-graduada em Neuropsicanálise, integra conhecimentos da psicanálise e da neurociência para um cuidado mais profundo e individualizado. Especializada em prevenção ao suicídio, ansiedade e depressão. Fundadora do Espaço EquilibraMente, um ambiente voltado ao acolhimento e à saúde emocional com ética, escuta e sensibilidade.
-               </p>
-               <p>
-               <a href="https://wa.me/5511944751511" target="_blank" style="text-decoration: none; color: inherit;">
-                  <img src="/assets/img/icons/whats.png" alt="WhatsApp" class="icon-waht" style=" margin-right: 5px;">
-                  <strong>(11) 94475-1511</strong>
-               </a><br>
-      
-               </p>
+
+            <hr class="mb-5">
+
+            <!-- Cristina Azeved -->
+            <div class="row especialista-bloco align-items-center mt-5">
+               <div class="col-lg-4">
+                  <img src="assets/img/team/cristina.jpg" class="img-fluid rounded shadow" alt="Cristina Azeved">
+               </div>
+               <div class="col-lg-6 especialista-texto">
+                  <h4>Cristina Azevedo</h4>
+                  <p>
+                     Psicóloga Clínica com mais de 5 anos de experiência em Terapia Cognitivo-Comportamental. Pós-graduanda em Neuropsicologia. Trabalha com avaliações e intervenções personalizadas.
+
+                  </p>
+                  <p>
+                     <a href="https://wa.me/5511915654166" target="_blank" style="text-decoration: none; color: inherit;">
+                     <img src="/assets/img/icons/whats.png" alt="WhatsApp" class="icon-waht" style="margin-right: 5px;">
+                     <strong>(11) 91565-4166</strong>
+                     </a><br>
+               
+                  </p>
+               </div>
             </div>
+
+            <hr class="mb-5">
+
+            <!-- Jicileia -->
+            <div class="row especialista-bloco align-items-center flex-lg-row-reverse">
+               <div class="col-lg-4">
+                  <img src="assets/img/team/djane.jpg" class="img-fluid rounded shadow" alt="Djane">
+               </div>
+               <div class="col-lg-6 especialista-texto">
+                  <h4>Djane </h4>
+                  <p>
+                     Psicopedagoga e Neuropsicopedagoga especializada no atendimento a crianças, jovens e adultos com TDAH, TEA e dificuldades de aprendizagem. Oferece avaliação, intervenção e orientação educacional personalizada.
+
+                  </p>
+                  <p>
+                  <a href="https://wa.me/5511972396456" target="_blank" style="text-decoration: none; color: inherit;">
+                     <img src="/assets/img/icons/whats.png" alt="WhatsApp" class="icon-waht" style=" margin-right: 5px;">
+                     <strong>(11) 97239-6456</strong>
+                  </a><br>
+         
+                  </p>
+               </div>
             </div>
 
 
