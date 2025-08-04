@@ -47,6 +47,7 @@ class MercadoPagoController extends Controller
                             DebugLog::create(['mensagem' => '⚠️ Reserva não encontrada: ' . $reservaId]);
                             return response()->json(['mensagem' => 'Reserva não encontrada'], 200);
                         }
+                        $statusPadronizado = strtolower($response['status']);
 
                         Transacao::updateOrCreate(
                             ['external_id' => $response['id']],
@@ -54,7 +55,7 @@ class MercadoPagoController extends Controller
                                 'reference_id' => $reserva->id,
                                 'usuario_id' => $reserva->usuario_id,
                                 'sala_id' => $reserva->sala_id,
-                                'status' => $response['status'],
+                                'status' => $statusPadronizado,
                                 'valor' => $response['transaction_amount'],
                                 'pagbank_order_id' => $response['order']['id'] ?? null,
                                 'detalhes' => json_encode($response),
@@ -62,10 +63,10 @@ class MercadoPagoController extends Controller
                         );
 
                         // Atualiza status da reserva
-                        if ($response['status'] === 'approved') {
+                        if ($statusPadronizado === 'approved') {
                             $reserva->update(['status' => 'CONFIRMADA']);
                             DebugLog::create(['mensagem' => '✅ Reserva confirmada: ID ' . $reserva->id]);
-                        } elseif (in_array($response['status'], ['rejected', 'cancelled', 'refunded', 'charged_back'])) {
+                        } elseif (in_array($statusPadronizado, ['rejected', 'cancelled', 'refunded', 'charged_back'])) {
                             $reserva->update(['status' => 'CANCELADA']);
                             DebugLog::create(['mensagem' => '🚫 Reserva cancelada: ID ' . $reserva->id]);
                         } else {

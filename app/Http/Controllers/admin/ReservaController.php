@@ -62,7 +62,8 @@ class ReservaController extends Controller
                 'data_reserva' => $horario['data_reserva'],
                 'hora_inicio' => $horario['hora_inicio'],
                 'hora_fim' => $horario['hora_fim'],
-                'usuario_id' => auth()->id() ?? 1,  // Usa o ID do usuário logado
+                'usuario_id' => auth()->id() ?? 1,
+                'status' => 'CONFIRMADA',   // Usa o ID do usuário logado
             ]);
             $reservasCriadas[] = $reserva;
         }
