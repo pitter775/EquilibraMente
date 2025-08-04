@@ -171,15 +171,32 @@ class SiteController extends Controller
 
                 $chaveParaUsar = $chaves->random();
 
-                $reserva = Reserva::create([
-                    'usuario_id'   => auth()->id(),
-                    'sala_id'      => $sala->id,
-                    'data_reserva' => $horario['data_reserva'],
-                    'hora_inicio'  => $horario['hora_inicio'],
-                    'hora_fim'     => $horario['hora_fim'],
-                    'status'       => 'PENDENTE',
-                    'chave_usada'  => $chaveParaUsar,
-                ]);
+                $reservaExistenteCancelada = Reserva::where('usuario_id', auth()->id())
+                ->where('sala_id', $sala->id)
+                ->where('data_reserva', $horario['data_reserva'])
+                ->where('hora_inicio', $horario['hora_inicio'])
+                ->where('hora_fim', $horario['hora_fim'])
+                ->where('status', 'CANCELADA')
+                ->first();
+
+                if ($reservaExistenteCancelada) {
+                    $reservaExistenteCancelada->update([
+                        'status' => 'PENDENTE',
+                        'chave_usada' => $chaveParaUsar
+                    ]);
+
+                    $reserva = $reservaExistenteCancelada;
+                } else {
+                    $reserva = Reserva::create([
+                        'usuario_id'   => auth()->id(),
+                        'sala_id'      => $sala->id,
+                        'data_reserva' => $horario['data_reserva'],
+                        'hora_inicio'  => $horario['hora_inicio'],
+                        'hora_fim'     => $horario['hora_fim'],
+                        'status'       => 'PENDENTE',
+                        'chave_usada'  => $chaveParaUsar,
+                    ]);
+                }
 
                 $reservasCriadas[] = $reserva;
             }

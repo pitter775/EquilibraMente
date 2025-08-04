@@ -76,6 +76,13 @@ $(function () {
     $('#confirmar-reserva').on('click', function () {
       console.log("🟡 Clique no botão de confirmar reserva");
       console.log("Método de pagamento selecionado:", metodoPagamento);
+
+
+      // ✅ Validação do checkbox
+      if (!$('#aceitoRegras').is(':checked')) {
+        toastr.error('Você precisa aceitar o regulamento antes de continuar.');
+        return false;
+      }
     
       $.ajax({
         url: '/reserva/confirmar',

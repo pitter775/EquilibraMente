@@ -4,8 +4,10 @@
 
 @section('content')
 <div class="text-center mt-5">
-  <h1 class="text-danger">❌ Erro no pagamento</h1>
+<div style=" height: 150px"></div>
+  <h1 class="text-danger mt-10">Ooops um erro no pagamento</h1>
   <p class="mt-3">{{ $mensagem ?? 'Houve um problema com sua transação.' }}</p>
-  <a href="{{ url('/reserva/revisao') }}" class="btn btn-danger mt-4">Tentar novamente</a>
+  <a href="{{ url('/reserva/revisao') }}" class="btn btn-danger mt-4 mb-10">Tentar novamente</a>
+  <div style=" height: 200px"></div>
 </div>
 @endsection

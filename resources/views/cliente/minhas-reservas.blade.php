@@ -40,18 +40,16 @@
                 </td>
                 <td>
                   @php
-                    $agora = now();
-                    $inicio = \Carbon\Carbon::parse($reserva->data_reserva . ' ' . $grupo->min('hora_inicio'));
-                    $fim = \Carbon\Carbon::parse($reserva->data_reserva . ' ' . $grupo->max('hora_fim'));
+                    $status = strtoupper($reserva->status);
+                    $badge = match($status) {
+                      'CONFIRMADA' => 'success',
+                      'PENDENTE' => 'warning',
+                      'CANCELADA' => 'danger',
+                      default => 'secondary'
+                    };
                   @endphp
 
-                  @if($agora->lt($inicio))
-                    <span class="badge badge-warning">Reservado</span>
-                  @elseif($agora->between($inicio, $fim))
-                    <span class="badge badge-success">Em andamento</span>
-                  @else
-                    <span class="badge badge-secondary">Concluído</span>
-                  @endif
+                  <span class="badge badge-{{ $badge }}">{{ ucfirst(strtolower($status)) }}</span>
                 </td>
               </tr>
 
