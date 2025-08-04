@@ -168,11 +168,13 @@
                                             <th>Período da Reserva</th>
                                             <th>Valor por Hora</th> <!-- Coluna para valor por hora -->
                                             <th>Status</th>
+                                            <th>Detalhes</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <!-- Carregado via DataTable -->
                                     </tbody>  
+
                                 </table>
 
 

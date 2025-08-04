@@ -77,7 +77,11 @@ class ReservaController extends Controller
     public function listar()
     {
         // Carrega as reservas com os dados de 'usuario' e 'sala'
-        $reservas = Reserva::with(['usuario', 'sala'])->get();
+        $reservas = Reserva::with([
+            'usuario',
+            'sala.imagens',
+            'sala.endereco'
+        ])->get();
 
         return response()->json($reservas);
     }

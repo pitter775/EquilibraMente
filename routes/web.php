@@ -49,8 +49,7 @@ Route::get('/mercadopago/status/{reservaId}', [MercadoPagoController::class, 'st
 
 
 
-
-
+Route::post('/reserva/cancelar', [SiteController::class, 'cancelarReserva']);
 
 
 

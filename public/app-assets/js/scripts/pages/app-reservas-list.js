@@ -78,36 +78,41 @@ $(function () {
                     const status = (dados.status || '').toUpperCase();
                     let badgeClass = 'secondary';
                     let label = 'Desconhecido';
-                  
+
                     switch (status) {
-                      case 'CONFIRMADA':
+                        case 'CONFIRMADA':
                         badgeClass = 'success';
                         label = 'Confirmada';
                         break;
-                      case 'PENDENTE':
+                        case 'PENDENTE':
                         badgeClass = 'warning';
                         label = 'Pendente';
                         break;
-                      case 'CANCELADA':
+                        case 'CANCELADA':
                         badgeClass = 'danger';
                         label = 'Cancelada';
                         break;
-                      default:
+                        default:
                         badgeClass = 'secondary';
                         label = status || 'Desconhecido';
                     }
-                  
+
                     return `<span class="badge badge-${badgeClass}">${label}</span>`;
-                }
+                    }
+            },
+            {
+              data: function (dados) {
+                return `<button class="btn btn-outline-primary abrir-modal-reserva btn-sm" data-dados='${JSON.stringify(dados)}'>Detalhes</button>`;
+              }
             }
-        ],
-        order: [[1, 'asc']],
-        language: {
-            url: datatablesLangUrl,
-            paginate: { previous: '&nbsp;', next: '&nbsp;' }
-        }
-    });   
-}
+            ],
+            order: [[1, 'asc']],
+            language: {
+                url: datatablesLangUrl,
+                paginate: { previous: '&nbsp;', next: '&nbsp;' }
+            }
+        });   
+    }
 
 
 
@@ -164,7 +169,7 @@ $(function () {
 
         newUserModal.modal('show'); // Abre o modal para edição
     });
-});
+  });
 
 
   // Evento de submissão do formulário para criar ou editar
@@ -187,6 +192,81 @@ $(function () {
             toastr.error(mensagemAmigavel);
           }
       });
+  });
+  
+  $(document).on('click', '.cancelar-reserva', function () {
+    const reservaId = $(this).data('id');
+  
+    $.ajax({
+      url: '/reserva/cancelar',
+      method: 'POST',
+      data: {
+        reference_id: `reserva_${reservaId}`,
+        _token: $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function (response) {
+        if (response.success) {
+          toastr.success('Reserva cancelada com sucesso!');
+          $('#modalReservaDetalhe').modal('hide');
+          tableUser.ajax.reload(); // recarrega a tabela
+        } else {
+          toastr.error('Falha ao cancelar reserva!');
+        }
+      },
+      error: function () {
+        toastr.error('Erro no servidor ao cancelar a reserva.');
+      }
+    });
+  });
+  
+
+  $(document).on('click', '.abrir-modal-reserva', function () {
+    const dados = $(this).data('dados');
+    const horarios = Array.isArray(dados.horarios)
+  ? dados.horarios.map(h => `<li>${h.hora_inicio} às ${h.hora_fim}</li>`).join('')
+  : '<li>Horário único: ' + dados.hora_inicio + ' às ' + dados.hora_fim + '</li>';
+
+    const modalHtml = `
+      <div class="modal fade" id="modalReservaDetalhe" tabindex="-1" role="dialog" aria-labelledby="modalReservaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalReservaLabel">Detalhes da Reserva</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                <span>&times;</span>
+              </button>
+            </div>
+
+            <div class="modal-body row">
+              <div class="col-md-5">
+                <img src="${dados.sala?.imagens?.[0]?.imagem_base64 || '/sem-imagem.jpg'}" class="img-fluid rounded" style="height: 220px; object-fit: cover;">
+              </div>
+              <div class="col-md-7">
+                <h5>${dados.sala?.nome || 'Sala'}</h5>
+                <p><strong>Endereço:</strong><br>
+                  ${dados.sala?.endereco?.rua || ''}, ${dados.sala?.endereco?.numero || ''}<br>
+                  ${dados.sala?.endereco?.bairro || ''} - ${dados.sala?.endereco?.cidade || ''}/${dados.sala?.endereco?.estado || ''}
+                </p>
+                <p><strong>Horários reservados:</strong></p>
+                <ul>${horarios}</ul>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger cancelar-reserva" data-id="${dados.id}">Cancelar Reserva</button>
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    `;
+
+    $('#modalReservaDetalhe').remove();
+    $('body').append(modalHtml);
+    $('#modalReservaDetalhe').modal('show');
   });
 
   dataReservas();
