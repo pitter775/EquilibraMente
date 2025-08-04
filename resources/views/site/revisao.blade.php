@@ -287,7 +287,7 @@ html .content {
                                         <input class="form-check-input" type="checkbox" id="aceitoRegras">
                                         <label class="form-check-label" for="aceitoRegras">
                                             Li e aceito os termos do regulamento de uso das salas.
-                                            <a href="/storage/Regulamento_Espaco_EquilibraMente.pdf" target="_blank" class=" btn-primary" style="margin-left: 10px; padding: 4px 8px !important">
+                                            <a href="/assets/REGULAMENTO DO ESPAÇO - EQM.pdf" target="_blank" class=" btn-primary" style="margin-left: 10px; padding: 4px 8px !important">
                                             ver regulamento completo
                                             </a>
                                         </label>
