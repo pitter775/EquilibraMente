@@ -105,6 +105,9 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fechar</button>
+                      <a href="https://wa.me/5511979691269?text=Olá,%20gostaria%20de%20cancelar%20minha%20reserva." target="_blank" class="btn btn-danger">
+    Cancelar via WhatsApp
+  </a>
                     </div>
                   </div>
                 </div>

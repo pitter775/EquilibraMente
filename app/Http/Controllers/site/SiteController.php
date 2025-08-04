@@ -72,7 +72,19 @@ class SiteController extends Controller
             return response()->json(['error' => 'Erro ao processar a reserva.'], 500);
         }
     }
+    public function cancelarReserva(Request $request)
+    {
+        $ref = $request->input('reference_id');
+        $reservaId = str_replace('reserva_', '', $ref);
 
+        $reservas = Reserva::where('id', $reservaId)->get();
+
+        foreach ($reservas as $reserva) {
+            $reserva->update(['status' => 'CANCELADA']);
+        }
+
+        return response()->json(['success' => true]);
+    }
 
     public function exibirRevisao()
     {

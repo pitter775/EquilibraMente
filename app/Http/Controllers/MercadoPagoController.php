@@ -222,6 +222,7 @@ class MercadoPagoController extends Controller
 
         $transacao = Transacao::where('reference_id', $reservaId)
             ->orWhere('reference_id', $reservaIdLimpo)
+            ->orderByDesc('created_at')
             ->latest()
             ->first();
 

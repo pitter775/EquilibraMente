@@ -366,21 +366,32 @@ html .content {
     <script src="../../../app-assets/vendors/js/forms/spinner/jquery.bootstrap-touchspin.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
-    <script>
-        $(window).on('load', function() {
-            if (feather) {
-                feather.replace({
-                    width: 14,
-                    height: 14
-                });
-            }
-            document.querySelectorAll('input[name="paymentOptions"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    document.getElementById('metodo_pagamento_input').value = this.value;
-                });
-            });
-        });
 
-       
-    </script>
+<script>
+  $(window).on('load', function () {
+    if (feather) {
+      feather.replace({ width: 14, height: 14 });
+    }
+
+    document.querySelectorAll('input[name="paymentOptions"]').forEach(radio => {
+      radio.addEventListener('change', function () {
+        document.getElementById('metodo_pagamento_input').value = this.value;
+      });
+    });
+
+    // Validação do checkbox
+    document.getElementById('confirmar-reserva').addEventListener('click', function (e) {
+      const aceito = document.getElementById('aceitoRegras').checked;
+      if (!aceito) {
+        e.preventDefault();
+        Swal.fire({
+          icon: 'warning',
+          title: 'Atenção!',
+          text: 'Você precisa aceitar os termos do regulamento para continuar.'
+        });
+        return false;
+      }
+    });
+  });
+</script>
 @endpush

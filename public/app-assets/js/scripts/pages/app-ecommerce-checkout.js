@@ -28,9 +28,14 @@ $(function () {
         console.log("🔚 Finalizando verificação. Sucesso:", pagamentoVerificado);
         clearInterval(intervalo);
         $('#modal-aguardando-pagamento').modal('hide');
+  
         if (!pagamentoVerificado) {
           $('#modal-erro-pagamento').modal('show');
+  
+          // ⚠️ Aqui você notifica o backend para cancelar a reserva
+          $.post('/reserva/cancelar', { reference_id: referenceId });
         }
+  
         return;
       }
   
@@ -39,6 +44,7 @@ $(function () {
         method: 'GET',
         success: function (response) {
           console.log("📩 Status do pagamento:", response);
+  
           if (response.status === 'PAGA') {
             pagamentoVerificado = true;
             clearInterval(intervalo);
@@ -47,6 +53,13 @@ $(function () {
             setTimeout(() => {
               window.location.href = '/cliente/reservas';
             }, 3000);
+          } else if (['REJEITADA', 'CANCELADA'].includes(response.status)) {
+            clearInterval(intervalo);
+            $('#modal-aguardando-pagamento').modal('hide');
+            $('#modal-erro-pagamento').modal('show');
+  
+            // ❌ Cancela a reserva no backend
+            $.post('/reserva/cancelar', { reference_id: referenceId });
           }
         },
         error: function (xhr) {
@@ -57,6 +70,7 @@ $(function () {
       tentativas++;
     }, 5000);
   }
+  
   
   
 
