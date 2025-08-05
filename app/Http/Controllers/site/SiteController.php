@@ -455,7 +455,7 @@ class SiteController extends Controller
             $item->description = 'Reserva da sala "' . $reserva->sala->nome . '" no dia ' . $reserva->data_reserva . ' das ' . $reserva->hora_inicio . ' às ' . $reserva->hora_fim;
             $item->category_id = 'services';
             $item->quantity = 1;
-            $item->unit_price = 4.50; //$valor; // ou use 5.00 se ainda estiver testando fixo
+            $item->unit_price = $valor; // ou use 5.00 se ainda estiver testando fixo
 
             $payer = new \stdClass();
             $payer->name = $usuario->name ?? "Nome";
