@@ -89,14 +89,14 @@ $(function () {
     
     $('#confirmar-reserva').on('click', function () {
       console.log("🟡 Clique no botão de confirmar reserva");
-      console.log("Método de pagamento selecionado:", metodoPagamento);
-
-
-      // ✅ Validação do checkbox
+      
       if (!$('#aceitoRegras').is(':checked')) {
         toastr.error('Você precisa aceitar o regulamento antes de continuar.');
         return false;
       }
+    
+      // 🔓 abre janela ANTES do AJAX
+      let janelaPagamento = window.open('', '_blank');
     
       $.ajax({
         url: '/reserva/confirmar',
@@ -106,45 +106,37 @@ $(function () {
           metodo_pagamento: metodoPagamento
         },
         success: function (response) {
-          console.log("✅ Resposta do servidor:", response);
-    
           let redirectUrl = response.redirect;
     
           if (typeof response.original === "object" && response.original.redirect) {
             redirectUrl = response.original.redirect;
           }
     
-          console.log("➡️ Link de pagamento final:", redirectUrl);
-          console.log("📦 Reference ID:", response.reference_id);
+          console.log("➡️ Link final:", redirectUrl);
     
-          if (typeof redirectUrl === "string" && redirectUrl.startsWith("http")) {
-            if (metodoPagamento === 'pagbank') {
-              pagbankLink = redirectUrl.trim();
-              window.open(pagbankLink, '_blank');
-            } else if (metodoPagamento === 'mercadopago') {
-              mercadopagoLink = redirectUrl.trim();
-              window.open(mercadopagoLink, '_blank');
-            }
+          if (redirectUrl && redirectUrl.startsWith("http")) {
+            // redireciona a janela aberta
+            janelaPagamento.location.href = redirectUrl;
     
             $('#modal-aguardando-pagamento').modal('show');
             referenceId = response.reference_id;
-    
             if (referenceId) {
               iniciarVerificacaoPagamento(referenceId, metodoPagamento);
             }
           } else {
-            console.error("❌ Link de pagamento inválido:", redirectUrl);
-            alert('Erro inesperado. Tente novamente.');
+            janelaPagamento.close();
+            alert("Erro ao gerar o link de pagamento.");
           }
         },
-        error: function (xhr) {
-          console.error("❌ Erro na requisição AJAX:", xhr.responseText);
-          alert('Erro ao processar a reserva: ' + xhr.responseText);
+        error: function () {
+          janelaPagamento.close();
+          alert("Erro ao processar a reserva.");
         }
       });
     
       return false;
     });
+    
     
   
 
