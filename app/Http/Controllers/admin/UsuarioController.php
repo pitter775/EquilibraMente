@@ -42,7 +42,7 @@ class UsuarioController extends Controller
         $usuario->tipo_registro_profissional = $request->input('tipo_registro_profissional');
         $usuario->password = Hash::make($request->input('senha'));
         $usuario->save();
-    
+
         // Salva o endereço (se aplicável)
         if ($request->filled(['endereco_rua', 'endereco_numero', 'endereco_bairro', 'endereco_cidade', 'endereco_estado', 'endereco_cep'])) {
             $usuario->endereco()->create([
@@ -55,9 +55,9 @@ class UsuarioController extends Controller
                 'cep' => $request->input('endereco_cep')
             ]);
         }
-    
+
         return response()->json(['success' => true]);
-    }  
+    }
     public function atualizar($id, Request $request)
     {
         $usuario = User::findOrFail($id);
@@ -72,13 +72,13 @@ class UsuarioController extends Controller
         $usuario->status = $request->input('status');
         $usuario->registro_profissional = $request->input('registro_profissional');
         $usuario->tipo_registro_profissional = $request->input('tipo_registro_profissional');
-    
+
         if ($request->filled('senha')) {
             $usuario->password = Hash::make($request->input('senha'));
         }
-    
+
         $usuario->save();
-    
+
         // Atualização do endereço
         if ($request->filled(['endereco_rua', 'endereco_numero', 'endereco_bairro', 'endereco_cidade', 'endereco_estado', 'endereco_cep'])) {
             $usuario->endereco()->updateOrCreate(
@@ -96,7 +96,7 @@ class UsuarioController extends Controller
         } else {
             $usuario->endereco()->delete();
         }
-    
+
         return response()->json(['success' => true]);
     }
     public function deletar($id)
@@ -110,7 +110,7 @@ class UsuarioController extends Controller
     public function detalhes($id)
     {
         $usuario = User::with('endereco')->findOrFail($id);
-    
+
         return response()->json([
             'id' => $usuario->id,
             'name' => $usuario->name,
@@ -121,18 +121,18 @@ class UsuarioController extends Controller
             'idade' => $usuario->idade,
             'registro_profissional' => $usuario->registro_profissional,
             'tipo_registro_profissional' => $usuario->tipo_registro_profissional,
-    
+
             'documento_tipo' => $usuario->documento_tipo,
             'documento_url' => $usuario->documento_caminho
                 ? URL::signedRoute('documento.ver', ['user' => $usuario->id])
                 : null,
-    
+
             'status_aprovacao' => $usuario->status_aprovacao, // 👈 Inclui isso aqui
-    
+
             'endereco' => $usuario->endereco,
         ]);
     }
-    
+
     public function toggleStatus(User $user)
     {
         // Alterna o status do usuário entre 'ativo' e 'inativo'
@@ -167,7 +167,7 @@ class UsuarioController extends Controller
             'documento_tipo' => 'required|string',
             'documento' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
-    
+
         if (Auth::check()) {
             // Atualiza o usuário autenticado
             $user = Auth::user();
@@ -191,7 +191,7 @@ class UsuarioController extends Controller
                     ? response()->json(['error' => 'E-mail já cadastrado. Faça login ou use outro e-mail.'], 422)
                     : redirect()->back()->with('error', 'E-mail já cadastrado. Faça login ou use outro e-mail.');
             }
-    
+
             // Cria novo usuário e faz login
             $user = User::create([
                 'name' => $request->input('fullname'),
@@ -205,10 +205,10 @@ class UsuarioController extends Controller
                 'password' => Hash::make($request->input('senha')),
                 'cadastro_completo' => true,
             ]);
-    
+
             Auth::login($user);
         }
-    
+
         // Salva ou atualiza o endereço
         $user->endereco()->updateOrCreate([], [
             'rua' => $request->input('endereco_rua'),
@@ -221,8 +221,8 @@ class UsuarioController extends Controller
         ]);
 
 
-        
-    
+
+
         // Salva o histórico do contrato
         $user->contratos()->create([
             'versao_contrato' => 'v1.0 - 2025-05-16',
@@ -253,29 +253,31 @@ class UsuarioController extends Controller
 
 
         $emailsAprovadores = [
-            'pitter775@gmail.com',
-            'adryana775@gmail.com'
+            'camelorosiane@gmail.com',
+            'psicojicileiaoliveira@gmail.com',
+            'caioguerra.vini@gmail.com',
+            'equilibramente12@gmail.com'
         ];
-        
+
         foreach ($emailsAprovadores as $email) {
             Mail::to($email)->send(new CadastroParaAprovacaoMail($user));
         }
-        
-    
+
+
         // Redireciona
         // $redirectUrl = session()->pull('voltar_para_sala', route('usuario.minhas.reservas'));
         $redirectUrl = session()->pull('voltar_para_sala', url('/'));
-    
+
         return $request->ajax()
             ? response()->json(['redirect' => $redirectUrl, 'message' => 'Cadastro completado com sucesso!'])
             : redirect($redirectUrl)->with('success', 'Cadastro completado com sucesso!');
-    }   
+    }
 
     public function mostrarFormularioCompletarCadastro()
     {
         $googleData = session('google_data', []);
         $contrato = Contract::latest()->first(); // pega o contrato mais recente
-    
+
         return view('site.completar-cadastro', compact('googleData', 'contrato'));
     }
 
@@ -284,17 +286,17 @@ class UsuarioController extends Controller
         if ($user->status_aprovacao !== 'pendente') {
             abort(403, 'Este usuário já foi avaliado.');
         }
-    
+
         return view('admin.usuarios.ver-aprovacao', compact('user'));
     }
-    
+
 
     public function verCadastroAprovado(User $user)
     {
         if ($user->status_aprovacao !== 'aprovado') {
             abort(403, 'Usuário ainda não foi aprovado.');
         }
-    
+
         return view('site.usuario-aprovado', compact('user'));
     }
 
