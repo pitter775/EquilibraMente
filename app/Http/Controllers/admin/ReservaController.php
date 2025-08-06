@@ -130,7 +130,7 @@ class ReservaController extends Controller
     {
         $horarios = collect();
         $inicio = Carbon::createFromTime(8, 0); // Horário inicial
-        $fim = Carbon::createFromTime(18, 0);   // Horário final
+        $fim = Carbon::createFromTime(20, 0);   // Horário final
 
         while ($inicio->lessThan($fim)) {
             $horarios->push([
