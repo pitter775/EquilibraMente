@@ -481,7 +481,6 @@
                 'endereco_rua', 'endereco_numero', 'endereco_bairro',
                 'endereco_cidade', 'endereco_estado', 'endereco_cep',
                 'senha', 'senha_confirmation',
-                'tipo_registro_profissional', 'registro_profissional',
                 'sexo', 'idade'
             ];
 
