@@ -38,8 +38,8 @@ class UsuarioController extends Controller
         $usuario->photo = $request->input('photo');
         $usuario->telefone = $request->input('telefone'); // Salva o telefone com DDD
         $usuario->status = $request->input('status');
-        $usuario->registro_profissional = $request->input('registro_profissional');
-        $usuario->tipo_registro_profissional = $request->input('tipo_registro_profissional');
+        $usuario->registro_profissional = $request->input('registro_profissional') ?? '00';
+        $usuario->tipo_registro_profissional = $request->input('tipo_registro_profissional') ?? '0000000';
         $usuario->password = Hash::make($request->input('senha'));
         $usuario->save();
 
@@ -70,8 +70,8 @@ class UsuarioController extends Controller
         $usuario->telefone = $request->input('telefone');
         $usuario->photo = $request->input('photo');
         $usuario->status = $request->input('status');
-        $usuario->registro_profissional = $request->input('registro_profissional');
-        $usuario->tipo_registro_profissional = $request->input('tipo_registro_profissional');
+        $usuario->registro_profissional = $request->input('registro_profissional') ?? '00';
+        $usuario->tipo_registro_profissional = $request->input('tipo_registro_profissional') ?? '0000000';
 
         if ($request->filled('senha')) {
             $usuario->password = Hash::make($request->input('senha'));
@@ -180,7 +180,7 @@ class UsuarioController extends Controller
                 'sexo' => $request->input('sexo'),
                 'idade' => $request->input('idade'),
                 'registro_profissional' => $request->input('registro_profissional'),
-                'tipo_registro_profissional' => $request->input('tipo_registro_profissional'),
+                'tipo_registro_profissional' => $request->input('tipo_registro_profissional') ?? '0000000',
                 'password' => Hash::make($request->input('senha')),
                 'cadastro_completo' => true,
             ]);
@@ -201,7 +201,7 @@ class UsuarioController extends Controller
                 'sexo' => $request->input('sexo'),
                 'idade' => $request->input('idade'),
                 'registro_profissional' => $request->input('registro_profissional'),
-                'tipo_registro_profissional' => $request->input('tipo_registro_profissional'),
+                'tipo_registro_profissional' => $request->input('tipo_registro_profissional')  ?? '0000000',
                 'password' => Hash::make($request->input('senha')),
                 'cadastro_completo' => true,
             ]);
