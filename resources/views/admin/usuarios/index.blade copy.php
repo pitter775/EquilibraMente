@@ -102,7 +102,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-1">
                                 <label for="registro_profissional" class="form-label">Registro Profissional</label>
-                                <input type="text" class="form-control" id="registro_profissional" name="registro_profissional">
+                                <input type="text" class="form-control" id="registro_profissional" name="registro_profissional" placeholder="000">
                             </div>
                             <div class="col-md-6 mb-1">
                                 <label for="tipo_registro_profissional" class="form-label">Tipo de Registro</label>
@@ -110,6 +110,7 @@
                                     <option value="">Selecione</option>
                                     <option value="CRM">CRM</option>
                                     <option value="CRP">CRP</option>
+                                    <option value="000">Não tem</option>
                                 </select>
                             </div>
                         </div>
