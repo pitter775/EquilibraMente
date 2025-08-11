@@ -23,19 +23,31 @@ class ReservaClienteController extends Controller
 
     public function verChave(Reserva $reserva)
     {
-        $agora = now();
-        $inicio = \Carbon\Carbon::parse($reserva->data_reserva . ' ' . $reserva->hora_inicio)->subMinutes(30);
-        $fim = \Carbon\Carbon::parse($reserva->data_reserva . ' ' . $reserva->hora_fim);
-
-        if ($reserva->usuario_id !== auth()->id()) {
-            return response()->json(['error' => 'Acesso negado.'], 403);
-        }
-
-        if ($agora->between($inicio, $fim)) {
-            return response()->json(['chave' => $reserva->chave_usada]);
-        }
-
-        return response()->json(['error' => 'A chave ainda não está disponível.'], 403);
+        return response()->json(['chave' => $reserva->chave_usada]);
     }
+
+    public function cancelar(Reserva $reserva)
+    {
+        // seg — só o dono pode mexer
+        if ($reserva->usuario_id !== auth()->id()) {
+            return response()->json(['success' => false, 'message' => 'Reserva não pertence a você.'], 403);
+        }
+
+        if (strtolower($reserva->status) !== 'pendente') {
+            return response()->json(['success' => false, 'message' => 'Somente reservas pendentes podem ser canceladas.'], 422);
+        }
+
+        // marca como cancelada (não apaga — mantém histórico)
+        $reserva->status = 'cancelada';
+        $reserva->save();
+
+        // se existir transação pendente, marca também
+        \App\Models\Transacao::where('reference_id', 'reserva_'.$reserva->id)
+            ->whereIn('status', ['pendente','iniciada','aguardando'])
+            ->update(['status' => 'cancelada']);
+
+        return response()->json(['success' => true]);
+    }
+
 
 }

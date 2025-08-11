@@ -20,6 +20,7 @@
               <th>Data</th>
               <th>Horários</th>
               <th>Status</th>
+              <th class="text-right">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -51,7 +52,26 @@
 
                   <span class="badge badge-{{ $badge }}">{{ ucfirst(strtolower($status)) }}</span>
                 </td>
+                <!-- TD da linha -->
+                <td class="text-right">
+                  @if(strtolower($reserva->status) === 'pendente')
+                    <button
+                      class="btn btn-sm btn-success btn-pagar"
+                      data-id="{{ $reserva->id }}">
+                      Concluir pagamento
+                    </button>
+
+                    <button
+                      class="btn btn-sm btn-outline-danger btn-cancelar"
+                      data-id="{{ $reserva->id }}">
+                      Cancelar
+                    </button>
+                  @else
+                    —
+                  @endif
+                </td>
               </tr>
+              
 
               {{-- Modal --}}
               <div class="modal fade" id="{{ $modalId }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel{{ $modalId }}" aria-hidden="true">
@@ -164,5 +184,58 @@
                 }
             });
         });
-    </script>
+
+document.addEventListener('click', async (e) => {
+  // pagar
+  if (e.target.closest('.btn-pagar')) {
+    const id = e.target.closest('.btn-pagar').dataset.id;
+    try {
+      const r = await fetch(`/cliente/reservas/${id}/pagar`, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+          'Accept': 'application/json'
+        }
+      });
+      const json = await r.json();
+
+      if (json?.redirect) {
+        window.location.href = json.redirect; // abre o link do MP
+      } else {
+        toastr.error(json?.message ?? 'Erro ao gerar link de pagamento.');
+      }
+    } catch (err) {
+      toastr.error('Falha ao iniciar pagamento.');
+    }
+  }
+
+  // cancelar
+  if (e.target.closest('.btn-cancelar')) {
+    const id = e.target.closest('.btn-cancelar').dataset.id;
+    if (!confirm('Tem certeza que deseja cancelar esta reserva?')) return;
+
+    try {
+      const r = await fetch(`/cliente/reservas/${id}/cancelar`, {
+        method: 'POST',
+        headers: {
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+          'Accept': 'application/json'
+        }
+      });
+      const json = await r.json();
+
+      if (json?.success) {
+        toastr.success('Reserva cancelada com sucesso.');
+        // recarrega a tabela/lista
+        window.location.reload();
+      } else {
+        toastr.error(json?.message ?? 'Não foi possível cancelar.');
+      }
+    } catch (err) {
+      toastr.error('Falha ao cancelar reserva.');
+    }
+  }
+});
+</script>
+
 @endpush

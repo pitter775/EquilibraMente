@@ -241,4 +241,71 @@ class MercadoPagoController extends Controller
             'status' => $mapa[$transacao->status] ?? strtoupper($transacao->status),
         ]);
     }
+
+    public function pagarReserva(\App\Models\Reserva $reserva)
+    {
+        if ($reserva->usuario_id !== auth()->id()) {
+            return response()->json(['message' => 'Reserva não pertence a você.'], 403);
+        }
+
+        if (strtolower($reserva->status) !== 'pendente') {
+            return response()->json(['message' => 'Reserva não está pendente.'], 422);
+        }
+
+        // calcula valor
+        $sala = \App\Models\Sala::findOrFail($reserva->sala_id);
+
+        $inicio = \Carbon\Carbon::createFromFormat('H:i:s', $reserva->hora_inicio);
+        $fim    = \Carbon\Carbon::createFromFormat('H:i:s', $reserva->hora_fim);
+        $horas  = max(1, (int) ceil($fim->floatDiffInHours($inicio)));
+        $valor  = (float) $sala->valor * $horas;
+
+        // === MERCADO PAGO (SDK clássico) ===
+        \MercadoPago\SDK::setAccessToken(config('services.mercadopago.access_token'));
+
+        $item = new \MercadoPago\Item();
+        $item->title      = 'Reserva da sala ' . $sala->nome;
+        $item->quantity   = 1;
+        $item->unit_price = (float) $valor;
+
+        $preference = new \MercadoPago\Preference();
+        $preference->items = [$item];
+        $preference->external_reference = 'reserva_' . $reserva->id;
+        $preference->notification_url   = route('mercadopago.webhook');
+
+        // (opcional) URLs de retorno
+        $preference->back_urls = [
+            'success' => route('pagamento.sucesso'),
+            'failure' => route('pagamento.erro'),
+            'pending' => route('pagamento.pendente'),
+        ];
+        $preference->auto_return = 'approved';
+
+        $preference->save();
+
+        // grava/atualiza transação (reference_id numérico p/ ficar igual ao webhook)
+        \App\Models\Transacao::updateOrCreate(
+            ['reference_id' => (string) $reserva->id], // string por compatibilidade com tua coluna varchar
+            [
+                'external_id' => $preference->id ?? null,
+                'usuario_id'  => auth()->id(),
+                'sala_id'     => $sala->id,
+                'valor'       => $valor,
+                'status'      => 'pendente',
+                'detalhes'    => $preference ? json_encode($preference) : null,
+            ]
+        );
+
+        $link = $preference->init_point ?? $preference->sandbox_init_point ?? null;
+        if (!$link) {
+            return response()->json(['message' => 'Erro ao gerar link de pagamento.'], 500);
+        }
+
+        return response()->json([
+            'redirect' => $link,
+            'reference_id' => 'reserva_' . $reserva->id
+        ]);
+    }
+
+
 }

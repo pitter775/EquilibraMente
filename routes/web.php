@@ -34,6 +34,8 @@ Route::get('/teste-link-falso', [MercadoPagoController::class, 'testeFixo']);
 
 
 
+
+
 Route::get('/pagar/{reservaId}', [MercadoPagoController::class, 'pagar'])->name('pagar.mercadopago');
 
 Route::get('/pagamento/sucesso', [MercadoPagoController::class, 'sucesso'])->name('pagamento.sucesso');
@@ -235,6 +237,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cliente', [ReservaClienteController::class, 'minhasReservas'])->name('cliente.index');
     Route::get('/cliente/reservas', [ReservaClienteController::class, 'minhasReservas'])->name('cliente.reservas');
     Route::get('/cliente/reserva/{reserva}/chave', [ReservaClienteController::class, 'verChave'])->name('cliente.reserva.chave');
+    Route::post('/cliente/reservas/{reserva}/cancelar', [ReservaClienteController::class, 'cancelar'])->name('cliente.reservas.cancelar');
+    Route::post('/cliente/reservas/{reserva}/pagar', [MercadoPagoController::class, 'pagarReserva'])->name('cliente.reservas.pagar');
 });
 
 // Rotas para administradores
