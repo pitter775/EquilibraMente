@@ -301,10 +301,15 @@ class MercadoPagoController extends Controller
             return response()->json(['message' => 'Erro ao gerar link de pagamento.'], 500);
         }
 
-        return response()->json([
-            'redirect' => $link,
-            'reference_id' => 'reserva_' . $reserva->id
-        ]);
+        // 🔀 Se veio AJAX/JSON, devolve JSON; se veio via GET (link), redireciona pro checkout
+        if (request()->wantsJson() || request()->ajax()) {
+            return response()->json([
+                'redirect' => $link,
+                'reference_id' => 'reserva_' . $reserva->id
+            ]);
+        }
+
+        return redirect()->away($link);
     }
 
 

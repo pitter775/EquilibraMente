@@ -57,7 +57,7 @@
                     {{ ucfirst(strtolower($status)) }}
                   </span>
                 </td>
-
+              </tr>
               
 
               {{-- Modal --}}
@@ -72,7 +72,10 @@
                     </div>
                     <div class="modal-body row">
                       <div class="col-md-5">
-                        <img src="{{ $reserva->sala->imagens->first()?->imagem_base64 ?? 'default.jpg' }}" class="img-fluid rounded" style="height: 220px; object-fit: cover;">
+                        <img src="{{ $reserva->sala->imagens->first()
+                            ? 'data:image/jpeg;base64,' . $reserva->sala->imagens->first()->imagem_base64
+                            : asset('images/default.jpg') }}"
+                            class="img-fluid rounded" style="height: 220px; object-fit: cover;">
                       </div>
                       <div class="col-md-7">
                         <h5>{{ $reserva->sala->nome }}</h5>
@@ -110,28 +113,35 @@
 
                       </div>
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fechar</button>
+                  @php
+                    // garante comparação certa
+                    $status = strtoupper($status ?? $reserva->status ?? '');
+                  @endphp
 
-                      @if ($status === 'PENDENTE')
-                        <a href="{{ route('pagar.mercadopago', $reserva->id) }}"
-                          class="btn btn-success" target="_blank">
-                          Concluir pagamento
-                        </a>
-                        <button type="button"
-                                class="btn btn-outline-danger btn-cancelar-sistema"
-                                data-id="{{ $reserva->id }}">
-                          Cancelar (sistema)
-                        </button>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fechar</button>
 
-                      @elseif (in_array($status, ['PAGA','CONFIRMADA']))
-                        <a href="https://wa.me/5511979691269?text=Ol%C3%A1!%20Quero%20cancelar%20a%20reserva%20%23{{ $reserva->id }}."
-                          target="_blank"
-                          class="btn btn-danger">
-                          Cancelar via WhatsApp
-                        </a>
-                      @endif
-                    </div>
+                    @if ($status === 'PENDENTE')
+                      {{-- usa a rota do cliente que aceita GET/POST e chama pagarReserva --}}
+                      <a href="{{ route('cliente.reservas.pagar', $reserva->id) }}"
+                        class="btn btn-success" target="_blank">
+                        Concluir pagamento
+                      </a>
+
+                      <button type="button"
+                              class="btn btn-outline-danger btn-cancelar-sistema"
+                              data-id="{{ $reserva->id }}">
+                        Cancelar (sistema)
+                      </button>
+
+                    @elseif (in_array($status, ['PAGA','CONFIRMADA']))
+                      <a href="https://wa.me/5511979691269?text=Ol%C3%A1!%20Quero%20cancelar%20a%20reserva%20%23{{ $reserva->id }}."
+                        target="_blank"
+                        class="btn btn-danger">
+                        Cancelar via WhatsApp
+                      </a>
+                    @endif
+                  </div>
 
                     </div>
                   </div>
@@ -193,7 +203,7 @@
         // cancelar no sistema (só PENDENTE)
         $(document).on('click', '.btn-cancelar-sistema', function () {
           const id = $(this).data('id');
-          const ref = 'reserva_' id;
+          const ref = 'reserva_' + id;
           $.ajax({
             url: '/reserva/cancelar',
             method: 'POST',

@@ -29,14 +29,12 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Config;
 use App\Http\Controllers\MercadoPagoController;
 
-Route::get('/teste-mercadopago/{id}', [MercadoPagoController::class, 'teste']);
-Route::get('/teste-link-falso', [MercadoPagoController::class, 'testeFixo']);
+// Route::get('/pagar/{reservaId}', [MercadoPagoController::class, 'pagar'])->name('pagar.mercadopago');
+// Route::get('/pagar/{reservaId}', [SiteController::class, 'gerarLinkPagamentoMercadoPago'])->name('pagar.mercadopago');
 
-
-
-
-
-Route::get('/pagar/{reservaId}', [MercadoPagoController::class, 'pagar'])->name('pagar.mercadopago');
+Route::get('/pagar/{reserva}', function ($reserva) {
+    return redirect()->route('cliente.reservas.pagar', $reserva);
+})->name('pagar.mercadopago');
 
 Route::get('/pagamento/sucesso', [MercadoPagoController::class, 'sucesso'])->name('pagamento.sucesso');
 Route::get('/pagamento/erro', [MercadoPagoController::class, 'erro'])->name('pagamento.erro');
@@ -238,7 +236,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cliente/reservas', [ReservaClienteController::class, 'minhasReservas'])->name('cliente.reservas');
     Route::get('/cliente/reserva/{reserva}/chave', [ReservaClienteController::class, 'verChave'])->name('cliente.reserva.chave');
     Route::post('/cliente/reservas/{reserva}/cancelar', [ReservaClienteController::class, 'cancelar'])->name('cliente.reservas.cancelar');
-    Route::post('/cliente/reservas/{reserva}/pagar', [MercadoPagoController::class, 'pagarReserva'])->name('cliente.reservas.pagar');
+    Route::match(['get','post'], '/cliente/reservas/{reserva}/pagar', [MercadoPagoController::class, 'pagarReserva'])->name('cliente.reservas.pagar');
+
+
 });
 
 // Rotas para administradores
