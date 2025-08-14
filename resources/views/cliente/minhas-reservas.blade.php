@@ -20,7 +20,6 @@
               <th>Data</th>
               <th>Horários</th>
               <th>Status</th>
-              <th class="text-right">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -31,7 +30,8 @@
                 $modalId = 'reservaModal_' . $reserva->id;
               @endphp
 
-              <tr style="cursor: pointer;" data-toggle="modal" data-target="#{{ $modalId }}">
+              {{-- <tr style="cursor: pointer;" data-toggle="modal" data-target="#{{ $modalId }}"> --}}
+              <tr>
                 <td>{{ $reserva->sala->nome }}</td>
                 <td>{{ $dataReserva }}</td>
                 <td>
@@ -50,27 +50,14 @@
                     };
                   @endphp
 
-                  <span class="badge badge-{{ $badge }}">{{ ucfirst(strtolower($status)) }}</span>
+                  <span class="badge badge-{{ $badge }} abrir-modal"
+                        data-toggle="modal"
+                        data-target="#{{ $modalId }}"
+                        style="cursor:pointer">
+                    {{ ucfirst(strtolower($status)) }}
+                  </span>
                 </td>
-                <!-- TD da linha -->
-                <td class="text-right">
-                  @if(strtolower($reserva->status) === 'pendente')
-                    <button
-                      class="btn btn-sm btn-success btn-pagar"
-                      data-id="{{ $reserva->id }}">
-                      Concluir pagamento
-                    </button>
 
-                    <button
-                      class="btn btn-sm btn-outline-danger btn-cancelar"
-                      data-id="{{ $reserva->id }}">
-                      Cancelar
-                    </button>
-                  @else
-                    —
-                  @endif
-                </td>
-              </tr>
               
 
               {{-- Modal --}}
@@ -125,9 +112,27 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fechar</button>
-                      <a href="https://wa.me/5511979691269?text=Olá,%20gostaria%20de%20cancelar%20minha%20reserva." target="_blank" class="btn btn-danger">
-                        Cancelar via WhatsApp
-                      </a>
+
+                      @if ($status === 'PENDENTE')
+                        <a href="{{ route('pagar.mercadopago', $reserva->id) }}"
+                          class="btn btn-success" target="_blank">
+                          Concluir pagamento
+                        </a>
+                        <button type="button"
+                                class="btn btn-outline-danger btn-cancelar-sistema"
+                                data-id="{{ $reserva->id }}">
+                          Cancelar (sistema)
+                        </button>
+
+                      @elseif (in_array($status, ['PAGA','CONFIRMADA']))
+                        <a href="https://wa.me/5511979691269?text=Ol%C3%A1!%20Quero%20cancelar%20a%20reserva%20%23{{ $reserva->id }}."
+                          target="_blank"
+                          class="btn btn-danger">
+                          Cancelar via WhatsApp
+                        </a>
+                      @endif
+                    </div>
+
                     </div>
                   </div>
                 </div>
@@ -185,57 +190,80 @@
             });
         });
 
-document.addEventListener('click', async (e) => {
-  // pagar
-  if (e.target.closest('.btn-pagar')) {
-    const id = e.target.closest('.btn-pagar').dataset.id;
+        // cancelar no sistema (só PENDENTE)
+        $(document).on('click', '.btn-cancelar-sistema', function () {
+          const id = $(this).data('id');
+          const ref = 'reserva_' id;
+          $.ajax({
+            url: '/reserva/cancelar',
+            method: 'POST',
+            data: {
+              _token: $('meta[name="csrf-token"]').attr('content'),
+              reference_id: ref
+            },
+            success: function () {
+              // simples e efetivo: recarrega lista já atualizada
+              location.reload();
+            },
+            error: function (xhr) {
+              alert(xhr.responseJSON?.message || 'Falha ao cancelar a reserva.');
+            }
+          });
+        });
+
+ $(document).on('click', '.btn-modal-pagar', async function () {
+    const id = $(this).data('id');
+    const $btn = $(this);
+    $btn.prop('disabled', true).text('Gerando link...');
     try {
       const r = await fetch(`/cliente/reservas/${id}/pagar`, {
         method: 'POST',
         headers: {
-          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
           'Accept': 'application/json'
         }
       });
-      const json = await r.json();
-
-      if (json?.redirect) {
-        window.location.href = json.redirect; // abre o link do MP
+      const j = await r.json();
+      if (j && j.redirect) {
+        window.location.href = j.redirect;
       } else {
-        toastr.error(json?.message ?? 'Erro ao gerar link de pagamento.');
+        toastr.error(j?.message ?? 'Erro ao gerar link de pagamento.');
+        $btn.prop('disabled', false).text('Concluir pagamento');
       }
-    } catch (err) {
+    } catch (e) {
       toastr.error('Falha ao iniciar pagamento.');
+      $btn.prop('disabled', false).text('Concluir pagamento');
     }
-  }
+  });
 
-  // cancelar
-  if (e.target.closest('.btn-cancelar')) {
-    const id = e.target.closest('.btn-cancelar').dataset.id;
+  // cancelar (na modal)
+  $(document).on('click', '.btn-modal-cancelar', async function () {
+    const id = $(this).data('id');
     if (!confirm('Tem certeza que deseja cancelar esta reserva?')) return;
 
+    const $btn = $(this);
+    $btn.prop('disabled', true).text('Cancelando...');
     try {
       const r = await fetch(`/cliente/reservas/${id}/cancelar`, {
         method: 'POST',
         headers: {
-          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
           'Accept': 'application/json'
         }
       });
-      const json = await r.json();
-
-      if (json?.success) {
-        toastr.success('Reserva cancelada com sucesso.');
-        // recarrega a tabela/lista
-        window.location.reload();
+      const j = await r.json();
+      if (j?.success) {
+        toastr.success('Reserva cancelada.');
+        location.reload();
       } else {
-        toastr.error(json?.message ?? 'Não foi possível cancelar.');
+        toastr.error(j?.message ?? 'Não foi possível cancelar.');
+        $btn.prop('disabled', false).text('Cancelar');
       }
-    } catch (err) {
-      toastr.error('Falha ao cancelar reserva.');
+    } catch (e) {
+      toastr.error('Falha ao cancelar.');
+      $btn.prop('disabled', false).text('Cancelar');
     }
-  }
-});
+  });
 </script>
 
 @endpush
