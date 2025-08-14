@@ -106,7 +106,7 @@ $(function () {
           metodo_pagamento: metodoPagamento
         },
         success: function (response) {
-          // 1) pega a URL de redirecionamento (tanto JSON normal quanto JSONResponse)
+          // pega a URL de redirecionamento (normal ou JsonResponse)
           let redirectUrl = response?.redirect;
           if (typeof response?.original === 'object' && response.original.redirect) {
             redirectUrl = response.original.redirect;
@@ -114,40 +114,37 @@ $(function () {
         
           console.log('➡️ Link final:', redirectUrl);
         
-          if (!redirectUrl) {
-            janelaPagamento.close();
-            alert('Erro ao gerar o link de pagamento.');
-            return;
-          }
-        
-          // 2) normaliza se vier relativo (ex.: /cliente/reservas/75/pagar)
-          if (!/^https?:\/\//i.test(redirectUrl)) {
-            redirectUrl = new URL(redirectUrl, window.location.origin).href;
-          }
-        
-          // 3) tenta navegar a nova aba
-          try {
-            // opcional: mostra algo na aba enquanto carrega
+          if (redirectUrl) {
+            // normaliza relativa → absoluta
+            if (!/^https?:\/\//i.test(redirectUrl)) {
+              redirectUrl = new URL(redirectUrl, window.location.origin).href;
+            }
+            // manda a nova aba pro checkout
             try {
-              janelaPagamento.document.write('<p style="font-family:sans-serif;padding:16px">Abrindo checkout…</p>');
-            } catch(_) {}
-            janelaPagamento.location.replace(redirectUrl);
-          } catch (e) {
-            // 4) fallback: abre direto e fecha a about:blank
-            window.open(redirectUrl, '_blank');
+              try { janelaPagamento.document.write('<p style="font-family:sans-serif;padding:16px">Abrindo checkout…</p>'); } catch(_) {}
+              janelaPagamento.location.replace(redirectUrl);
+            } catch(_) {
+              window.open(redirectUrl, '_blank');
+              try { janelaPagamento.close(); } catch(_) {}
+            }
+        
+            // modal + polling
+            $('#modal-aguardando-pagamento').modal('show');
+            referenceId = response?.reference_id || null;
+            if (referenceId) iniciarVerificacaoPagamento(referenceId, metodoPagamento);
+          } else {
+            // ❗ sem link? fecha a aba em branco e segue o fluxo sem barulho
             try { janelaPagamento.close(); } catch(_) {}
+            window.location.href = '/cliente/reservas';
           }
+        },
         
-          // 5) modal + polling de status
-          $('#modal-aguardando-pagamento').modal('show');
-          referenceId = response?.reference_id || null;
-          if (referenceId) iniciarVerificacaoPagamento(referenceId, metodoPagamento);
-        },        
-        
-        error: function () {
-          janelaPagamento.close();
-          alert("Erro ao processar a reserva.");
+        error: function (xhr) {
+          // ❗ qualquer erro → fecha a about:blank e leva para "Minhas Reservas"
+          try { janelaPagamento.close(); } catch(_) {}
+          window.location.href = '/cliente/reservas';
         }
+        
       });
     
       return false;
