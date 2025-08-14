@@ -72,10 +72,7 @@
                     </div>
                     <div class="modal-body row">
                       <div class="col-md-5">
-                        <img src="{{ $reserva->sala->imagens->first()
-                            ? 'data:image/jpeg;base64,' . $reserva->sala->imagens->first()->imagem_base64
-                            : asset('images/default.jpg') }}"
-                            class="img-fluid rounded" style="height: 220px; object-fit: cover;">
+                        <img src="{{ $reserva->sala->imagens->first()?->imagem_base64 ?? 'default.jpg' }}" class="img-fluid rounded" style="height: 220px; object-fit: cover;">
                       </div>
                       <div class="col-md-7">
                         <h5>{{ $reserva->sala->nome }}</h5>
