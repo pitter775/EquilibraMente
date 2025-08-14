@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Sala;
 use App\Models\Reserva;
 use Carbon\Carbon;
+use App\Models\Transacao;
 
 class ReservaController extends Controller
 {
@@ -106,6 +107,32 @@ class ReservaController extends Controller
     // Novo método para listar horários disponíveis
     public function horariosDisponiveis($sala_id, $data_reserva)
     {
+        // --- faxina on-demand: zera pendentes > 30min desta sala ---
+        $limite = now()->subMinutes(30);
+
+        // pega ids pendentes antigos
+        $ids = \App\Models\Reserva::where('sala_id', $sala_id)
+            ->whereIn('status', ['pendente','PENDENTE'])
+            ->where('created_at', '<', $limite) // base por criação da reserva
+            ->pluck('id');
+
+        if ($ids->isNotEmpty()) {
+            // cancela reservas (padroniza status)
+            \App\Models\Reserva::whereIn('id', $ids)->update([
+                'status' => 'CANCELADA',
+                'updated_at' => now(),
+            ]);
+
+            // marca transações vinculadas como canceladas (cobre 2 formatos de reference_id)
+            Transacao::whereIn('reference_id', $ids->map(fn ($id) => (string)$id)->all())
+                ->whereIn('status', ['pendente','iniciada','aguardando','pending'])
+                ->update(['status' => 'cancelada', 'updated_at' => now()]);
+
+            Transacao::whereIn('reference_id', $ids->map(fn ($id) => 'reserva_'.$id)->all())
+                ->whereIn('status', ['pendente','iniciada','aguardando','pending'])
+                ->update(['status' => 'cancelada', 'updated_at' => now()]);
+        }
+        // --- fim faxina ---
         $reservas = Reserva::where('sala_id', $sala_id)
             ->where('data_reserva', $data_reserva)
             ->whereIn('status', ['CONFIRMADA', 'PENDENTE']) // <-- só considera essas

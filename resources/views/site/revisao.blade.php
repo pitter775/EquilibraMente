@@ -316,10 +316,21 @@ html .content {
                     <h5 class="modal-title">Aguardando Pagamento...</h5>
                 </div>
                 <div class="modal-body text-center">
-                    <p>Estamos aguardando a confirmação do seu pagamento. Isso pode levar alguns segundos.</p>
-                    <div class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Carregando...</span>
+                <p>Estamos aguardando a confirmação do seu pagamento. Isso pode levar alguns segundos.</p>
+
+                <div class="d-flex align-items-center justify-content-center gap-3">
+                    <div class="spinner-border text-primary" role="status" aria-live="polite">
+                    <span class="visually-hidden">Carregando...</span>
                     </div>
+
+                    <!-- use a rota nomeada (recomendado) -->
+                    <a href="{{ route('cliente.reservas') }}" class="btn btn-outline-secondary">
+                    Ver minhas reservas
+                    </a>
+
+                    <!-- ou, se preferir fixo: -->
+                    <!-- <a href="https://www.espacoequilibramente.com.br/cliente/reservas" class="btn btn-outline-secondary">Ver minhas reservas</a> -->
+                </div>
                 </div>
                 </div>
             </div>
