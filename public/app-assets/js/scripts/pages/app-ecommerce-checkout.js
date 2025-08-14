@@ -106,7 +106,7 @@ $(function () {
           metodo_pagamento: metodoPagamento
         },
         success: function (response) {
-          // pega a URL de redirecionamento
+          // 1) pega a URL de redirecionamento (tanto JSON normal quanto JSONResponse)
           let redirectUrl = response?.redirect;
           if (typeof response?.original === 'object' && response.original.redirect) {
             redirectUrl = response.original.redirect;
@@ -114,26 +114,35 @@ $(function () {
         
           console.log('➡️ Link final:', redirectUrl);
         
-          if (redirectUrl) {
-            // se vier relativo (/cliente/reservas/75/pagar), normaliza para absoluto
-            if (!/^https?:\/\//i.test(redirectUrl)) {
-              redirectUrl = new URL(redirectUrl, window.location.origin).href;
-            }
-        
-            // redireciona a janela aberta antes do AJAX
-            janelaPagamento.location.href = redirectUrl;
-        
-            // modal + polling de status
-            $('#modal-aguardando-pagamento').modal('show');
-            referenceId = response?.reference_id || null;
-            if (referenceId) {
-              iniciarVerificacaoPagamento(referenceId, metodoPagamento);
-            }
-          } else {
+          if (!redirectUrl) {
             janelaPagamento.close();
             alert('Erro ao gerar o link de pagamento.');
+            return;
           }
-        },
+        
+          // 2) normaliza se vier relativo (ex.: /cliente/reservas/75/pagar)
+          if (!/^https?:\/\//i.test(redirectUrl)) {
+            redirectUrl = new URL(redirectUrl, window.location.origin).href;
+          }
+        
+          // 3) tenta navegar a nova aba
+          try {
+            // opcional: mostra algo na aba enquanto carrega
+            try {
+              janelaPagamento.document.write('<p style="font-family:sans-serif;padding:16px">Abrindo checkout…</p>');
+            } catch(_) {}
+            janelaPagamento.location.replace(redirectUrl);
+          } catch (e) {
+            // 4) fallback: abre direto e fecha a about:blank
+            window.open(redirectUrl, '_blank');
+            try { janelaPagamento.close(); } catch(_) {}
+          }
+        
+          // 5) modal + polling de status
+          $('#modal-aguardando-pagamento').modal('show');
+          referenceId = response?.reference_id || null;
+          if (referenceId) iniciarVerificacaoPagamento(referenceId, metodoPagamento);
+        },        
         
         error: function () {
           janelaPagamento.close();

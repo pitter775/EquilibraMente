@@ -233,15 +233,22 @@ class SiteController extends Controller
             : $linkPagamento;
 
             // Extrai corretamente a URL do link de pagamento
-            $checkoutUrl = $linkPagamento['redirect'] ?? $linkPagamento;
+            $checkoutUrl = is_array($linkPagamento)
+                ? ($linkPagamento['redirect'] ?? null)
+                : $linkPagamento;
 
+            // 🔁 Fallback: se não veio link válido, manda para a rota que gera/redireciona o checkout
+            if (!$checkoutUrl || !preg_match('~^https?://~', $checkoutUrl)) {
+                return response()->json([
+                    'redirect' => route('cliente.reservas.pagar', $primeiraReserva->id),
+                    'reference_id' => 'reserva_' . $primeiraReserva->id
+                ], 200, ['Content-Type' => 'application/json']);
+            }
 
-            Log::info('mensagem', ['Link de pagamento checkoutUrl:' => json_encode($linkPagamento)]);
-
-            // Retorna apenas a URL correta
+            // OK: devolve o link direto
             return response()->json([
                 'redirect' => $checkoutUrl,
-                'reference_id' => 'reserva_' . $primeiraReserva->id // Retorna a referência correta para a verificação
+                'reference_id' => 'reserva_' . $primeiraReserva->id
             ], 200, ['Content-Type' => 'application/json']);
 
 
