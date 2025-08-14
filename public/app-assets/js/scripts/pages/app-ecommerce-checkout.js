@@ -106,28 +106,35 @@ $(function () {
           metodo_pagamento: metodoPagamento
         },
         success: function (response) {
-          let redirectUrl = response.redirect;
-    
-          if (typeof response.original === "object" && response.original.redirect) {
+          // pega a URL de redirecionamento
+          let redirectUrl = response?.redirect;
+          if (typeof response?.original === 'object' && response.original.redirect) {
             redirectUrl = response.original.redirect;
           }
-    
-          console.log("➡️ Link final:", redirectUrl);
-    
-          if (redirectUrl && redirectUrl.startsWith("http")) {
-            // redireciona a janela aberta
+        
+          console.log('➡️ Link final:', redirectUrl);
+        
+          if (redirectUrl) {
+            // se vier relativo (/cliente/reservas/75/pagar), normaliza para absoluto
+            if (!/^https?:\/\//i.test(redirectUrl)) {
+              redirectUrl = new URL(redirectUrl, window.location.origin).href;
+            }
+        
+            // redireciona a janela aberta antes do AJAX
             janelaPagamento.location.href = redirectUrl;
-    
+        
+            // modal + polling de status
             $('#modal-aguardando-pagamento').modal('show');
-            referenceId = response.reference_id;
+            referenceId = response?.reference_id || null;
             if (referenceId) {
               iniciarVerificacaoPagamento(referenceId, metodoPagamento);
             }
           } else {
             janelaPagamento.close();
-            alert("Erro ao gerar o link de pagamento.");
+            alert('Erro ao gerar o link de pagamento.');
           }
         },
+        
         error: function () {
           janelaPagamento.close();
           alert("Erro ao processar a reserva.");
