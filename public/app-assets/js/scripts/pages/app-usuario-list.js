@@ -35,6 +35,18 @@ $(function () {
                     return dados.tipo_usuario === 'cliente' ? 'Cliente' : 'Administrador';
                 }
             },
+            { 
+                data: function (dados) {
+                    let data = new Date(dados.created_at);
+                    return data.toLocaleString('pt-BR', { 
+                        day: '2-digit', 
+                        month: '2-digit', 
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+            },
             {
                 data: function (dados) {
                     if (dados.status_aprovacao === 'aprovado') {

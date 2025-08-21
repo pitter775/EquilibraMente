@@ -125,6 +125,7 @@
                                             <th>Email</th>
                                             <th>Telefone</th>
                                             <th>Perfil</th>
+                                            <th>Data Castro</th>
                                             <th>Status</th> 
                                         </tr>
                                     </thead>
