@@ -37,14 +37,16 @@ $(function () {
             },
             { 
                 data: function (dados) {
-                    let data = new Date(dados.created_at);
-                    return data.toLocaleString('pt-BR', { 
+                    let original = dados.created_at; // formato do banco
+                    let formatada = new Date(original).toLocaleString('pt-BR', { 
                         day: '2-digit', 
                         month: '2-digit', 
                         year: 'numeric',
                         hour: '2-digit',
                         minute: '2-digit'
                     });
+            
+                    return `<span style="opacity:0;position:absolute;">${original}</span>${formatada}`;
                 }
             },
             {
