@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Support\AssetVersion;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 
@@ -23,5 +25,9 @@ class AppServiceProvider extends ServiceProvider
         if (env('APP_ENV') !== 'local') {
             URL::forceScheme('https');
         }
+
+        Blade::directive('vasset', function ($expression) {
+            return "<?php echo \\App\\Support\\AssetVersion::url({$expression}); ?>";
+        });
     }
 }

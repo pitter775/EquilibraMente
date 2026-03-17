@@ -10,8 +10,8 @@
 
 
     <!-- Favicons -->
-    <link href="/assets/img/favicon.png" rel="icon">
-    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="@vasset('assets/img/favicon.png')" rel="icon">
+    <link href="@vasset('assets/img/apple-touch-icon.png')" rel="apple-touch-icon">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -22,12 +22,12 @@
     
     
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="@vasset('css/app.css')" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/vendors.min.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/nouislider.min.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/vendors/css/extensions/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="@vasset('app-assets/vendors/css/vendors.min.css')">
+    <link rel="stylesheet" type="text/css" href="@vasset('app-assets/vendors/css/extensions/nouislider.min.css')">
+    <link rel="stylesheet" type="text/css" href="@vasset('app-assets/vendors/css/extensions/toastr.min.css')">
     @stack('css_vendor')
     
     <!-- END: Vendor CSS-->
@@ -35,23 +35,23 @@
 
 
     <!-- BEGIN: Theme CSS-->
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/bootstrap-extended.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/colors.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/components.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/themes/dark-layout.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/themes/bordered-layout.css">
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/themes/semi-dark-layout.css">
+    <link rel="stylesheet" type="text/css" href="@vasset('app-assets/css/bootstrap.css')">
+    <link rel="stylesheet" type="text/css" href="@vasset('app-assets/css/bootstrap-extended.css')">
+    <link rel="stylesheet" type="text/css" href="@vasset('app-assets/css/colors.css')">
+    <link rel="stylesheet" type="text/css" href="@vasset('app-assets/css/components.css')">
+    <link rel="stylesheet" type="text/css" href="@vasset('app-assets/css/themes/dark-layout.css')">
+    <link rel="stylesheet" type="text/css" href="@vasset('app-assets/css/themes/bordered-layout.css')">
+    <link rel="stylesheet" type="text/css" href="@vasset('app-assets/css/themes/semi-dark-layout.css')">
 
     <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="../../../app-assets/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="@vasset('app-assets/css/core/menu/menu-types/vertical-menu.css')">
 
     @stack('css_page')
 
 
     <!-- BEGIN: Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="../../../assets/css/style.css">
-    <link rel="stylesheet" type="text/css" href="../../../assets/vendor/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="@vasset('assets/css/style.css')">
+    <link rel="stylesheet" type="text/css" href="@vasset('assets/vendor/aos/aos.css')">
 
 
     
@@ -86,14 +86,14 @@
 
 
     <!-- BEGIN: Vendor JS-->     
-    <script src="../../../app-assets/vendors/js/vendors.min.js"></script>
+    <script src="@vasset('app-assets/vendors/js/vendors.min.js')"></script>
 
 
 
     <!-- BEGIN: Page Vendor JS-->
-    <script src="../../../app-assets/vendors/js/extensions/wNumb.min.js"></script>
-    <script src="../../../app-assets/vendors/js/extensions/nouislider.min.js"></script>
-    <script src="../../../app-assets/vendors/js/extensions/toastr.min.js"></script>
+    <script src="@vasset('app-assets/vendors/js/extensions/wNumb.min.js')"></script>
+    <script src="@vasset('app-assets/vendors/js/extensions/nouislider.min.js')"></script>
+    <script src="@vasset('app-assets/vendors/js/extensions/toastr.min.js')"></script>
     <!-- Adicione esse script no cabeçalho ou rodapé, antes de aplicar a máscara -->
  
 
@@ -101,8 +101,8 @@
     @stack('js_vendor')
 
     <!-- BEGIN: Theme JS-->
-    <script src="../../../app-assets/js/core/app-menu.js"></script>
-    <script src="../../../app-assets/js/core/app.js"></script>
+    <script src="@vasset('app-assets/js/core/app-menu.js')"></script>
+    <script src="@vasset('app-assets/js/core/app.js')"></script>
     
 
 
