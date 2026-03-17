@@ -57,6 +57,14 @@
         margin-bottom: 0;
     }
 
+    .section-help-strong {
+        color: #5b6755;
+        font-size: 13px;
+        margin-top: 6px;
+        margin-bottom: 0;
+        font-weight: 600;
+    }
+
     .bloqueio-empty {
         border: 1px dashed #d7ded4;
         border-radius: 12px;
@@ -242,6 +250,123 @@
 
     .sala-block-header h3 {
         margin-bottom: 4px;
+    }
+
+    .status-overview {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.95fr);
+        gap: 16px;
+        margin-bottom: 18px;
+    }
+
+    .status-overview-card,
+    .status-guidance-card {
+        border-radius: 16px;
+        padding: 16px 18px;
+    }
+
+    .status-overview-card {
+        border: 1px solid #e6ede2;
+        background: linear-gradient(180deg, #fbfdf9 0%, #f2f7ef 100%);
+    }
+
+    .status-overview-label {
+        display: block;
+        color: #7c8578;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 10px;
+    }
+
+    .status-overview-main {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .status-overview-copy {
+        min-width: 0;
+    }
+
+    .status-overview-title {
+        margin: 0;
+        color: #355b33;
+        font-size: 1.05rem;
+        font-weight: 700;
+    }
+
+    .status-overview-subtitle {
+        margin: 6px 0 0;
+        color: #6f7b6c;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-weight: 800;
+        font-size: 13px;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+        border: 1px solid transparent;
+    }
+
+    .status-pill.is-disponivel {
+        background: #edf7ea;
+        color: #3f7c34;
+        border-color: #dcecd6;
+    }
+
+    .status-pill.is-indisponivel {
+        background: #fff1f1;
+        color: #c25757;
+        border-color: #f6d7d7;
+    }
+
+    .status-guidance-card {
+        border: 1px solid #eef2eb;
+        background: #fff;
+    }
+
+    .status-guidance-title {
+        color: #4f7e48;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .status-guidance-text {
+        color: #6f7b6c;
+        font-size: 13px;
+        line-height: 1.55;
+        margin-bottom: 0;
+    }
+
+    .status-field-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .status-helper-inline {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #6f7b6c;
+        font-size: 12px;
+        line-height: 1.45;
+    }
+
+    .status-helper-inline strong {
+        color: #4f7e48;
     }
 
     .imagem-card {
@@ -471,6 +596,10 @@
             flex: none;
             margin-bottom: 22px;
         }
+
+        .status-overview {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
@@ -511,24 +640,47 @@
                                     <div>
                                         <h3 class="mt-0">Dados iniciais</h3>
                                         <p class="section-help">Informações principais para cadastro e organização da sala.</p>
+                                        <p class="section-help-strong">Use a aba "Agenda e bloqueios" para controlar datas e horários, não este status.</p>
                                     </div>
                                     <span class="section-badge">Cadastro base</span>
                                 </div>
 
+                                <div class="status-overview">
+                                    <div class="status-overview-card">
+                                        <span class="status-overview-label">Leitura rápida</span>
+                                        <div class="status-overview-main">
+                                            <div class="status-overview-copy">
+                                                <p class="status-overview-title">Status geral da sala</p>
+                                                <p class="status-overview-subtitle">Este campo representa a situação global da sala. A agenda tem controle separado.</p>
+                                            </div>
+                                            <span class="status-pill is-disponivel" id="status-geral-badge">Disponível</span>
+                                        </div>
+                                    </div>
+                                    <div class="status-guidance-card">
+                                        <div class="status-guidance-title">Quando usar</div>
+                                        <p class="status-guidance-text">Status geral serve para ativar ou desativar a sala como um todo. Para bloquear um dia, um período ou uma manutenção pontual, use Agenda e bloqueios.</p>
+                                    </div>
+                                </div>
+
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-lg-7 col-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="status">Status geral da sala</label>
+                                            <div class="status-field-wrap">
+                                                <select class="form-control" id="status" name="status" required>
+                                                    <option value="disponivel">Disponível para operação</option>
+                                                    <option value="indisponivel">Indisponível no geral</option>
+                                                </select>
+                                                <span class="status-helper-inline">
+                                                    <strong>Importante:</strong> bloqueios de agenda não devem ser feitos aqui.
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 col-12">
                                         <div class="form-group">
                                             <label class="form-label" for="nome">Nome</label>
                                             <input type="text" class="form-control" id="nome" placeholder="Nome da Sala" name="nome" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label" for="status">Status</label>
-                                            <select class="form-control" id="status" name="status" required>
-                                                <option value="disponivel">Disponível</option>
-                                                <option value="indisponivel">Indisponível</option>
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">

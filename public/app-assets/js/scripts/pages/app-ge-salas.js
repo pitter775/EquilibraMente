@@ -146,6 +146,20 @@ $(document).ready(function () {
         $('#bloqueio-horarios-row').hide();
     }
 
+    function atualizarStatusBadge(status) {
+        var statusAtual = status === 'indisponivel' ? 'indisponivel' : 'disponivel';
+        var badge = $('#status-geral-badge');
+
+        if (!badge.length) {
+            return;
+        }
+
+        badge
+            .removeClass('is-disponivel is-indisponivel')
+            .addClass(statusAtual === 'indisponivel' ? 'is-indisponivel' : 'is-disponivel')
+            .text(statusAtual === 'indisponivel' ? 'Indisponível no geral' : 'Disponível para operação');
+    }
+
     function atualizarModoModal(isEdit, salaNome) {
         $('#myModalLabel17').text(isEdit ? 'Editar Sala' : 'Adicionar Nova Sala');
         $('#modal-subtitle-sala').text(
@@ -161,6 +175,7 @@ $(document).ready(function () {
         $('#bloqueio-sala-alerta').toggle(!isEdit);
         $('#bloqueio-sala-conteudo').toggle(isEdit);
         limparFormularioBloqueio();
+        atualizarStatusBadge($('#status').val());
         if (typeof feather !== 'undefined') {
             feather.replace();
         }
@@ -277,6 +292,10 @@ $(document).ready(function () {
         atualizarModoModal(false);
     });
 
+    $(document).on('change', '#status', function () {
+        atualizarStatusBadge($(this).val());
+    });
+
 
     // Antes de enviar o formulário, copia o conteúdo do Quill para o textarea
     $('#add-new-sala-form').on('submit', function (e) {
@@ -364,6 +383,7 @@ $(document).ready(function () {
                 $('#valor').val(data.sala.valor);
                 $('#metragem').val(data.sala.metragem);
                 $('#status').val(data.sala.status);
+                atualizarStatusBadge(data.sala.status);
                 quill.root.innerHTML = data.sala.descricao || '';
     
                 // Exibe as imagens existentes no modal
