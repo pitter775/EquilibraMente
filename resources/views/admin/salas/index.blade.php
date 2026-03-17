@@ -5,39 +5,88 @@
 
 <style>
     #conveniencias-container .form-check {
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        padding: 10px;
+        display: inline-flex;
+        align-items: center;
+        background: linear-gradient(180deg, #ffffff 0%, #f7faf5 100%);
+        border: 1px solid #e4ece0;
+        border-radius: 14px;
+        box-shadow: 0 8px 16px rgba(56, 83, 47, 0.08);
+        padding: 11px 14px 11px 12px;
         margin-bottom: 10px;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
         margin-right: 10px;
+        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
     }
 
     #conveniencias-container .form-check:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-1px);
+        box-shadow: 0 12px 20px rgba(56, 83, 47, 0.12);
+        border-color: #cfe0c8;
     }
 
     #conveniencias-container .form-check-input {
-        margin-right: 10px;
+        appearance: none;
+        -webkit-appearance: none;
+        width: 19px;
+        height: 19px;
+        min-width: 19px;
+        border-radius: 6px;
+        border: 1.5px solid #b9c8b3;
+        background: #fff;
+        margin: 0;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.18s ease;
     }
 
     #conveniencias-container .form-check-label {
         display: flex;
         align-items: center;
         gap: 8px;
-        margin-left: 15px;
-        margin-top: 3px;
+        margin-left: 10px;
+        margin-top: 0;
+        margin-bottom: 0;
+        cursor: pointer;
+        color: #56824f;
+        font-weight: 500;
     }
 
     #conveniencias-container .form-check-label i {
-        font-size: 18px;
-        color: #666;
+        font-size: 17px;
+        color: #7c8a77;
+        transition: color 0.18s ease;
     }
 
     .form-check-input {
         margin-left: 0;
+    }
+
+    #conveniencias-container .form-check-input:hover {
+        border-color: #7ea86f;
+        box-shadow: 0 0 0 4px rgba(127, 177, 118, 0.12);
+    }
+
+    #conveniencias-container .form-check-input:checked {
+        background-color: #4f7e48;
+        border-color: #4f7e48;
+        box-shadow: 0 0 0 4px rgba(127, 177, 118, 0.16);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.2' d='M3.2 8.2l2.8 2.9 6-6.2'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 12px 12px;
+    }
+
+    #conveniencias-container .form-check-input:checked + .form-check-label {
+        color: #355b33;
+    }
+
+    #conveniencias-container .form-check-input:checked + .form-check-label i {
+        color: #4f7e48;
+    }
+
+    #conveniencias-container .form-check:has(.form-check-input:checked) {
+        background: linear-gradient(180deg, #f7fbf5 0%, #edf6ea 100%);
+        border-color: #cfe0c8;
+        box-shadow: 0 12px 22px rgba(79, 126, 72, 0.12);
     }
 
     .section-badge {
