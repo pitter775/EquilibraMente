@@ -169,7 +169,7 @@ $(document).ready(function () {
         );
         $('#modal-sala-contexto')
             .toggleClass('d-none', !(isEdit && salaNome))
-            .text(isEdit && salaNome ? `Sala selecionada: ${salaNome}` : '');
+            .text(isEdit && salaNome ? salaNome : '');
         $('#btn-salvar-sala').html(`<i data-feather='check-circle'></i> ${isEdit ? 'Atualizar sala' : 'Salvar sala'}`);
         $('#btn-excluir-sala').toggle(isEdit);
         $('#bloqueio-sala-alerta').toggle(!isEdit);
@@ -273,6 +273,52 @@ $(document).ready(function () {
         });
     }
 
+    function carregarSalaParaEdicao(salaId) {
+        var salaUrl = `/admin/salas/${salaId}/dados`;
+
+        $.get(salaUrl, function (data) {
+            console.log('Dados recebidos:', data);
+            if (data.sala) {
+                $('#add-new-sala-form').find('input[name="sala_id"]').remove();
+                atualizarModoModal(true, data.sala.nome);
+                if (data.conveniencias && data.conveniencias.length > 0) {
+                    data.conveniencias.forEach(function (conveniencia) {
+                        var checkbox = $(`#conveniencia_${conveniencia.id}`);
+                        if (checkbox.length > 0) {
+                            var isChecked = data.conveniencias_selecionadas.includes(conveniencia.id);
+                            checkbox.prop('checked', isChecked);
+                        }
+                    });
+                }
+
+                if (data.sala.endereco) {
+                    $('#endereco_rua').val(data.sala.endereco.rua || '');
+                    $('#endereco_numero').val(data.sala.endereco.numero || '');
+                    $('#endereco_complemento').val(data.sala.endereco.complemento || '');
+                    $('#endereco_bairro').val(data.sala.endereco.bairro || '');
+                    $('#endereco_cidade').val(data.sala.endereco.cidade || '');
+                    $('#endereco_estado').val(data.sala.endereco.estado || '');
+                    $('#endereco_cep').val(data.sala.endereco.cep || '');
+                }
+
+                $('#nome').val(data.sala.nome);
+                $('#descricao').val(data.sala.descricao);
+                $('#valor').val(data.sala.valor);
+                $('#metragem').val(data.sala.metragem);
+                $('#status').val(data.sala.status);
+                atualizarStatusBadge(data.sala.status);
+                quill.root.innerHTML = data.sala.descricao || '';
+
+                renderizarImagens(data.sala.imagens || []);
+                $('#add-new-sala-form').attr('action', `/admin/salas/${salaId}`);
+                $('#add-new-sala-form').append('<input type="hidden" name="sala_id" id="sala_id" value="' + salaId + '">');
+                renderizarBloqueios(data.bloqueios || data.sala.bloqueios || []);
+                $('#salaModalTabs a[href="#tab-dados"]').tab('show');
+                $('#modals-slide-in').modal('show');
+            }
+        });
+    }
+
     atualizarModoModal(false);
 
     // Ao abrir o modal, atualiza o conteúdo do Quill com o valor do textarea
@@ -347,77 +393,7 @@ $(document).ready(function () {
     // Abrir o modal para editar a sala
     $(document).on('click', '.btn-edit-sala', function (e) {
         e.preventDefault();
-        var salaId = $(this).data('id');
-        var salaUrl = `/admin/salas/${salaId}/dados`;
-    
-        $.get(salaUrl, function (data) {
-            console.log('Dados recebidos:', data);
-            if (data.sala) {
-                $('#add-new-sala-form').find('input[name="sala_id"]').remove();
-                atualizarModoModal(true, data.sala.nome);
-                // Atualiza os estados dos checkboxes de conveniências
-                if (data.conveniencias && data.conveniencias.length > 0) {
-                    data.conveniencias.forEach(function (conveniencia) {
-                        var checkbox = $(`#conveniencia_${conveniencia.id}`);
-                        if (checkbox.length > 0) {
-                            var isChecked = data.conveniencias_selecionadas.includes(conveniencia.id);
-                            checkbox.prop('checked', isChecked);
-                        }
-                    });
-                }
-    
-                // Preenche os campos de endereço
-                if (data.sala.endereco) {
-                    $('#endereco_rua').val(data.sala.endereco.rua || '');
-                    $('#endereco_numero').val(data.sala.endereco.numero || '');
-                    $('#endereco_complemento').val(data.sala.endereco.complemento || '');
-                    $('#endereco_bairro').val(data.sala.endereco.bairro || '');
-                    $('#endereco_cidade').val(data.sala.endereco.cidade || '');
-                    $('#endereco_estado').val(data.sala.endereco.estado || '');
-                    $('#endereco_cep').val(data.sala.endereco.cep || '');
-                }
-    
-                // Preenche os outros campos
-                $('#nome').val(data.sala.nome);
-                $('#descricao').val(data.sala.descricao);
-                $('#valor').val(data.sala.valor);
-                $('#metragem').val(data.sala.metragem);
-                $('#status').val(data.sala.status);
-                atualizarStatusBadge(data.sala.status);
-                quill.root.innerHTML = data.sala.descricao || '';
-    
-                // Exibe as imagens existentes no modal
-                var imagensContainer = $('#imagens-existentes');
-                imagensContainer.empty(); // Limpa o container antes de adicionar novas imagens
-    
-                if (data.sala.imagens && data.sala.imagens.length > 0) {
-                    data.sala.imagens.forEach(function (imagem) {
-                        var imagemHtml = `
-                            <div class="col-md-3 mb-2" id="imagem-${imagem.id}">
-                                <img src="${imagem.imagem_base64}" class="img-fluid img-thumbnail ${imagem.principal ? 'principal' : ''}" alt="Imagem da sala">
-                                <div class="mt-2">
-                                    <button type="button" class="btn btn-danger btn-sm btn-remover-imagem" data-id="${imagem.id}">Excluir</button>
-                                    <button type="button" class="btn btn-${imagem.principal ? 'primary' : 'info'} btn-sm definir-principal" data-id="${imagem.id}">
-                                        ${imagem.principal ? 'Imagem Principal' : 'Definir Principal'}
-                                    </button>
-                                </div>
-                            </div>
-                        `;
-                        imagensContainer.append(imagemHtml);
-                    });
-                } else {
-                    imagensContainer.html('<p>Não há imagens para esta sala.</p>');
-                }
-    
-                // Configuração do modal
-                renderizarImagens(data.sala.imagens || []);
-                $('#add-new-sala-form').attr('action', `/admin/salas/${salaId}`);
-                $('#add-new-sala-form').append('<input type="hidden" name="sala_id" id="sala_id" value="' + salaId + '">');
-                renderizarBloqueios(data.bloqueios || data.sala.bloqueios || []);
-                $('#salaModalTabs a[href="#tab-dados"]').tab('show');
-                $('#modals-slide-in').modal('show');
-            }
-        });
+        carregarSalaParaEdicao($(this).data('id'));
     });
        
 
@@ -441,6 +417,16 @@ $(document).ready(function () {
         $('#salaModalTabs a[href="#tab-dados"]').tab('show');
         $('#modals-slide-in').modal('show');
     });   
+
+    const params = new URLSearchParams(window.location.search);
+    const salaParaEditar = params.get('editar');
+    if (salaParaEditar) {
+        carregarSalaParaEdicao(salaParaEditar);
+        params.delete('editar');
+        const novaQuery = params.toString();
+        const novaUrl = window.location.pathname + (novaQuery ? `?${novaQuery}` : '');
+        window.history.replaceState({}, '', novaUrl);
+    }
 
     $(document).on('change', '#bloqueio_tipo', function () {
         $('#bloqueio-horarios-row').toggle($(this).val() === 'intervalo');

@@ -192,6 +192,10 @@
     }
 
     #modals-slide-in .modal-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
         padding-right: 1.5rem;
     }
 
@@ -200,6 +204,51 @@
         padding: 0.25rem;
         line-height: 1;
         opacity: 1;
+        flex-shrink: 0;
+    }
+
+    .sala-modal-header-copy {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .sala-modal-heading {
+        display: block;
+        width: 100%;
+    }
+
+    .sala-modal-heading .modal-title {
+        margin-bottom: 0;
+        line-height: 1.15;
+    }
+
+    .sala-modal-header-side {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+        margin-left: auto;
+    }
+
+    .sala-modal-contexto {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: #edf6ea;
+        color: #4f7e48;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        white-space: nowrap;
+    }
+
+    .sala-modal-contexto.d-none {
+        display: none !important;
     }
 
     .sala-tabs {
@@ -494,9 +543,9 @@
         display: flex;
         flex-direction: column;
         min-height: 100%;
-        width: min(100%, 360px);
-        max-width: 360px;
-        flex: 0 0 360px;
+        width: min(100%, 320px);
+        max-width: 320px;
+        flex: 1 1 300px;
     }
 
     .sala-card-media {
@@ -585,6 +634,31 @@
         font-weight: 700;
     }
 
+    @media (max-width: 1500px) {
+        #ecommerce-products {
+            gap: 16px;
+        }
+
+        .sala-card {
+            width: min(100%, 290px);
+            max-width: 290px;
+            flex-basis: 290px;
+        }
+
+        .sala-card-body {
+            padding: 14px 14px 12px;
+        }
+
+        .sala-card-footer {
+            padding: 0 14px 14px;
+        }
+
+        .sala-card-description {
+            font-size: 13px;
+            line-height: 1.45;
+        }
+    }
+
     @media (max-width: 767px) {
         #ecommerce-products {
             display: block;
@@ -605,16 +679,20 @@
 
 <div class="modal fade text-left" id="modals-slide-in">
     <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div>
-                    <h4 class="modal-title" id="myModalLabel17">Adicionar Nova Sala</h4>
-                    <small class="text-muted d-block" id="modal-subtitle-sala">Cadastre uma nova sala com seus dados principais.</small>
-                    <small class="d-none mt-50" id="modal-sala-contexto"></small>
-                </div>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span>&times;</span>
-                </button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="sala-modal-header-copy">
+                        <div class="sala-modal-heading">
+                            <h4 class="modal-title" id="myModalLabel17" style="margin-left: 0px">Adicionar Nova Sala</h4>
+                        </div>
+                        <small class="text-muted d-block" id="modal-subtitle-sala">Cadastre uma nova sala com seus dados principais.</small>
+                    </div>
+                    <div class="sala-modal-header-side">
+                        <span class="sala-modal-contexto d-none" id="modal-sala-contexto"></span>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span>&times;</span>
+                        </button>
+                    </div>
             </div>
 
             <form class="add-new-sala pt-0" method="POST" id="add-new-sala-form" enctype="multipart/form-data" action="{{ route('salas.store') }}" data-action-store="{{ route('salas.store') }}">

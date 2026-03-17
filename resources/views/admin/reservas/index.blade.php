@@ -3,6 +3,357 @@
 ])
 @section('content')
 
+<style>
+    .reservas-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+    }
+
+    .reservas-toolbar-copy h3 {
+        margin-bottom: 6px;
+        color: #4f7e48;
+        display: block;
+    }
+
+    .reservas-toolbar-copy p {
+        margin-bottom: 0;
+        color: #7c8578;
+        display: block;
+        width: 100%;
+    }
+
+    .reservas-toolbar-copy {
+        display: block;
+        flex: 1 1 100%;
+    }
+
+    .reservas-filters {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+    }
+
+    .reservas-filter {
+        min-width: 180px;
+    }
+
+    .reservas-filter label {
+        display: block;
+        margin-bottom: 6px;
+        color: #5c6758;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .reserva-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    .reserva-avatar-fallback {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #edf6ea;
+        color: #4f7e48;
+        font-weight: 700;
+        font-size: 12px;
+        flex-shrink: 0;
+    }
+
+    .reserva-person {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 170px;
+    }
+
+    .reserva-person-name {
+        font-weight: 700;
+        color: #495057;
+        line-height: 1.35;
+    }
+
+    .reserva-person-meta {
+        color: #7c8578;
+        font-size: 12px;
+        line-height: 1.35;
+        margin-top: 2px;
+    }
+
+    .reserva-contact {
+        min-width: 170px;
+        color: #5d645b;
+        line-height: 1.5;
+    }
+
+    .reserva-contact strong,
+    .reserva-sala strong,
+    .reserva-periodo strong,
+    .reserva-valor strong {
+        display: block;
+        color: #495057;
+        margin-bottom: 2px;
+    }
+
+    .reserva-sala,
+    .reserva-periodo,
+    .reserva-valor {
+        color: #5d645b;
+        line-height: 1.5;
+    }
+
+    .reserva-status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 999px;
+        padding: 7px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .reserva-status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: currentColor;
+    }
+
+    .reserva-status-confirmada {
+        background: #edf7ea;
+        color: #347245;
+    }
+
+    .reserva-status-pendente {
+        background: #fff6df;
+        color: #a87a16;
+    }
+
+    .reserva-status-cancelada {
+        background: #fff0f0;
+        color: #bf5454;
+    }
+
+    .reserva-status-default {
+        background: #f1f3f5;
+        color: #66707a;
+    }
+
+    .reserva-status-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .reserva-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .reserva-actions .btn {
+        white-space: nowrap;
+    }
+
+    .reserva-actions .btn + .btn {
+        margin-left: 0;
+    }
+
+    .user-list-table {
+        width: 100% !important;
+    }
+
+    .user-list-table th:nth-child(1),
+    .user-list-table td:nth-child(1) {
+        width: 17%;
+    }
+
+    .user-list-table th:nth-child(2),
+    .user-list-table td:nth-child(2) {
+        width: 15%;
+    }
+
+    .user-list-table th:nth-child(3),
+    .user-list-table td:nth-child(3) {
+        width: 13%;
+    }
+
+    .user-list-table th:nth-child(4),
+    .user-list-table td:nth-child(4) {
+        width: 26%;
+    }
+
+    .user-list-table th:nth-child(5),
+    .user-list-table td:nth-child(5) {
+        width: 29%;
+    }
+
+    .table-responsive {
+        width: 100%;
+    }
+
+    .user-list-table.dataTable {
+        table-layout: fixed;
+    }
+
+    .reserva-modal-hero {
+        display: grid;
+        grid-template-columns: 360px minmax(0, 1fr);
+        gap: 24px;
+        margin-bottom: 20px;
+    }
+
+    .reserva-modal-image {
+        width: 100%;
+        height: 240px;
+        border-radius: 18px;
+        object-fit: cover;
+        box-shadow: 0 14px 34px rgba(44, 62, 36, 0.12);
+        background: #f4f7f2;
+    }
+
+    .reserva-modal-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .reserva-modal-headerline {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .reserva-modal-kicker {
+        color: #7c8578;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 6px;
+    }
+
+    .reserva-modal-title {
+        margin-bottom: 4px;
+        color: #355b33;
+    }
+
+    .reserva-modal-subtitle {
+        margin-bottom: 0;
+        color: #6f7b6c;
+    }
+
+    .reserva-modal-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .reserva-detail-card {
+        border: 1px solid #ebf0e8;
+        border-radius: 16px;
+        background: #fff;
+        padding: 16px;
+    }
+
+    .reserva-detail-card h6 {
+        color: #4f7e48;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+
+    .reserva-detail-line {
+        color: #5d645b;
+        line-height: 1.55;
+    }
+
+    .reserva-detail-line strong {
+        color: #495057;
+    }
+
+    .reserva-hours-list {
+        padding-left: 18px;
+        margin-bottom: 0;
+        color: #5d645b;
+    }
+
+    .reserva-hours-list li + li {
+        margin-top: 4px;
+    }
+
+    .reserva-modal-footer-note {
+        margin-right: auto;
+        color: #7c8578;
+        font-size: 13px;
+    }
+
+    @media (max-width: 1500px) {
+        .user-list-table th,
+        .user-list-table td {
+            padding: 0.72rem 0.45rem;
+            vertical-align: top;
+        }
+
+        .reservas-filter {
+            min-width: 150px;
+        }
+
+        .reserva-person {
+            min-width: 140px;
+            gap: 8px;
+        }
+
+        .reserva-contact {
+            min-width: 135px;
+            font-size: 13px;
+        }
+
+        .reserva-sala,
+        .reserva-periodo,
+        .reserva-valor {
+            font-size: 13px;
+        }
+
+        .reserva-status-actions {
+            gap: 8px;
+        }
+
+        .reserva-actions .btn {
+            font-size: 12px;
+            padding: 0.38rem 0.55rem;
+        }
+    }
+
+    @media (max-width: 991px) {
+        .reserva-modal-hero {
+            grid-template-columns: 1fr;
+        }
+
+        .reserva-modal-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
 @if(session('success'))
     <p style="color: green;">{{ session('success') }}</p>
 @endif
@@ -10,7 +361,7 @@
 <!-- Botão para abrir o modal de Novo Usuário -->
 
 
-    <!-- Modal para Adicionar/Editar Usuário -->
+    <!-- Modal para detalhes do cliente -->
     <div class="modal fade" id="newUserModal" tabindex="-1" aria-labelledby="newUserModalLabel" >
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -128,6 +479,67 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalReservaDetalhe" tabindex="-1" aria-labelledby="modalReservaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <div class="reserva-modal-kicker" id="modalReservaKicker">Reserva</div>
+                        <h4 class="modal-title mb-0" id="modalReservaLabel">Detalhes da Reserva</h4>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span>&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="reserva-modal-hero">
+                        <img src="/sem-imagem.jpg" alt="Imagem da sala" class="reserva-modal-image" id="modalReservaImagem">
+
+                        <div class="reserva-modal-panel">
+                            <div class="reserva-modal-headerline">
+                                <div>
+                                    <h4 class="reserva-modal-title" id="modalReservaSala">Sala</h4>
+                                    <p class="reserva-modal-subtitle" id="modalReservaPeriodo">Data e horário</p>
+                                </div>
+                                <div id="modalReservaStatus"></div>
+                            </div>
+
+                            <div class="reserva-modal-grid">
+                                <div class="reserva-detail-card">
+                                    <h6>Cliente</h6>
+                                    <div class="reserva-detail-line" id="modalReservaCliente"></div>
+                                </div>
+
+                                <div class="reserva-detail-card">
+                                    <h6>Pagamento</h6>
+                                    <div class="reserva-detail-line" id="modalReservaPagamento"></div>
+                                </div>
+
+                                <div class="reserva-detail-card">
+                                    <h6>Local da reserva</h6>
+                                    <div class="reserva-detail-line" id="modalReservaEndereco"></div>
+                                </div>
+
+                                <div class="reserva-detail-card">
+                                    <h6>Horários reservados</h6>
+                                    <ul class="reserva-hours-list" id="modalReservaHorarios"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <span class="reserva-modal-footer-note" id="modalReservaRodape">Confira os dados antes de executar qualquer ação.</span>
+                    <a href="/admin/salas" class="btn btn-outline-primary" id="modalReservaSalaLink">Editar sala</a>
+                    <button type="button" class="btn btn-danger cancelar-reserva" id="btnCancelarReservaModal" data-id="">Cancelar Reserva</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
    <div class="">
         <div class="content-overlay"></div>
@@ -138,7 +550,10 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h3 class="float-left mb-0">Reservas</h3>                
+                            <div class="reservas-toolbar-copy d-block">
+                                <h3 class="mb-0">Reservas</h3>
+                                <p>Visualize rapidamente cliente, período, situação e ações de cada reserva.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -155,20 +570,33 @@
                     <div class="col-12">
                         <div class="card" style="padding: 20px">                           
                             <!-- Conteúdo da página e tabela de usuários -->
+                            <div class="reservas-filters">
+                                <div class="reservas-filter">
+                                    <label for="filtro-status-reserva">Status</label>
+                                    <select id="filtro-status-reserva" class="form-control">
+                                        <option value="">Todos</option>
+                                        <option value="Confirmada">Confirmada</option>
+                                        <option value="Pendente">Pendente</option>
+                                        <option value="Cancelada">Cancelada</option>
+                                    </select>
+                                </div>
+                                <div class="reservas-filter">
+                                    <label for="filtro-sala-reserva">Sala</label>
+                                    <select id="filtro-sala-reserva" class="form-control">
+                                        <option value="">Todas</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="table-responsive"> 
                  
                                 <table class="table user-list-table">  
                                     <thead>
                                         <tr>
-                                            <th>Avatar</th>
-                                            <th>Nome</th>
-                                            <th>Email</th>
-                                            <th>Telefone</th>
+                                            <th>Cliente</th>
+                                            <th>Contato</th>
                                             <th>Sala</th>
-                                            <th>Período da Reserva</th>
-                                            <th>Valor por Hora</th> <!-- Coluna para valor por hora -->
-                                            <th>Status</th>
-                                            <th>Detalhes</th>
+                                            <th>Data e Horário</th>
+                                            <th>Status e Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -272,7 +700,7 @@
     <script src="../../../app-assets/js/scripts/extensions/ext-component-sweet-alerts.js"></script>
     <script src="../../../app-assets/js/scripts/forms/pickers/form-pickers.js"></script>
 
-    <script src="../../../app-assets/js/scripts/pages/app-reservas-list.js"></script>
+    <script src="@vasset('app-assets/js/scripts/pages/app-reservas-list.js')"></script>
 @endpush
 
 @push('js_vendor')
@@ -287,6 +715,3 @@
     <script src="../../../app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js"></script>
     
 @endpush
-
-
-

@@ -5,8 +5,88 @@
         background-attachment: fixed !important; 
         background-position: bottom left !important;  
         }
+
+        .menu_lateral .main-menu-content {
+            padding-bottom: 128px;
+        }
+
+        .sidebar-account {
+            position: absolute;
+            left: 14px;
+            right: 14px;
+            bottom: 16px;
+            padding: 14px 12px;
+            border-radius: 18px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0.44) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 16px 34px rgba(69, 91, 58, 0.16);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .sidebar-account__top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-account__avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 999px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .sidebar-account__name {
+            color: #42533b;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+
+        .sidebar-account__role {
+            color: #7b8677;
+            font-size: 12px;
+            text-transform: capitalize;
+            line-height: 1.2;
+        }
+
+        .sidebar-account__logout {
+            width: 100%;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .sidebar-mobile-toggle {
+            position: fixed;
+            right: 14px;
+            bottom: 14px;
+            z-index: 1005;
+            width: 46px;
+            height: 46px;
+            border: 0;
+            border-radius: 999px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: #4f7e48;
+            color: #fff;
+            box-shadow: 0 12px 24px rgba(57, 90, 49, 0.22);
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar-mobile-toggle {
+                display: inline-flex;
+            }
+        }
     </style>
     <input type="hidden" value="{{Auth::user()->use_perfil}}" name="use_perfilInput" id="use_perfilInput" />
+    <button class="sidebar-mobile-toggle menu-toggle" type="button" aria-label="Abrir menu">
+        <i data-feather="menu"></i>
+    </button>
     <div class="main-menu menu_lateral menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
         <div class="navbar-header mb-4" >
                 <ul class="nav navbar-nav flex-row">
@@ -99,6 +179,22 @@
 
         </ul>
 
+        </div>
+        <div class="sidebar-account">
+            <div class="sidebar-account__top">
+                @if(Auth::user()->photo == null)
+                    <img src="{{ asset('app-assets/images/avatars/avatar.png') }}" alt="avatar" class="sidebar-account__avatar">
+                @else
+                    <img src="{{ Auth::user()->photo }}" alt="avatar" class="sidebar-account__avatar">
+                @endif
+                <div>
+                    <div class="sidebar-account__name">{{ Auth::user()->name }}</div>
+                    <div class="sidebar-account__role">{{ Auth::user()->tipo_usuario }}</div>
+                </div>
+            </div>
+            <a class="btn btn-outline-secondary btn-sm d-flex align-items-center sidebar-account__logout" href="{{ route('logout') }}">
+                <i class="mr-50" data-feather="power"></i> Sair
+            </a>
         </div>
     </div>
 

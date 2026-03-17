@@ -52,6 +52,18 @@
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="@vasset('assets/css/style.css')">
     <link rel="stylesheet" type="text/css" href="@vasset('assets/vendor/aos/aos.css')">
+    <style>
+        @media (min-width: 992px) {
+            html body.vertical-layout.vertical-menu-modern .app-content {
+                padding-top: 1rem;
+            }
+        }
+
+        html body .header-navbar,
+        html body .header-navbar-shadow {
+            display: none !important;
+        }
+    </style>
 
 
     
@@ -73,7 +85,6 @@
 <body class="vertical-layout vertical-menu-modern  navbar-sticky footer-static" data-open="click" data-menu="vertical-menu-modern" data-col="">
          
 
-    @include('layouts.nav_topo')   
     @include('layouts.nav_lateral')   
     @include('layouts.pagina')   
 

@@ -9,6 +9,7 @@ use App\Models\Reserva;
 use App\Models\BloqueioSala;
 use Carbon\Carbon;
 use App\Models\Transacao;
+use Illuminate\Support\Facades\Log;
 
 class ReservaController extends Controller
 {
@@ -83,14 +84,42 @@ class ReservaController extends Controller
 
     public function listar()
     {
-        // Carrega as reservas com os dados de 'usuario' e 'sala'
-        $reservas = Reserva::with([
-            'usuario',
-            'sala.imagens',
-            'sala.endereco'
-        ])->get();
+        try {
+            $reservas = Reserva::query()
+                ->select([
+                    'id',
+                    'usuario_id',
+                    'sala_id',
+                    'data_reserva',
+                    'hora_inicio',
+                    'hora_fim',
+                    'status',
+                    'created_at',
+                ])
+                ->with([
+                    'usuario:id,name,email,telefone,photo',
+                    'sala:id,nome,valor',
+                    'sala.imagens' => function ($query) {
+                        $query
+                            ->select(['id', 'sala_id', 'imagem_base64', 'principal'])
+                            ->where('principal', true);
+                    },
+                    'sala.endereco:id,enderecavel_id,enderecavel_type,rua,numero,bairro,cidade,estado',
+                ])
+                ->latest('data_reserva')
+                ->latest('hora_inicio')
+                ->get();
 
-        return response()->json($reservas);
+            return response()->json($reservas);
+        } catch (\Throwable $e) {
+            Log::error('Falha ao listar reservas para DataTable.', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'message' => 'Nao foi possivel carregar a lista de reservas.',
+            ], 500);
+        }
     }
 
 
