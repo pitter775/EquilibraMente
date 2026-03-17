@@ -1403,10 +1403,14 @@
       //carrocel das salas
       $(document).ready(function(){
          let $carousel = $('.carousel-sala').owlCarousel({
+            autoplay: false,
+            autoplayHoverPause: false,
             loop: true,
             margin: 15,
             nav: false, // desativa as setas nativas
             dots: false,
+            smartSpeed: 450,
+            pullDrag: false,
             responsive: {
                   0: { items: 1 },
                   768: { items: 2 },

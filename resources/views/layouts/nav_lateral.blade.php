@@ -60,6 +60,57 @@
             border-radius: 12px;
         }
 
+        .sidebar-account__logout-label {
+            display: inline;
+        }
+
+        html body.vertical-layout.vertical-menu-modern.menu-collapsed .menu_lateral .main-menu-content {
+            padding-bottom: 94px;
+        }
+
+        html body.vertical-layout.vertical-menu-modern.menu-collapsed .sidebar-account {
+            left: 8px;
+            right: 8px;
+            bottom: 12px;
+            padding: 10px 6px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        html body.vertical-layout.vertical-menu-modern.menu-collapsed .sidebar-account__top {
+            margin-bottom: 0;
+            justify-content: center;
+        }
+
+        html body.vertical-layout.vertical-menu-modern.menu-collapsed .sidebar-account__avatar {
+            width: 34px;
+            height: 34px;
+        }
+
+        html body.vertical-layout.vertical-menu-modern.menu-collapsed .sidebar-account__name,
+        html body.vertical-layout.vertical-menu-modern.menu-collapsed .sidebar-account__role {
+            display: none;
+        }
+
+        html body.vertical-layout.vertical-menu-modern.menu-collapsed .sidebar-account__logout {
+            width: 34px;
+            min-width: 34px;
+            height: 34px;
+            padding: 0;
+            border-radius: 12px;
+        }
+
+        html body.vertical-layout.vertical-menu-modern.menu-collapsed .sidebar-account__logout .mr-50 {
+            margin-right: 0 !important;
+        }
+
+        html body.vertical-layout.vertical-menu-modern.menu-collapsed .sidebar-account__logout-label {
+            display: none;
+        }
+
         .sidebar-mobile-toggle {
             position: fixed;
             right: 14px;
@@ -192,8 +243,9 @@
                     <div class="sidebar-account__role">{{ Auth::user()->tipo_usuario }}</div>
                 </div>
             </div>
-            <a class="btn btn-outline-secondary btn-sm d-flex align-items-center sidebar-account__logout" href="{{ route('logout') }}">
-                <i class="mr-50" data-feather="power"></i> Sair
+            <a class="btn btn-outline-secondary btn-sm d-flex align-items-center sidebar-account__logout" href="{{ route('logout') }}" title="Sair" aria-label="Sair">
+                <i class="mr-50" data-feather="power"></i>
+                <span class="sidebar-account__logout-label">Sair</span>
             </a>
         </div>
     </div>

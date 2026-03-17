@@ -156,7 +156,33 @@
             if (location.protocol !== 'https:') {
                 location.replace(`https:${location.href.substring(location.protocol.length)}`);
             }
-        }   
+        }
+
+        function ajustarMenuParaResolucao() {
+            if (!window.$ || !$.app || !$.app.menu) {
+                return;
+            }
+
+            var largura = window.innerWidth || document.documentElement.clientWidth;
+            var isDesktop = largura >= 992;
+            var deveColapsar = isDesktop && largura < 1440;
+
+            if (!isDesktop) {
+                return;
+            }
+
+            if (deveColapsar && !$('body').hasClass('menu-collapsed')) {
+                $.app.menu.collapse();
+            }
+
+            if (!deveColapsar && !$('body').hasClass('menu-expanded')) {
+                $.app.menu.expand();
+            }
+        }
+
+        $(window).on('load resize', function () {
+            ajustarMenuParaResolucao();
+        });
 
     </script>
 
