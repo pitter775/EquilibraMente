@@ -126,6 +126,130 @@ $(document).ready(function () {
     var quill = new Quill('#descricao_quill', { theme: 'snow' });
     $('#descricao_quill').data('quill-initialized', true);
 
+    function formatarDataBloqueio(data) {
+        if (!data) {
+            return '-';
+        }
+
+        const dataNormalizada = String(data).split('T')[0].split(' ')[0];
+        const partes = dataNormalizada.split('-');
+        return partes.length === 3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : data;
+    }
+
+    function limparFormularioBloqueio() {
+        $('#bloqueio_tipo').val('dia_inteiro');
+        $('#bloqueio_data_inicio').val('');
+        $('#bloqueio_data_fim').val('');
+        $('#bloqueio_hora_inicio').val('');
+        $('#bloqueio_hora_fim').val('');
+        $('#bloqueio_motivo').val('');
+        $('#bloqueio-horarios-row').hide();
+    }
+
+    function atualizarModoModal(isEdit, salaNome) {
+        $('#myModalLabel17').text(isEdit ? 'Editar Sala' : 'Adicionar Nova Sala');
+        $('#modal-subtitle-sala').text(
+            isEdit
+                ? 'Atualize os dados da sala e gerencie os bloqueios da agenda.'
+                : 'Cadastre uma nova sala com seus dados principais.'
+        );
+        $('#modal-sala-contexto')
+            .toggleClass('d-none', !(isEdit && salaNome))
+            .text(isEdit && salaNome ? `Sala selecionada: ${salaNome}` : '');
+        $('#btn-salvar-sala').html(`<i data-feather='check-circle'></i> ${isEdit ? 'Atualizar sala' : 'Salvar sala'}`);
+        $('#btn-excluir-sala').toggle(isEdit);
+        $('#bloqueio-sala-alerta').toggle(!isEdit);
+        $('#bloqueio-sala-conteudo').toggle(isEdit);
+        limparFormularioBloqueio();
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+    }
+
+    function renderizarImagens(imagens) {
+        var imagensContainer = $('#imagens-existentes');
+        imagensContainer.empty();
+
+        if (!imagens || !imagens.length) {
+            imagensContainer.html('<div class="col-12"><div class="bloqueio-empty">Nenhuma imagem cadastrada para esta sala.</div></div>');
+            return;
+        }
+
+        imagens.forEach(function (imagem, index) {
+            var isPrincipal = !!imagem.principal;
+
+            imagensContainer.append(`
+                <div class="col-md-4 col-lg-3 mb-2" id="imagem-${imagem.id}">
+                    <div class="imagem-card ${isPrincipal ? 'is-principal' : ''}">
+                        <div class="imagem-preview-wrap">
+                            <span class="imagem-badge-principal">Imagem principal</span>
+                            <img src="${imagem.imagem_base64}" class="imagem-preview" alt="Imagem da sala">
+                        </div>
+                        <div class="imagem-card-body">
+                            <div class="imagem-card-title">${isPrincipal ? 'Principal da sala' : `Imagem ${index + 1}`}</div>
+                            <div class="imagem-card-actions">
+                                <button type="button" class="btn btn-sm ${isPrincipal ? 'btn-success' : 'btn-outline-primary'} definir-principal" data-id="${imagem.id}">
+                                    ${isPrincipal ? 'Principal selecionada' : 'Tornar principal'}
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-danger btn-remover-imagem" data-id="${imagem.id}">
+                                    Excluir imagem
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+        });
+
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+    }
+
+    function renderizarBloqueios(bloqueios) {
+        var lista = $('#lista-bloqueios-sala');
+        lista.empty();
+
+        if (!bloqueios || !bloqueios.length) {
+            lista.html('<div class="bloqueio-empty">Nenhum bloqueio cadastrado para esta sala.</div>');
+            return;
+        }
+
+        bloqueios.forEach(function (bloqueio) {
+            var periodo = formatarDataBloqueio(bloqueio.data_inicio);
+            if (bloqueio.data_fim && bloqueio.data_fim !== bloqueio.data_inicio) {
+                periodo += ' até ' + formatarDataBloqueio(bloqueio.data_fim);
+            }
+
+            var horario = bloqueio.tipo === 'intervalo'
+                ? `${(bloqueio.hora_inicio || '').slice(0, 5)} às ${(bloqueio.hora_fim || '').slice(0, 5)}`
+                : 'Dia inteiro';
+
+            var criador = bloqueio.criador && bloqueio.criador.name ? bloqueio.criador.name : 'Administração';
+            var motivo = bloqueio.motivo ? `<div class="mt-1">${bloqueio.motivo}</div>` : '';
+
+            lista.append(`
+                <div class="bloqueio-item" id="bloqueio-${bloqueio.id}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <strong>${bloqueio.tipo === 'intervalo' ? 'Bloqueio por intervalo' : 'Bloqueio de dia inteiro'}</strong>
+                            <div>${periodo}</div>
+                            <div class="bloqueio-meta">${horario} • Criado por ${criador}</div>
+                            ${motivo}
+                        </div>
+                    </div>
+                    <div class="bloqueio-actions">
+                        <button type="button" class="btn btn-sm btn-outline-danger btn-remover-bloqueio" data-id="${bloqueio.id}">
+                            Remover
+                        </button>
+                    </div>
+                </div>
+            `);
+        });
+    }
+
+    atualizarModoModal(false);
+
     // Ao abrir o modal, atualiza o conteúdo do Quill com o valor do textarea
     $('#modals-slide-in').on('shown.bs.modal', function () {
         var descricao = $('#descricao').val(); // Pega o valor do textarea
@@ -133,12 +257,14 @@ $(document).ready(function () {
     });
     // Resetar o formulário ao fechar o modal
     $('#modals-slide-in').on('hidden.bs.modal', function () {
-        $('#myModalLabel17').text('Adicionar Nova Sala');
         $('#add-new-sala-form')[0].reset();
         $('#add-new-sala-form').attr('action', $('#add-new-sala-form').data('action-store'));
         $('#add-new-sala-form').find('input[name="sala_id"]').remove();
         $('#imagens-existentes').empty();
+        $('#lista-bloqueios-sala').html('<div class="bloqueio-empty">Nenhum bloqueio cadastrado para esta sala.</div>');
         quill.root.innerHTML = '';
+        $('#salaModalTabs a[href="#tab-dados"]').tab('show');
+        atualizarModoModal(false);
     });
 
 
@@ -198,6 +324,8 @@ $(document).ready(function () {
         $.get(salaUrl, function (data) {
             console.log('Dados recebidos:', data);
             if (data.sala) {
+                $('#add-new-sala-form').find('input[name="sala_id"]').remove();
+                atualizarModoModal(true, data.sala.nome);
                 // Atualiza os estados dos checkboxes de conveniências
                 if (data.conveniencias && data.conveniencias.length > 0) {
                     data.conveniencias.forEach(function (conveniencia) {
@@ -226,6 +354,7 @@ $(document).ready(function () {
                 $('#valor').val(data.sala.valor);
                 $('#metragem').val(data.sala.metragem);
                 $('#status').val(data.sala.status);
+                quill.root.innerHTML = data.sala.descricao || '';
     
                 // Exibe as imagens existentes no modal
                 var imagensContainer = $('#imagens-existentes');
@@ -251,8 +380,11 @@ $(document).ready(function () {
                 }
     
                 // Configuração do modal
+                renderizarImagens(data.sala.imagens || []);
                 $('#add-new-sala-form').attr('action', `/admin/salas/${salaId}`);
                 $('#add-new-sala-form').append('<input type="hidden" name="sala_id" id="sala_id" value="' + salaId + '">');
+                renderizarBloqueios(data.bloqueios || data.sala.bloqueios || []);
+                $('#salaModalTabs a[href="#tab-dados"]').tab('show');
                 $('#modals-slide-in').modal('show');
             }
         });
@@ -272,11 +404,87 @@ $(document).ready(function () {
         $('#imagens-existentes').empty();
     
         // Define a ação do formulário para a criação
-        $('#add-new-sala-form').attr('action', '/admin/salas');
+        $('#add-new-sala-form').attr('action', $('#add-new-sala-form').data('action-store'));
+    atualizarModoModal(false);
     
         // Abre a modal para criação da nova sala
+        $('#salaModalTabs a[href="#tab-dados"]').tab('show');
         $('#modals-slide-in').modal('show');
     });   
+
+    $(document).on('change', '#bloqueio_tipo', function () {
+        $('#bloqueio-horarios-row').toggle($(this).val() === 'intervalo');
+    });
+
+    $(document).on('click', '#btn-salvar-bloqueio', function () {
+        var salaId = $('#sala_id').val();
+
+        if (!salaId) {
+            toastr.warning('Salve a sala antes de cadastrar bloqueios.');
+            return;
+        }
+
+        $.ajax({
+            url: `/admin/salas/${salaId}/bloqueios`,
+            method: 'POST',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                tipo: $('#bloqueio_tipo').val(),
+                data_inicio: $('#bloqueio_data_inicio').val(),
+                data_fim: $('#bloqueio_data_fim').val(),
+                hora_inicio: $('#bloqueio_hora_inicio').val(),
+                hora_fim: $('#bloqueio_hora_fim').val(),
+                motivo: $('#bloqueio_motivo').val()
+            },
+            success: function (response) {
+                toastr.success(response.message || 'Bloqueio salvo com sucesso.');
+                limparFormularioBloqueio();
+                $.get(`/admin/salas/${salaId}/dados`, function (data) {
+                    renderizarBloqueios(data.bloqueios || data.sala.bloqueios || []);
+                });
+            },
+            error: function (xhr) {
+                var mensagem = 'Erro ao salvar o bloqueio.';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    mensagem = xhr.responseJSON.message;
+                }
+                toastr.error(mensagem);
+            }
+        });
+    });
+
+    $(document).on('click', '.btn-remover-bloqueio', function () {
+        var bloqueioId = $(this).data('id');
+        var salaId = $('#sala_id').val();
+
+        if (!confirm('Deseja remover este bloqueio da agenda?')) {
+            return;
+        }
+
+        $.ajax({
+            url: `/admin/bloqueios/${bloqueioId}`,
+            method: 'DELETE',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                toastr.success(response.message || 'Bloqueio removido com sucesso.');
+                $(`#bloqueio-${bloqueioId}`).remove();
+                if (!$('#lista-bloqueios-sala').children().length) {
+                    $('#lista-bloqueios-sala').html('<div class="bloqueio-empty">Nenhum bloqueio cadastrado para esta sala.</div>');
+                }
+
+                if (salaId) {
+                    $.get(`/admin/salas/${salaId}/dados`, function (data) {
+                        renderizarBloqueios(data.bloqueios || data.sala.bloqueios || []);
+                    });
+                }
+            },
+            error: function () {
+                toastr.error('Erro ao remover o bloqueio.');
+            }
+        });
+    });
     
         
     // Excluir imagem ao clicar no botão de exclusão
@@ -391,10 +599,90 @@ $(document).ready(function () {
         // 👇 Força a visualização lista ao carregar a página
         listViewBtn.trigger('click');
       }
+
+    $(document).off('click', '.btn-remover-imagem');
+    $(document).on('click', '.btn-remover-imagem', function () {
+        var imagemId = $(this).data('id');
+        var imagemUrl = `/admin/imagens/${imagemId}`;
+
+        if (!confirm('Você tem certeza que deseja excluir esta imagem?')) {
+            return;
+        }
+
+        $.ajax({
+            url: imagemUrl,
+            method: 'DELETE',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                if (response.success) {
+                    $(`#imagem-${imagemId}`).remove();
+                    if (!$('#imagens-existentes').children().length) {
+                        renderizarImagens([]);
+                    }
+                    toastr.success(response.message, 'Sucesso', {
+                        closeButton: true,
+                        tapToDismiss: false
+                    });
+                } else {
+                    toastr.error('Erro ao excluir a imagem.', 'Erro', {
+                        closeButton: true,
+                        tapToDismiss: false
+                    });
+                }
+            },
+            error: function () {
+                toastr.error('Erro ao excluir a imagem.', 'Erro', {
+                    closeButton: true,
+                    tapToDismiss: false
+                });
+            }
+        });
+    });
+
+    $(document).off('click', '.definir-principal');
+    $(document).on('click', '.definir-principal', function (e) {
+        e.preventDefault();
+
+        var imagemId = $(this).data('id');
+
+        $.ajax({
+            url: '/imagens/' + imagemId + '/principal',
+            method: 'POST',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                toastr.success(response.message);
+
+                $('.imagem-card').removeClass('is-principal');
+                $('.imagem-badge-principal').hide();
+                $('.definir-principal')
+                    .removeClass('btn-success')
+                    .addClass('btn-outline-primary')
+                    .text('Tornar principal');
+                $('.imagem-card-title').each(function (index) {
+                    $(this).text(`Imagem ${index + 1}`);
+                });
+
+                $('#imagem-' + imagemId + ' .imagem-card').addClass('is-principal');
+                $('#imagem-' + imagemId + ' .imagem-badge-principal').show();
+                $('#imagem-' + imagemId + ' .definir-principal')
+                    .removeClass('btn-outline-primary')
+                    .addClass('btn-success')
+                    .text('Principal selecionada');
+                $('#imagem-' + imagemId + ' .imagem-card-title').text('Principal da sala');
+            },
+            error: function () {
+                toastr.error('Erro ao definir imagem principal.');
+            }
+        });
+    });
 });
 
 // Função para adicionar ou atualizar uma sala dinamicamente
-function adicionarSala(sala, isEdit = false) {
+function adicionarSalaAntigo(sala, isEdit = false) {
     // Definir imagem principal padrão como placeholder
     var imagemPrincipal = '../../../app-assets/images/pages/eCommerce/1.png'; // Placeholder padrão
 
@@ -467,7 +755,7 @@ function adicionarSala(sala, isEdit = false) {
 
     
 // Função para carregar as salas com filtros (status ou busca)
-function carregarSalas(status = '', busca = '') {
+function carregarSalasAntigo(status = '', busca = '') {
     $.ajax({
         url: '/salas/all', // Rota para buscar todas as salas
         method: 'GET',
@@ -565,5 +853,77 @@ document.addEventListener('DOMContentLoaded', function () {
         inputValor.value = value;
     });
 });
+
+function adicionarSala(sala, isEdit = false) {
+    var imagemPrincipal = '../../../app-assets/images/pages/eCommerce/1.png';
+
+    if (sala.imagens && sala.imagens.length > 0) {
+        let imagemPrincipalObj = sala.imagens.find(img => img.principal);
+        imagemPrincipal = imagemPrincipalObj ? imagemPrincipalObj.imagem_base64 : sala.imagens[0].imagem_base64;
+    }
+
+    var descricao = sala.descricao || '';
+    var descricaoCurta = descricao.length > 120 ? descricao.substring(0, 120) + '...' : descricao;
+    var statusClass = sala.status === 'indisponivel' ? 'is-indisponivel' : '';
+    var statusLabel = sala.status ? sala.status.replace('_', ' ') : 'disponivel';
+    var metragem = sala.metragem ? `${sala.metragem} m²` : 'Metragem não informada';
+
+    var salaHTML = `
+        <article class="sala-card" id="sala-card-${sala.id}">
+            <div class="sala-card-media">
+                <img src="${imagemPrincipal}" alt="Imagem da sala ${sala.nome}">
+                <div class="sala-card-price">R$ ${sala.valor}/h</div>
+            </div>
+            <div class="sala-card-body">
+                <div class="sala-card-topline">
+                    <h4 class="sala-card-title">${sala.nome}</h4>
+                    <span class="sala-card-status ${statusClass}">${statusLabel}</span>
+                </div>
+                <div class="sala-card-meta">${metragem}</div>
+                <p class="sala-card-description">${descricaoCurta}</p>
+            </div>
+            <div class="sala-card-footer">
+                <a href="javascript:void(0);" class="btn btn-primary btn-block btn-edit-sala" data-id="${sala.id}">
+                    <i data-feather="edit"></i>
+                    <span>Editar sala</span>
+                </a>
+            </div>
+        </article>
+    `;
+
+    if (isEdit) {
+        $(`#sala-card-${sala.id}`).replaceWith(salaHTML);
+    } else {
+        $('#ecommerce-products').prepend(salaHTML);
+    }
+
+    if (typeof feather !== 'undefined') {
+        feather.replace();
+    }
+}
+
+function carregarSalas(status = '', busca = '') {
+    $.ajax({
+        url: '/salas/all',
+        method: 'GET',
+        data: { status: status, busca: busca },
+        success: function (response) {
+            $('#ecommerce-products').empty();
+            $('.search-results').text(`${response.quantidade} ${response.quantidade === 1 ? 'sala encontrada' : 'salas encontradas'}`);
+
+            if (!response.salas || !response.salas.length) {
+                $('#ecommerce-products').html('<div class="bloqueio-empty">Nenhuma sala encontrada para este filtro.</div>');
+                return;
+            }
+
+            $.each(response.salas, function (index, sala) {
+                adicionarSala(sala);
+            });
+        },
+        error: function () {
+            toastr.error('Erro ao carregar as salas.');
+        }
+    });
+}
 
 

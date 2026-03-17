@@ -433,6 +433,18 @@
             overflow: hidden;
             background: white;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+         }
+
+         .card-sala.indisponivel {
+            opacity: 0.92;
+         }
+
+         .card-sala.indisponivel .sala-imagem::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(28, 33, 28, 0.28);
          }
 
          .sala-imagem {
@@ -442,6 +454,26 @@
             background-position: center;
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
+            position: relative;
+         }
+
+         .sala-status-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            z-index: 2;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #216C2E;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+         }
+
+         .sala-status-badge.indisponivel {
+            background: rgba(170, 48, 48, 0.92);
+            color: #fff;
          }
 
          .card-sala .content {
@@ -482,7 +514,7 @@
          .owl-next-custom:hover {
             background:rgb(115, 223, 133);
          }
-         
+
       </style>
       <section id="about" class="about" style="margin-top: -40px">
          <div class="container">
@@ -505,11 +537,15 @@
                   <div class="owl-carousel carousel-sala">
                      @foreach ($salas as $sala)
                         <div class="item-sala">
-                              <div class="card-sala">
+                              <div class="card-sala {{ $sala->status === 'indisponivel' ? 'indisponivel' : '' }}">
                                  @php
                                     $imagem = $sala->imagens->isNotEmpty() ? "url('{$sala->imagens->first()->imagem_base64}')" : "url('/img/default-sala.jpg')";
                                  @endphp
-                                 <div class="sala-imagem" style="background-image: {{ $imagem }};"></div>
+                                 <div class="sala-imagem" style="background-image: {{ $imagem }};">
+                                    <span class="sala-status-badge {{ $sala->status === 'indisponivel' ? 'indisponivel' : '' }}">
+                                       {{ $sala->status === 'indisponivel' ? 'Indisponível' : 'Disponível' }}
+                                    </span>
+                                 </div>
                                  <div class="content textop">
                                     <h4>{{ $sala->nome }}</h4>
 
@@ -531,7 +567,7 @@
                                           <h4>R$ {{$sala->valor}}/h</h4>
                                           </span>
                                           <span class="metragem">
-                                             <a href="{{ route('site.sala.detalhes', $sala->id) }}" class=" about-btn">Ver Detalhes</a>
+                                             <a href="{{ route('site.sala.detalhes', $sala->id) }}" class="about-btn">Ver Detalhes</a>
                                           </span>
                                     </div>
                                  </div>

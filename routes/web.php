@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\NewsletterController;
 use App\Models\DebugLog;
 use App\Http\Controllers\admin\FechaduraController;
+use App\Http\Controllers\admin\BloqueioSalaController;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CadastroAprovadoMail;
@@ -259,6 +260,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/admin/salas/{sala}', [SalaController::class, 'destroy'])->name('salas.destroy');
     Route::get('/admin/salas/{sala}/dados', [SalaController::class, 'getSalaData'])->name('salas.dados');
     Route::get('/admin/salas/{sala}/imagens', [ImagemSalaController::class, 'index'])->name('imagens.index');
+    Route::post('/admin/salas/{sala}/bloqueios', [BloqueioSalaController::class, 'store'])->name('admin.salas.bloqueios.store');
+    Route::delete('/admin/bloqueios/{bloqueio}', [BloqueioSalaController::class, 'destroy'])->name('admin.bloqueios.destroy');
     // Route::delete('/admin/imagens/{imagem}', [ImagemSalaController::class, 'destroy'])->name('imagens.destroy');
     Route::get('/salas/all', [SalaController::class, 'getSalasData'])->name('salas.data');
 

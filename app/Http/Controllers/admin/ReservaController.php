@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Sala;
 use App\Models\Reserva;
+use App\Models\BloqueioSala;
 use Carbon\Carbon;
 use App\Models\Transacao;
 
@@ -32,6 +33,11 @@ class ReservaController extends Controller
 
         // Verifica conflitos para todos os horários antes de criar reservas
         foreach ($validated['horarios'] as $horario) {
+            if ($this->existeBloqueioParaPeriodo($sala->id, $horario['data_reserva'], $horario['hora_inicio'], $horario['hora_fim'])) {
+                $conflitos[] = "{$horario['data_reserva']} - {$horario['hora_inicio']} às {$horario['hora_fim']} (bloqueado manualmente)";
+                continue;
+            }
+
             $conflict = $sala->reservas()
                 ->where('data_reserva', $horario['data_reserva'])
                 ->whereIn('status', ['CONFIRMADA', 'PENDENTE']) // aqui considera os dois
@@ -138,18 +144,38 @@ class ReservaController extends Controller
             ->whereIn('status', ['CONFIRMADA', 'PENDENTE']) // <-- só considera essas
             ->get(['hora_inicio', 'hora_fim']);
 
+        $bloqueios = $this->buscarBloqueiosAtivos($sala_id, $data_reserva);
         $horariosPossiveis = $this->gerarHorariosPossiveis();
 
-        $horariosDisponiveis = $horariosPossiveis->filter(function ($horario) use ($reservas) {
-            foreach ($reservas as $reserva) {
-                if ($this->horarioConflita($horario, $reserva)) {
-                    return false;
-                }
+        $horarios = $horariosPossiveis->map(function ($horario) use ($reservas, $bloqueios) {
+            $bloqueio = $bloqueios->first(fn ($item) => $this->horarioBloqueado($horario, $item));
+            if ($bloqueio) {
+                return [
+                    ...$horario,
+                    'status' => 'bloqueado',
+                    'mensagem' => $bloqueio->motivo ?: 'Horário bloqueado pela administração.',
+                ];
             }
-            return true;
+
+            $reserva = $reservas->first(fn ($item) => $this->horarioConflita($horario, $item));
+            if ($reserva) {
+                return [
+                    ...$horario,
+                    'status' => 'reservado',
+                    'mensagem' => 'Este horário já foi reservado.',
+                ];
+            }
+
+            return [
+                ...$horario,
+                'status' => 'disponivel',
+                'mensagem' => 'Horário disponível para reserva.',
+            ];
         });
 
-        return response()->json(['horarios' => $horariosDisponiveis->values()]);
+        return response()->json([
+            'horarios' => $horarios->values(),
+        ]);
     }
 
 
@@ -173,6 +199,48 @@ class ReservaController extends Controller
     private function horarioConflita($horario, $reserva)
     {
         return ($horario['inicio'] < $reserva->hora_fim && $horario['fim'] > $reserva->hora_inicio);
+    }
+
+    private function buscarBloqueiosAtivos(int $salaId, string $dataReserva)
+    {
+        return BloqueioSala::query()
+            ->where('sala_id', $salaId)
+            ->where('ativo', true)
+            ->whereDate('data_inicio', '<=', $dataReserva)
+            ->whereDate('data_fim', '>=', $dataReserva)
+            ->get();
+    }
+
+    private function existeBloqueioParaPeriodo(int $salaId, string $dataReserva, string $horaInicio, string $horaFim): bool
+    {
+        $horario = [
+            'inicio' => substr($horaInicio, 0, 5),
+            'fim' => substr($horaFim, 0, 5),
+        ];
+
+        foreach ($this->buscarBloqueiosAtivos($salaId, $dataReserva) as $bloqueio) {
+            if ($this->horarioBloqueado($horario, $bloqueio)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function horarioBloqueado(array $horario, BloqueioSala $bloqueio): bool
+    {
+        if ($bloqueio->tipo === 'dia_inteiro') {
+            return true;
+        }
+
+        if (!$bloqueio->hora_inicio || !$bloqueio->hora_fim) {
+            return true;
+        }
+
+        $inicioBloqueio = substr($bloqueio->hora_inicio, 0, 5);
+        $fimBloqueio = substr($bloqueio->hora_fim, 0, 5);
+
+        return $horario['inicio'] < $fimBloqueio && $horario['fim'] > $inicioBloqueio;
     }
 
 

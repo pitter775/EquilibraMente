@@ -66,6 +66,11 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\ContratoUsuario::class);
     }
 
+    public function bloqueiosCriados()
+    {
+        return $this->hasMany(BloqueioSala::class, 'created_by');
+    }
+
     /**
      * Relacionamento polimórfico com endereço
      */
@@ -74,4 +79,3 @@ class User extends Authenticatable
         return $this->morphOne(Endereco::class, 'enderecavel');
     }
 }
-

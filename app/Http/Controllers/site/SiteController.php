@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Reserva;
 use App\Models\Transacao;
 use App\Models\Sala;
+use App\Models\BloqueioSala;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Models\DebugLog;
@@ -156,6 +157,13 @@ class SiteController extends Controller
             foreach ($reservaData['horarios'] as $horario) {
                 $sala = Sala::find($reservaData['sala_id']);
 
+                if ($this->existeBloqueioParaPeriodo($sala->id, $horario['data_reserva'], $horario['hora_inicio'], $horario['hora_fim'])) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Horário indisponível. Existe um bloqueio manual para esse período.'
+                    ], 409);
+                }
+
                 $existeConflito = Reserva::where('sala_id', $sala->id)
                     ->where('data_reserva', $horario['data_reserva'])
                     ->where(function ($query) use ($horario) {
@@ -281,6 +289,11 @@ class SiteController extends Controller
 
             // Verifica conflitos para os horários
             foreach ($horarios as $horario) {
+                if ($this->existeBloqueioParaPeriodo($sala->id, $horario['data_reserva'], $horario['hora_inicio'], $horario['hora_fim'])) {
+                    $conflitos[] = "{$horario['data_reserva']} - {$horario['hora_inicio']} às {$horario['hora_fim']} (bloqueado manualmente)";
+                    continue;
+                }
+
                 $conflict = $sala->reservas()
                     ->where('data_reserva', $horario['data_reserva'])
                     ->where(function ($query) use ($horario) {
@@ -513,6 +526,48 @@ class SiteController extends Controller
             ], 500);
         }
 
+    }
+
+    private function buscarBloqueiosAtivos(int $salaId, string $dataReserva)
+    {
+        return BloqueioSala::query()
+            ->where('sala_id', $salaId)
+            ->where('ativo', true)
+            ->whereDate('data_inicio', '<=', $dataReserva)
+            ->whereDate('data_fim', '>=', $dataReserva)
+            ->get();
+    }
+
+    private function existeBloqueioParaPeriodo(int $salaId, string $dataReserva, string $horaInicio, string $horaFim): bool
+    {
+        $horario = [
+            'inicio' => substr($horaInicio, 0, 5),
+            'fim' => substr($horaFim, 0, 5),
+        ];
+
+        foreach ($this->buscarBloqueiosAtivos($salaId, $dataReserva) as $bloqueio) {
+            if ($this->horarioBloqueado($horario, $bloqueio)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function horarioBloqueado(array $horario, BloqueioSala $bloqueio): bool
+    {
+        if ($bloqueio->tipo === 'dia_inteiro') {
+            return true;
+        }
+
+        if (!$bloqueio->hora_inicio || !$bloqueio->hora_fim) {
+            return true;
+        }
+
+        $inicioBloqueio = substr($bloqueio->hora_inicio, 0, 5);
+        $fimBloqueio = substr($bloqueio->hora_fim, 0, 5);
+
+        return $horario['inicio'] < $fimBloqueio && $horario['fim'] > $inicioBloqueio;
     }
 
 }

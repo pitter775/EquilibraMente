@@ -1,4 +1,4 @@
-@extends('layouts.site-interna', [
+﻿@extends('layouts.site-interna', [
     'elementActive' => 'detalhes'
 ])
 
@@ -6,6 +6,104 @@
 
   <style>
         .bthorasdis { margin: 5px}
+        .horarios-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .horario-slot {
+            min-width: 108px;
+            border-radius: 10px;
+            border: 1px solid #d9e2d6;
+            background: #f5f7f4;
+            color: #4d5b4b;
+            padding: 10px 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .horario-slot.horario-disponivel {
+            background: #f4f7f2;
+            border-color: #d9e2d6;
+            color: #50624b;
+        }
+
+        .horario-slot.horario-disponivel:hover {
+            background: #e9f4e6;
+            border-color: #9bc18f;
+        }
+
+        .horario-slot.horario-selecionado {
+            background: #2f7d3f;
+            border-color: #2f7d3f;
+            color: #fff;
+        }
+
+        .horario-slot.horario-reservado {
+            background: #f1f3f4;
+            border-color: #d6dadd;
+            color: #95a0a6;
+            cursor: not-allowed;
+        }
+
+        .horario-slot.horario-bloqueado {
+            background: #fff1f1;
+            border-color: #f1c6c6;
+            color: #b24c4c;
+            cursor: not-allowed;
+        }
+
+        .horarios-legenda {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 12px 0 0;
+        }
+
+        .horarios-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 120px;
+            color: #66725f;
+            font-weight: 500;
+        }
+
+        .horarios-loading-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d7e3d2;
+            border-top-color: #4f7e48;
+            border-radius: 999px;
+            animation: horarios-spin 0.8s linear infinite;
+        }
+
+        @keyframes horarios-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .legenda-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #6d746b;
+        }
+
+        .legenda-ponto {
+            width: 12px;
+            height: 12px;
+            border-radius: 999px;
+            display: inline-block;
+        }
+
+        .legenda-disponivel { background: #9bc18f; }
+        .legenda-reservado { background: #cfd6da; }
+        .legenda-bloqueado { background: #e9aaaa; }
  
       .fc-toolbar-title { font-size: 14px !important}
       .preco {
@@ -29,16 +127,16 @@
             object-fit: cover; /* Ajusta a imagem sem distorcer */
             border-radius: 12px; /* Define o arredondamento das bordas */
             border: none; /* Remove bordas extras */
-            padding: 2px; /* Reduz o espaçamento interno */
+            padding: 2px; /* Reduz o espaÃ§amento interno */
         }
 
         .row.g-1 {
-            gap: 5px; /* Espaço mínimo entre as imagens */
+            gap: 5px; /* EspaÃ§o mÃ­nimo entre as imagens */
         }
 
         .carousel-inner img {
             max-height: 450px; /* Ajusta a altura da imagem principal */
-            object-fit: cover; /* Garante que a imagem se adapte sem distorção */
+            object-fit: cover; /* Garante que a imagem se adapte sem distorÃ§Ã£o */
         }
 
 
@@ -63,7 +161,7 @@
         }
 
         .col-6 {
-            padding: 5px; /* Adiciona espaço entre as colunas */
+            padding: 5px; /* Adiciona espaÃ§o entre as colunas */
         }
 
         .sala-detalhes .titisala { color: #777; font-size: 18px; font-weight: 500; }
@@ -84,10 +182,10 @@
             }
 
             .img-thumbnail {
-                max-height: 70px; /* Define o tamanho máximo da imagem */
+                max-height: 70px; /* Define o tamanho mÃ¡ximo da imagem */
                 display: block; /* Garante que a imagem seja tratada como um bloco */
                 margin: 0 auto; /* Centraliza horizontalmente */
-                position: relative; /* Permite o uso de posicionamento absoluto se necessário */
+                position: relative; /* Permite o uso de posicionamento absoluto se necessÃ¡rio */
             }
 
             .col-4.d-flex.flex-column {
@@ -100,7 +198,7 @@
                 margin-bottom: 5px;
             }
             .carousel-inner img {
-                border-radius: 8px; /* Também arredonda as bordas da imagem principal, caso necessário */
+                border-radius: 8px; /* TambÃ©m arredonda as bordas da imagem principal, caso necessÃ¡rio */
             }
             h3{ font-size: 16px !important}
 
@@ -117,6 +215,37 @@
         .contentg p { font-size: 15px; color: #555}
         .contentg h3 span {
             color: #216C2E;
+        }
+
+        .status-sala-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            margin: 18px 0 6px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-sala-banner.indisponivel {
+            background: #fff1f1;
+            color: #b24c4c;
+            border: 1px solid #f2caca;
+        }
+
+        .btn-reserva-indisponivel {
+            background: #d8ddd7 !important;
+            border-color: #d8ddd7 !important;
+            color: #6d746b !important;
+            cursor: not-allowed;
+        }
+
+        .btn-disponibilidade {
+            font-family: inherit;
+            font-weight: 600;
+            letter-spacing: 0;
         }
 
   </style>
@@ -146,7 +275,7 @@
                                 </a>
                                 <a class="carousel-control-next" href="#carouselSalaDetalhes" role="button" data-slide="next">
                                     <span class="carousel-control-next-icon" ></span>
-                                    <span class="sr-only">Próximo</span>
+                                    <span class="sr-only">PrÃ³ximo</span>
                                 </a>
                             </div>
                         </div>
@@ -179,7 +308,7 @@
                                         @else
                                             <div class="d-flex align-items-center justify-content-center rounded w-100" 
                                                 style="height: 100px; background-color: #f1f1f1; color: #777;">
-                                                <!-- Espaço vazio -->
+                                                <!-- EspaÃ§o vazio -->
                                             </div>
                                         @endif
                                     </div>
@@ -199,6 +328,13 @@
                <div class="contentg">
                         <h3>Sobre a<span> {{ $sala->nome }}</span></h3>                    
                     </div>
+
+                @if($sala->status === 'indisponivel')
+                    <div class="status-sala-banner indisponivel">
+                        <span>Esta sala estÃ¡ temporariamente indisponÃ­vel para novas reservas.</span>
+                        <span>VocÃª ainda pode consultar os detalhes.</span>
+                    </div>
+                @endif
             </div>
 
           </div>
@@ -209,40 +345,46 @@
               <div class="row">
 
                
-                <!-- Nome e Descrição da Sala -->
+                <!-- Nome e DescriÃ§Ã£o da Sala -->
                 <div class="col-lg-8 mb-5 mt-3">                  
                     <div>
                      <div id="divvalorP" class="card p-4">
                     <div class="row">
                     <div class="col-12 d-flex justify-content-between align-items-center">
-                        <!-- Valor alinhado à esquerda -->
+                        <!-- Valor alinhado Ã  esquerda -->
                         <p class="mt-2 mb-4 mb-0" style="font-size:25px; color: #000">
                             R$ {{ number_format($sala->valor, 2, ',', '.') }}/h
                         </p>
 
-                        <!-- Metragem alinhada à direita -->
+                        <!-- Metragem alinhada Ã  direita -->
                         <div class="d-flex align-items-center">
                             <i class="fa-solid fa-ruler-combined me-2 pr-2" style="font-size: 15px; color: #76aa66"></i>
-                            <span style="font-size: 15px; color: #333;">{{$sala->metragem}} m²</span>
+                            <span style="font-size: 15px; color: #333;">{{$sala->metragem}} mÂ²</span>
                         </div>
                     </div>
                     <div class="col-12">
 
                     
 
-                    <a href="{{ auth()->check() ? '#' : route('login') }}" 
-                        class="btn btn-primary" 
-                        data-toggle="{{ auth()->check() ? 'modal' : '' }}" 
-                        data-target="{{ auth()->check() ? '#modalHorarios' : '' }}">
-                        Horários disponíveis
-                    </a>
+                    @if($sala->status === 'indisponivel')
+                        <button type="button" class="btn btn-primary btn-reserva-indisponivel" disabled>
+                            Sala indisponível no momento
+                        </button>
+                    @else
+                        <a href="{{ auth()->check() ? '#' : route('login') }}" 
+                            class="btn btn-primary btn-disponibilidade" 
+                            data-toggle="{{ auth()->check() ? 'modal' : '' }}" 
+                            data-target="{{ auth()->check() ? '#modalHorarios' : '' }}">
+                            Horários disponíveis
+                        </a>
+                    @endif
 
 
                     </div>
                     </div>
                 
                 </div>
-                        <!-- Conteúdo completo inicialmente escondido -->
+                        <!-- ConteÃºdo completo inicialmente escondido -->
                         <div id="descricao-completa">
                             {!! $sala->descricao !!}
                         </div>
@@ -261,7 +403,7 @@
                               </div>
                             </div>
                           @empty
-                              <p>Sem conveniências cadastradas para esta sala.</p>
+                              <p>Sem conveniÃªncias cadastradas para esta sala.</p>
                           @endforelse
                       
                     </div>
@@ -277,27 +419,33 @@
                     <div id="divvalor" class="card p-4" style="margin-top: -40px">
                       <div class="row">
                         <div class="col-12 d-flex justify-content-between align-items-center">
-                          <!-- Valor alinhado à esquerda -->
+                          <!-- Valor alinhado Ã  esquerda -->
                           <p class="mt-2 mb-4 mb-0" style="font-size:25px; color: #000">
                               R$ {{ number_format($sala->valor, 2, ',', '.') }}/h
                           </p>
 
-                          <!-- Metragem alinhada à direita -->
+                          <!-- Metragem alinhada Ã  direita -->
                           <div class="d-flex align-items-center">
                               <i class="fa-solid fa-ruler-combined me-2 pr-2" style="font-size: 15px; color: #76aa66"></i>
-                              <span style="font-size: 15px; color: #333;">{{$sala->metragem}} m²</span>
+                              <span style="font-size: 15px; color: #333;">{{$sala->metragem}} mÂ²</span>
                           </div>
                         </div>
                         <div class="col-12">
 
                         
 
-                        <a href="{{ auth()->check() ? '#' : route('login') }}" 
-                          class="btn btn-primary" 
-                          data-toggle="{{ auth()->check() ? 'modal' : '' }}" 
-                          data-target="{{ auth()->check() ? '#modalHorarios' : '' }}">
-                          Horários disponíveis
-                        </a>
+                        @if($sala->status === 'indisponivel')
+                          <button type="button" class="btn btn-primary btn-reserva-indisponivel" disabled>
+                              Sala indisponível no momento
+                          </button>
+                        @else
+                          <a href="{{ auth()->check() ? '#' : route('login') }}" 
+                            class="btn btn-primary btn-disponibilidade" 
+                            data-toggle="{{ auth()->check() ? 'modal' : '' }}" 
+                            data-target="{{ auth()->check() ? '#modalHorarios' : '' }}">
+                            Horários disponíveis
+                          </a>
+                        @endif
 
 
                         </div>
@@ -323,11 +471,11 @@
                               <div class="col-lg-12 ">
 
 
-                                {{-- <h4 id="selected-date" class="mb-3 mt-3" style=" font-size: 16px">Selecione uma data no calendário.</h4>
+                                {{-- <h4 id="selected-date" class="mb-3 mt-3" style=" font-size: 16px">Selecione uma data no calendÃ¡rio.</h4>
                                 @if(auth()->check())
                                   <div id="calendar"></div>
                                 @else
-                                  <p>Para ver a disponibilidade e fazer reservas, faça login.</p>
+                                  <p>Para ver a disponibilidade e fazer reservas, faÃ§a login.</p>
                                   <a href="/login" class="btn btn-primary">Entrar</a>                                  
                                 @endif --}}
                               </div>
@@ -337,10 +485,10 @@
 
                     <div class="card p-4" style="margin-top: -20px">
                         <p class="text-success mb-2">
-                            <i class="fas fa-lock"></i> Este é um ambiente seguro!
+                            <i class="fas fa-lock"></i> Este Ã© um ambiente seguro!
                         </p>
                         <p>
-                            Trabalhamos constantemente para proteger sua segurança e privacidade. 
+                            Trabalhamos constantemente para proteger sua seguranÃ§a e privacidade. 
                             <a href="{{ route('privacidade') }}" class="text-primary">Saiba mais</a>
                         </p>
                     
@@ -353,7 +501,7 @@
         </div>
       </section>
 
-      <!-- Modal para seleção de horários -->
+      <!-- Modal para seleÃ§Ã£o de horÃ¡rios -->
       <div class="modal fade" id="modalHorarios" tabindex="-1" role="dialog" aria-labelledby="modalHorariosLabel" >
 
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -409,13 +557,18 @@
 
               <div style="min-height: 170px;">
                   <hr>
-                   <p id="divhorarios" style="display: none"><i class="fas fa-clock"></i> <span style='font-size: 13px'> Horários disponíveis <i class="fas fa-calendar-alt"></i> <b><span id='datasele'></span></b></span></p>
+                   <p id="divhorarios" style="display: none"><i class="fas fa-clock"></i> <span style='font-size: 13px'> Agenda do dia <i class="fas fa-calendar-alt"></i> <b><span id='datasele'></span></b></span></p>
                    <div id="horarios-disponiveis">
                 
                     <div class="text-center mt-4">
                         Aguardando selecionar a data para exibir os horários...
                     </div>
-                    <!-- Horários serão carregados aqui via AJAX -->
+                    <!-- HorÃ¡rios serÃ£o carregados aqui via AJAX -->
+                  </div>
+                  <div class="horarios-legenda" id="horarios-legenda" style="display:none;">
+                    <span class="legenda-item"><span class="legenda-ponto legenda-disponivel"></span> DisponÃ­vel</span>
+                    <span class="legenda-item"><span class="legenda-ponto legenda-reservado"></span> Reservado</span>
+                    <span class="legenda-item"><span class="legenda-ponto legenda-bloqueado"></span> Bloqueado</span>
                   </div>
               </div>
               
@@ -441,18 +594,48 @@
 @push('js_page')
 
   <script>
+      const salaIndisponivel = @json($sala->status === 'indisponivel');
       @if(auth()->check())
-        let horariosSelecionados = []; // Array para armazenar os horários selecionados
-        const valorPorHora = {{ $sala->valor }}; // Valor por hora da sala
+        let horariosSelecionados = [];
+        const valorPorHora = {{ $sala->valor }};
+
+        function formatarLabelHorario(horaInicio, horaFim) {
+            return `${horaInicio.substring(0, 2)}hs - ${horaFim.substring(0, 2)}hs`;
+        }
+
+        function renderizarAgendaVazia(mensagem) {
+            document.getElementById('horarios-disponiveis').innerHTML = `
+                <div class="text-center mt-4">${mensagem}</div>
+            `;
+            document.getElementById('horarios-legenda').style.display = "none";
+        }
+
+        function renderizarAgendaCarregando() {
+            document.getElementById('horarios-disponiveis').innerHTML = `
+                <div class="horarios-loading">
+                    <span class="horarios-loading-spinner" aria-hidden="true"></span>
+                    <span>Carregando agenda do dia...</span>
+                </div>
+            `;
+            document.getElementById('horarios-legenda').style.display = "none";
+        }
 
         function mostrarModalHorarios(data_reserva) {
-            horariosSelecionados = []; // Reseta a seleção de horários quando abre a modal
+            if (salaIndisponivel) {
+                renderizarAgendaVazia('Esta sala está temporariamente indisponível para novas reservas.');
+                document.getElementById('divhorarios').style.display = "none";
+                document.getElementById('datasele').innerText = '';
+                toastr.warning('Esta sala está temporariamente indisponível para novas reservas.');
+                return;
+            }
 
-            // Converte "20/03/2025" para "2025-03-20"
+            horariosSelecionados = [];
+
             const partesData = data_reserva.split("/");
             const dataFormatada = `${partesData[2]}-${partesData[1]}-${partesData[0]}`;
-
-            //document.getElementById('modalDataReserva').innerText = data_reserva; // Mostra a data formatada no modal
+            document.getElementById('divhorarios').style.display = "block";
+            document.getElementById('datasele').innerText = data_reserva;
+            renderizarAgendaCarregando();
 
             fetch(`/horarios-disponiveis/{{ $sala->id }}/${dataFormatada}`)
                 .then(response => {
@@ -462,47 +645,70 @@
                     return response.json();
                 })
                 .then(data => {
-                    let horariosDisponiveisContainer = document.getElementById('horarios-disponiveis');
-                    horariosDisponiveisContainer.innerHTML = '';
+                    const horariosDisponiveisContainer = document.getElementById('horarios-disponiveis');
+                    const legenda = document.getElementById('horarios-legenda');
 
-                    document.getElementById('divhorarios').style.display = "block";
-                    document.getElementById('datasele').innerText = data_reserva;
+                    if (!data.horarios || data.horarios.length === 0) {
+                        renderizarAgendaVazia('Nenhum horário foi encontrado para esta data.');
+                        atualizarValorTotal();
+                        return;
+                    }
 
-                    data.horarios.forEach(horario => {
-                        horariosDisponiveisContainer.innerHTML += `
-                            <button class="btn btn-secondary horario-btn bthorasdis" 
-                                onclick="selecionarHorario('${data_reserva}', '${horario.inicio}', '${horario.fim}', this)">
-                                ${horario.inicio.substring(0, 2)}hs - ${horario.fim.substring(0, 2)}hs
-                            </button>
-                        `;
+                    horariosDisponiveisContainer.innerHTML = `
+                        <div class="horarios-grid">
+                            ${data.horarios.map(horario => {
+                                const classeStatus = `horario-${horario.status}`;
+                                const label = formatarLabelHorario(horario.inicio, horario.fim);
+                                const mensagem = horario.mensagem || '';
 
-                    });
+                                if (horario.status !== 'disponivel') {
+                                    return `
+                                        <button
+                                            type="button"
+                                            class="horario-slot ${classeStatus}"
+                                            disabled
+                                            title="${mensagem}">
+                                            ${label}
+                                        </button>
+                                    `;
+                                }
 
+                                return `
+                                    <button
+                                        type="button"
+                                        class="horario-slot ${classeStatus}"
+                                        title="${mensagem}"
+                                        onclick="selecionarHorario('${data_reserva}', '${horario.inicio}', '${horario.fim}', this)">
+                                        ${label}
+                                    </button>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+
+                    legenda.style.display = "flex";
                     atualizarValorTotal();
                 })
-                .catch(error => console.error('Erro:', error));
+                .catch(error => {
+                    console.error('Erro:', error);
+                    renderizarAgendaVazia('Não foi possível carregar a agenda deste dia.');
+                    toastr.error('Não foi possível carregar os horários agora. Tente novamente.');
+                });
         }
-
 
         function selecionarHorario(data_reserva, hora_inicio, hora_fim, button) {
           const horario = { data_reserva, hora_inicio, hora_fim };
-          
-          // Verifica se o horário já está selecionado
           const index = horariosSelecionados.findIndex(h => h.hora_inicio === hora_inicio && h.hora_fim === hora_fim);
           
           if (index === -1) {
-            // Se não estiver, adiciona à lista e marca o botão
             horariosSelecionados.push(horario);
-            button.classList.add('btn-success');
-            button.classList.remove('btn-secondary');
+            button.classList.add('horario-selecionado');
           } else {
-            // Se já estiver, remove da lista e desmarca o botão
             horariosSelecionados.splice(index, 1);
-            button.classList.add('btn-secondary');
-            button.classList.remove('btn-success');
+            button.classList.remove('horario-selecionado');
           }
 
-          atualizarValorTotal(); // Atualiza o valor total sempre que um horário é selecionado ou desmarcado
+          atualizarValorTotal();
         }
 
         function atualizarValorTotal() {
@@ -526,10 +732,9 @@
                 return;
             }
 
-            // Converter datas para YYYY-MM-DD antes de enviar
             let horariosFormatados = horariosSelecionados.map(horario => {
-                let partesData = horario.data_reserva.split("/"); // Divide "20/03/2025" em ["20", "03", "2025"]
-                let dataFormatada = `${partesData[2]}-${partesData[1]}-${partesData[0]}`; // Converte para "2025-03-20"
+                let partesData = horario.data_reserva.split("/");
+                let dataFormatada = `${partesData[2]}-${partesData[1]}-${partesData[0]}`;
 
                 return {
                     data_reserva: dataFormatada,
@@ -538,14 +743,14 @@
                 };
             });
 
-            console.log('Horários Formatados para envio:', JSON.stringify(horariosFormatados, null, 2)); // Veja se as datas estão corretas
+            console.log('Horários formatados para envio:', JSON.stringify(horariosFormatados, null, 2));
 
             $.ajax({
                 url: '/reserva/revisao',
                 type: 'POST',
                 data: {
                     sala_id: {{ $sala->id }},
-                    horarios: horariosFormatados, // Agora está no formato correto!
+                    horarios: horariosFormatados,
                     _token: '{{ csrf_token() }}'
                 },
                 dataType: 'json',
@@ -563,24 +768,29 @@
             });
         }
 
-
-
-
         document.addEventListener("DOMContentLoaded", function() {
+            const modalHorarios = document.getElementById('modalHorarios');
+
+            if (modalHorarios && salaIndisponivel) {
+                $('#modalHorarios').on('show.bs.modal', function(event) {
+                    event.preventDefault();
+                    toastr.warning('Esta sala está temporariamente indisponível para novas reservas.');
+                });
+            }
+
             flatpickr("#datepicker", {
-                enableTime: false, // Apenas data
-                dateFormat: "d/m/Y", // Formato brasileiro
-                minDate: "today", // Bloqueia datas passadas
-                locale: "pt", // Deixa os nomes dos meses e dias em português
+                enableTime: false,
+                dateFormat: "d/m/Y",
+                minDate: "today",
+                locale: "pt",
                 onChange: function(selectedDates, dateStr, instance) {
-                    mostrarModalHorarios(dateStr); // Chama a função passando a data selecionada
+                    mostrarModalHorarios(dateStr);
                 }
             });
         });
 
 
       @endif
-
       function trocarImagemPrincipal(novaImagem) {
           const carrosselAtivo = document.querySelector('#carouselSalaDetalhes .carousel-item.active img');
           if (carrosselAtivo) {
@@ -595,3 +805,6 @@
     
   </script>
 @endpush
+
+
+

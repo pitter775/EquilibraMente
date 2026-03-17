@@ -21,9 +21,9 @@ class Sala extends Model
 
     
 
-    public function disponibilidades()
+    public function bloqueios()
     {
-        return $this->hasMany(Disponibilidade::class);
+        return $this->hasMany(BloqueioSala::class);
     }
 
     public function reservas()
