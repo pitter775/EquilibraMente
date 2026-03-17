@@ -1,4 +1,4 @@
-   <!DOCTYPE html>
+﻿   <!DOCTYPE html>
    <html lang="en">
 
    <head>
@@ -222,7 +222,7 @@
          }
          .step video {
             width: 80px;
-            height: auto; /* Mantém a proporção */
+            height: auto; /* MantÃ©m a proporÃ§Ã£o */
             image-rendering: smooth; /* Suaviza o serrilhado */
             cursor: pointer;
             object-fit: contain;
@@ -234,7 +234,7 @@
             font-size: 13px;
          }
          .step::after {
-            content: '\f105'; /* Ícone de seta para a direita do FontAwesome */
+            content: '\f105'; /* Ãcone de seta para a direita do FontAwesome */
             font-family: 'Font Awesome 5 Free';
             font-weight: 900;
             font-size: 24px;
@@ -295,11 +295,11 @@
                   margin-top: 80px;
                   width: 100%;
                   text-align: center;
-                  margin-bottom: 20px; /* Dá espaço entre o título e os passos */
+                  margin-bottom: 20px; /* DÃ¡ espaÃ§o entre o tÃ­tulo e os passos */
             }
 
             .steps {
-                  width: 100%; /* Ocupa toda a largura disponível */
+                  width: 100%; /* Ocupa toda a largura disponÃ­vel */
                   flex-direction: column;
                   align-items: center;
                   gap: 15px;
@@ -457,6 +457,43 @@
             position: relative;
          }
 
+         .sala-imagem-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 3;
+            width: 34px;
+            height: 34px;
+            border: none;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.92);
+            color: #216C2E;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            box-shadow: 0 6px 18px rgba(26, 41, 24, 0.18);
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .sala-imagem-nav:hover {
+            background: #fff;
+            transform: translateY(-50%) scale(1.06);
+        }
+
+        .sala-imagem-nav.prev {
+            left: 12px;
+        }
+
+        .sala-imagem-nav.next {
+            right: 12px;
+        }
+
+        .sala-imagem-nav[hidden] {
+            display: none !important;
+        }
+
          .sala-status-badge {
             position: absolute;
             top: 14px;
@@ -539,9 +576,16 @@
                         <div class="item-sala">
                               <div class="card-sala {{ $sala->status === 'indisponivel' ? 'indisponivel' : '' }}">
                                  @php
-                                    $imagem = $sala->imagens->isNotEmpty() ? "url('{$sala->imagens->first()->imagem_base64}')" : "url('/img/default-sala.jpg')";
+                                    $imagensSala = $sala->imagens->pluck('imagem_base64')->values();
+                                    $primeiraImagem = $imagensSala->first() ?: '/img/default-sala.jpg';
                                  @endphp
-                                 <div class="sala-imagem" style="background-image: {{ $imagem }};">
+                                 <div
+                                    class="sala-imagem"
+                                    data-imagens='@json($imagensSala->isNotEmpty() ? $imagensSala : ['/img/default-sala.jpg'])'
+                                    data-imagem-index="0"
+                                    style="background-image: url('{{ $primeiraImagem }}');">
+                                    <button type="button" class="sala-imagem-nav prev" {{ $imagensSala->count() <= 1 ? 'hidden' : '' }} aria-label="Imagem anterior">‹</button>
+                                    <button type="button" class="sala-imagem-nav next" {{ $imagensSala->count() <= 1 ? 'hidden' : '' }} aria-label="Próxima imagem">›</button>
                                     <span class="sala-status-badge {{ $sala->status === 'indisponivel' ? 'indisponivel' : '' }}">
                                        {{ $sala->status === 'indisponivel' ? 'Indisponível' : 'Disponível' }}
                                     </span>
@@ -593,7 +637,7 @@
                      <div class="step">
                
                         <img src="/assets/img/icons/mesa.png" alt="" class="icon-verde icospteps" style=""> 
-                        <p>Escolha um dos nossos consultório disponiveis</p>
+                        <p>Escolha um dos nossos consultórios disponíveis</p>
                      </div>
                      <div class="step">
                         <img src="/assets/img/icons/calendar.png" alt="" class="icon-verde icospteps" style=""> 
@@ -673,13 +717,13 @@
             gap: 10px;
          }
 
-         /* Ícones */
+         /* Ãcones */
          .icon-prof {
             width: 30px;
             height: auto;
          }
 
-         /* ✅ RESPONSIVO */
+         /* âœ… RESPONSIVO */
          @media (max-width: 768px) {
             .profissionais-section {
                   flex-direction: column;
@@ -1071,7 +1115,7 @@
          <div class="contentg">
             <h3>Nossos time de <span>Especialistas</span></h3>
             <p>
-               Nosso time é formado por profissionais experientescomprometidas com o cuidado emocional, garantindo qualidade no atendimento e cuidado com cada detalhe.
+               Nosso time é formado por profissionais experientes comprometidas com o cuidado emocional, garantindo qualidade no atendimento e cuidado com cada detalhe.
             </p>
 
            
@@ -1277,14 +1321,14 @@
       const dots = document.querySelectorAll('.dot');
       const totalSlides = slides.length -1;
 
-      // Verifica se há slides suficientes para evitar erros
+      // Verifica se hÃ¡ slides suficientes para evitar erros
       if (totalSlides > 0) {
          function goToSlide(index) {
             // Remove a classe 'active' de todos os slides e dots
             slides.forEach(slide => slide.classList.remove('active'));
             dots.forEach(dot => dot.classList.remove('active'));
 
-            // Atualiza o índice e adiciona a classe 'active' ao slide correto
+            // Atualiza o Ã­ndice e adiciona a classe 'active' ao slide correto
             currentIndex = index % totalSlides;
             slides[currentIndex].classList.add('active');
             dots[currentIndex].classList.add('active');
@@ -1298,7 +1342,7 @@
          // Inicia o loop do banner
          setInterval(nextSlide, 5000);
 
-         // Ativa o primeiro slide ao carregar a página
+         // Ativa o primeiro slide ao carregar a pÃ¡gina
          goToSlide(0);
       } else {
          console.error("Erro: Nenhum slide encontrado!");
@@ -1347,7 +1391,7 @@
                   item.previousElementSibling.querySelector('.arrow').textContent = "+";
             });
 
-            // Se não estava aberto, abre a resposta
+            // Se nÃ£o estava aberto, abre a resposta
             if (!isOpen || isOpen === "0px") {
                   answer.style.maxHeight = answer.scrollHeight + "px";
                   answer.style.padding = "15px";
@@ -1379,6 +1423,27 @@
          $('.owl-next-custom').click(function() {
             $carousel.trigger('next.owl.carousel');
          });
+
+         $(document).on('click', '.sala-imagem-nav', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const $botao = $(this);
+            const $imagem = $botao.closest('.sala-imagem');
+            const imagens = $imagem.data('imagens');
+
+            if (!Array.isArray(imagens) || imagens.length <= 1) {
+               return;
+            }
+
+            let indiceAtual = parseInt($imagem.attr('data-imagem-index'), 10) || 0;
+            indiceAtual = $botao.hasClass('next')
+               ? (indiceAtual + 1) % imagens.length
+               : (indiceAtual - 1 + imagens.length) % imagens.length;
+
+            $imagem.attr('data-imagem-index', indiceAtual);
+            $imagem.css('background-image', `url('${imagens[indiceAtual]}')`);
+         });
       });
 
 
@@ -1391,3 +1456,4 @@
    </body>
 
    </html>
+

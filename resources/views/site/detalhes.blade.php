@@ -275,7 +275,7 @@
                                 </a>
                                 <a class="carousel-control-next" href="#carouselSalaDetalhes" role="button" data-slide="next">
                                     <span class="carousel-control-next-icon" ></span>
-                                    <span class="sr-only">PrÃ³ximo</span>
+                                    <span class="sr-only">Próximo</span>
                                 </a>
                             </div>
                         </div>
@@ -331,8 +331,8 @@
 
                 @if($sala->status === 'indisponivel')
                     <div class="status-sala-banner indisponivel">
-                        <span>Esta sala estÃ¡ temporariamente indisponÃ­vel para novas reservas.</span>
-                        <span>VocÃª ainda pode consultar os detalhes.</span>
+                        <span>Esta sala está temporariamente indisponível para novas reservas.</span>
+                        <span>Você ainda pode consultar os detalhes.</span>
                     </div>
                 @endif
             </div>
@@ -359,7 +359,7 @@
                         <!-- Metragem alinhada Ã  direita -->
                         <div class="d-flex align-items-center">
                             <i class="fa-solid fa-ruler-combined me-2 pr-2" style="font-size: 15px; color: #76aa66"></i>
-                            <span style="font-size: 15px; color: #333;">{{$sala->metragem}} mÂ²</span>
+                            <span style="font-size: 15px; color: #333;">{{$sala->metragem}} m²</span>
                         </div>
                     </div>
                     <div class="col-12">
@@ -403,7 +403,7 @@
                               </div>
                             </div>
                           @empty
-                              <p>Sem conveniÃªncias cadastradas para esta sala.</p>
+                              <p>Sem conveniências cadastradas para esta sala.</p>
                           @endforelse
                       
                     </div>
@@ -427,7 +427,7 @@
                           <!-- Metragem alinhada Ã  direita -->
                           <div class="d-flex align-items-center">
                               <i class="fa-solid fa-ruler-combined me-2 pr-2" style="font-size: 15px; color: #76aa66"></i>
-                              <span style="font-size: 15px; color: #333;">{{$sala->metragem}} mÂ²</span>
+                              <span style="font-size: 15px; color: #333;">{{$sala->metragem}} m²</span>
                           </div>
                         </div>
                         <div class="col-12">
@@ -485,10 +485,10 @@
 
                     <div class="card p-4" style="margin-top: -20px">
                         <p class="text-success mb-2">
-                            <i class="fas fa-lock"></i> Este Ã© um ambiente seguro!
+                            <i class="fas fa-lock"></i> Este é um ambiente seguro!
                         </p>
                         <p>
-                            Trabalhamos constantemente para proteger sua seguranÃ§a e privacidade. 
+                            Trabalhamos constantemente para proteger sua segurança e privacidade. 
                             <a href="{{ route('privacidade') }}" class="text-primary">Saiba mais</a>
                         </p>
                     
@@ -563,10 +563,10 @@
                     <div class="text-center mt-4">
                         Aguardando selecionar a data para exibir os horários...
                     </div>
-                    <!-- HorÃ¡rios serÃ£o carregados aqui via AJAX -->
+                    <!-- Horários serão carregados aqui via AJAX -->
                   </div>
                   <div class="horarios-legenda" id="horarios-legenda" style="display:none;">
-                    <span class="legenda-item"><span class="legenda-ponto legenda-disponivel"></span> DisponÃ­vel</span>
+                    <span class="legenda-item"><span class="legenda-ponto legenda-disponivel"></span> Disponível</span>
                     <span class="legenda-item"><span class="legenda-ponto legenda-reservado"></span> Reservado</span>
                     <span class="legenda-item"><span class="legenda-ponto legenda-bloqueado"></span> Bloqueado</span>
                   </div>

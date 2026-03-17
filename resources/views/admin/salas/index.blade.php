@@ -69,14 +69,45 @@
     .bloqueio-item {
         border: 1px solid #edf1eb;
         border-radius: 12px;
-        padding: 14px 16px;
+        padding: 12px 14px;
         background: #fff;
-        margin-bottom: 12px;
-        box-shadow: 0 6px 18px rgba(44, 62, 36, 0.05);
+        margin-bottom: 10px;
+        box-shadow: 0 4px 14px rgba(44, 62, 36, 0.04);
     }
 
     .bloqueio-item strong {
         color: #4f7e48;
+    }
+
+    .bloqueio-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+    }
+
+    .bloqueio-main {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .bloqueio-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 4px;
+    }
+
+    .bloqueio-tipo {
+        font-size: 14px;
+        line-height: 1.2;
+    }
+
+    .bloqueio-periodo {
+        color: #5c6758;
+        font-size: 13px;
+        font-weight: 600;
     }
 
     .bloqueio-meta {
@@ -84,10 +115,49 @@
         font-size: 13px;
     }
 
+    .bloqueio-motivo {
+        margin-top: 7px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        max-width: 100%;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #f4f7f2;
+        color: #5b6755;
+        font-size: 12px;
+        line-height: 1.3;
+    }
+
+    .bloqueio-motivo strong {
+        color: #4f7e48;
+        font-size: 12px;
+    }
+
     .bloqueio-actions {
         display: flex;
-        justify-content: flex-end;
-        margin-top: 10px;
+        flex-shrink: 0;
+    }
+
+    .bloqueio-actions .btn {
+        white-space: nowrap;
+    }
+
+    #lista-bloqueios-sala {
+        max-height: 420px;
+        overflow-y: auto;
+        padding-right: 4px;
+    }
+
+    @media (max-width: 767px) {
+        .bloqueio-row {
+            flex-direction: column;
+        }
+
+        .bloqueio-actions {
+            width: 100%;
+            justify-content: flex-end;
+        }
     }
 
     #modals-slide-in .modal-dialog {

@@ -215,7 +215,13 @@ $(document).ready(function () {
             return;
         }
 
-        bloqueios.forEach(function (bloqueio) {
+        var bloqueiosOrdenados = [].concat(bloqueios).sort(function (a, b) {
+            var dataA = `${a.data_inicio || ''} ${a.hora_inicio || '00:00:00'}`;
+            var dataB = `${b.data_inicio || ''} ${b.hora_inicio || '00:00:00'}`;
+            return dataB.localeCompare(dataA);
+        });
+
+        bloqueiosOrdenados.forEach(function (bloqueio) {
             var periodo = formatarDataBloqueio(bloqueio.data_inicio);
             if (bloqueio.data_fim && bloqueio.data_fim !== bloqueio.data_inicio) {
                 periodo += ' até ' + formatarDataBloqueio(bloqueio.data_fim);
@@ -226,22 +232,26 @@ $(document).ready(function () {
                 : 'Dia inteiro';
 
             var criador = bloqueio.criador && bloqueio.criador.name ? bloqueio.criador.name : 'Administração';
-            var motivo = bloqueio.motivo ? `<div class="mt-1">${bloqueio.motivo}</div>` : '';
+            var motivo = bloqueio.motivo
+                ? `<div class="bloqueio-motivo"><strong>Motivo:</strong> <span>${bloqueio.motivo}</span></div>`
+                : `<div class="bloqueio-motivo"><strong>Motivo:</strong> <span>Não informado</span></div>`;
 
             lista.append(`
                 <div class="bloqueio-item" id="bloqueio-${bloqueio.id}">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <strong>${bloqueio.tipo === 'intervalo' ? 'Bloqueio por intervalo' : 'Bloqueio de dia inteiro'}</strong>
-                            <div>${periodo}</div>
+                    <div class="bloqueio-row">
+                        <div class="bloqueio-main">
+                            <div class="bloqueio-head">
+                                <strong class="bloqueio-tipo">${bloqueio.tipo === 'intervalo' ? 'Bloqueio por intervalo' : 'Bloqueio de dia inteiro'}</strong>
+                                <span class="bloqueio-periodo">${periodo}</span>
+                            </div>
                             <div class="bloqueio-meta">${horario} • Criado por ${criador}</div>
                             ${motivo}
                         </div>
-                    </div>
-                    <div class="bloqueio-actions">
-                        <button type="button" class="btn btn-sm btn-outline-danger btn-remover-bloqueio" data-id="${bloqueio.id}">
-                            Remover
-                        </button>
+                        <div class="bloqueio-actions">
+                            <button type="button" class="btn btn-sm btn-outline-danger btn-remover-bloqueio" data-id="${bloqueio.id}">
+                                Remover
+                            </button>
+                        </div>
                     </div>
                 </div>
             `);
