@@ -632,15 +632,17 @@
     }
 
     .sala-card-topline {
+        gap: 10px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 10px;
+        
     }
 
     .sala-card-status {
-        display: inline-flex;
         align-items: center;
+        display: inline-flex;
+        
         padding: 6px 10px;
         border-radius: 999px;
         background: #edf6ea;
